@@ -1,0 +1,23 @@
+{
+  "name": "district5/date",
+  "description": "District5 Date Library",
+  "keywords": ["php", "district5", "date"],
+  "homepage": "https://bitbucket.developer.io/projects/D5LIBS/repos/date/browse",
+  "license": "Proprietary",
+  "authors": [
+    {
+      "name": "Mark Morgan",
+      "email": "mark.morgan@district5.co.uk"
+    },
+    {
+      "name": "Roger Thomas",
+      "email": "roger.thomas@district5.co.uk"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-4": { "District5\\": "src/" }
+  }
+}
