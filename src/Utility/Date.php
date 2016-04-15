@@ -259,6 +259,86 @@ class Date
     }
 
     /**
+     * Gets a DateTime of the current time minus the number of seconds specified
+     *
+     * @param int $x The number of seconds
+     *
+     * @return \DateTime A DateTime of the current time minus the number of seconds specified
+     */
+    public static function NowMinusXSeconds($x)
+    {
+        return static::_NowMinusXTimePeriod($x, 'seconds');
+    }
+
+    /**
+     * Gets a DateTime of the current time minus the number of minutes specified
+     *
+     * @param int $x The number of minutes
+     *
+     * @return \DateTime A DateTime of the current time minus the number of minutes specified
+     */
+    public static function NowMinusXMinutes($x)
+    {
+        return static::_NowMinusXTimePeriod($x, 'minutes');
+    }
+
+    /**
+     * Gets a DateTime of the current time minus the number of hours specified
+     *
+     * @param int $x The number of hours
+     *
+     * @return \DateTime A DateTime of the current time minus the number of hours specified
+     */
+    public static function NowMinusXHours($x)
+    {
+        return static::_NowMinusXTimePeriod($x, 'hours');
+    }
+
+    /**
+     * Gets a DateTime of the current time minus the number of days specified
+     *
+     * @param int $x The number of days
+     *
+     * @return \DateTime A DateTime of the current time minus the number of days specified
+     */
+    public static function NowMinusXDays($x)
+    {
+        return static::_NowMinusXTimePeriod($x, 'days');
+    }
+
+    /**
+     * Gets a DateTime of the current time minus the number of months specified
+     *
+     * @param int $x The number of months
+     *
+     * @return \DateTime A DateTime of the current time minus the number of months specified
+     */
+    public static function NowMinusXMonths($x)
+    {
+        return static::_NowMinusXTimePeriod($x, 'months');
+    }
+
+    /**
+     * Takes the current DateTime, DateTime('now'), and subtracts the given interval
+     *
+     * @param int $x The amount of time to subtract
+     * @param string $timePeriod The time period, e.g. seconds, minutes, days etc
+     *
+     * @return \DateTime The adjusted time period
+     */
+    protected static function _NowMinusXTimePeriod($x, $timePeriod)
+    {
+        $date = date("Y-m-d H:i:s");
+
+        $date = strtotime(date("Y-m-d H:i:s", strtotime($date)) . " -" . $x . "  " . $timePeriod);
+
+        $dt = new \DateTime();
+        $dt->setTimestamp($date);
+
+        return $dt;
+    }
+
+    /**
      * Gets a DateTime of the current time plus the number of seconds specified
      *
      * @param int $x The number of seconds
