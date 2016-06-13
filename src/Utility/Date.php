@@ -431,6 +431,21 @@ class Date
     }
 
     /**
+     * Gets a DateTime given a timestamp
+     *
+     * @param int $timestamp The timestamp
+     *
+     * @return \DateTime A DateTime of the specified date timestamp
+     */
+    public static function SpecificDateFromTimestamp($timestamp)
+    {
+        $dt = new \DateTime();
+        $dt->setTimestamp($timestamp);
+
+        return $dt;
+    }
+
+    /**
      * Gets a string representation of a non-leading zero day of a DateTime
      *
      * @param \DateTime $date
