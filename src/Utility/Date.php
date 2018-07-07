@@ -478,7 +478,7 @@ class Date
      */
     public static function ToYearMonthDayString($date)
     {
-        return self::_DateToString($date, 'Y-d-m');
+        return self::_DateToString($date, 'Y-m-d');
     }
 
     /**
