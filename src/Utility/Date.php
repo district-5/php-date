@@ -233,6 +233,16 @@ class Date
     }
 
     /**
+     * Gets the number of seconds since the epoch (Unix Timestamp)
+     *
+     * @return int
+     */
+    public static function GetSecondsSinceEpoch()
+    {
+        return time();
+    }
+
+    /**
      * Checks whether dateStr1 is after dateStr2 utilising strtotime() to calculate dates
      *
      * @param string $dateStr1
