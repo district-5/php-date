@@ -305,6 +305,16 @@ class Date
     }
 
     /**
+     * Gets a DateTime of the current time
+     *
+     * @return \DateTime A DateTime of the current time
+     */
+    public static function Now()
+    {
+        return new \DateTime();
+    }
+
+    /**
      * Gets a DateTime of the current time minus the number of days specified
      *
      * @param int $x The number of days
