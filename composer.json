@@ -2,7 +2,7 @@
   "name": "district5/date",
   "description": "District5 Date Library",
   "keywords": ["php", "district5", "date"],
-  "homepage": "https://bitbucket.developer.io/projects/D5LIBS/repos/date/browse",
+  "homepage": "https://github.com/district-5/php-date",
   "license": "Proprietary",
   "authors": [
     {
