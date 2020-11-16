@@ -125,7 +125,9 @@ class Timezone
     public static function GetTimezone($timezoneId)
     {
         if (!array_key_exists($timezoneId, static::$_options))
+        {
             return null;
+        }
 
         return static::$_options[$timezoneId];
     }
@@ -150,7 +152,9 @@ class Timezone
     public static function IsValidTimezoneId($id)
     {
         if (!array_key_exists($id, static::$_options))
+        {
             return false;
+        }
 
         return true;
     }

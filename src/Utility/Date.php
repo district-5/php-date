@@ -62,7 +62,9 @@ class Date
         $daysInMonth = static::CalculateDaysInMonth($month, $year);
 
         if ($currentDay > $daysInMonth)
+        {
             throw new \InvalidArgumentException('Invalid number of days, number of days exceeds the number of days in the given month');
+        }
 
         return $daysInMonth - $currentDay;
     }
@@ -79,15 +81,21 @@ class Date
     {
         $timezone = Timezone::GetTimezone($toTimezoneId);
         if (null === $timezone)
+        {
             throw new \InvalidArgumentException('Invalid timezoneId specified in Date::ConvertFromUtc()');
+        }
 
         $hourOffset = $timezone['utcOffset'];
 
         // TODO: check this should have the inner strtotime(), if its already a timestamp it shouldn't be needed
         if ($hourOffset >= 0)
+        {
             return strtotime(date("Y-m-d H:i:s", strtotime($utcTimestamp)) . " +" . $hourOffset . " hours");
+        }
         else
+        {
             return strtotime(date("Y-m-d H:i:s", strtotime($utcTimestamp)) . " -" . abs($hourOffset) . " hours");
+        }
     }
 
     /**
