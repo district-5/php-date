@@ -277,6 +277,37 @@ class Date
     }
 
     /**
+     * Checks whether date1 and date2 are 'on the same day'. Fast fails on the day, followed by month, finally year
+     *
+     * @param \DateTime $date1
+     * @param \DateTime $date2
+     *
+     * @return bool
+     */
+    public static function IsSameDay(\DateTime $date1, \DateTime $date2) : bool
+    {
+        if ((int)($date1->format('d')) !== (int)($date2->format('d')))
+        {
+            // days dont match
+            return false;
+        }
+
+        if ((int)($date1->format('m')) !== (int)($date2->format('m')))
+        {
+            // months dont match
+            return false;
+        }
+
+        if ((int)($date1->format('Y')) !== (int)($date2->format('Y')))
+        {
+            // years dont match
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Gets a DateTime of the current time minus the number of seconds specified
      *
      * @param int $x The number of seconds
