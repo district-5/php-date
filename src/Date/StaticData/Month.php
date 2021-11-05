@@ -24,7 +24,7 @@ class Month
      * @param int|null $year
      * @return DateTime
      */
-    public function firstDateInMonth(int $monthNumber, ?int $year = null): DateTime
+    public function firstDateInMonth(int $monthNumber, int $year = null): DateTime
     {
         if ($year === null) {
             $year = Date::output(Date::nowDefault())->getYear();
@@ -65,7 +65,7 @@ class Month
      * @param int|null $year
      * @return DateTime
      */
-    public function lastDateInMonth(int $monthNumber, ?int $year = null): DateTime
+    public function lastDateInMonth(int $monthNumber, int $year = null): DateTime
     {
         if ($year === null) {
             $year = Date::output(Date::nowDefault())->getYear();
@@ -93,7 +93,7 @@ class Month
      * @param int|null $year
      * @return int
      */
-    public function numberDaysInMonth(int $monthNumber, ?int $year = null): int
+    public function numberDaysInMonth(int $monthNumber, int $year = null): int
     {
         return Date::output(
             self::lastDateInMonth(

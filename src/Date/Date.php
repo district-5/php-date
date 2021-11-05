@@ -30,7 +30,7 @@ class Date
      * @param DateTime|null $dateTime
      * @return OutputFormatter
      */
-    public static function output(?DateTime $dateTime = null): OutputFormatter
+    public static function output(DateTime $dateTime = null): OutputFormatter
     {
         $dateTime = self::getDateTime($dateTime);
         return new OutputFormatter($dateTime);
@@ -43,7 +43,7 @@ class Date
      * @param DateTime|null $dateTime
      * @return Diff
      */
-    public static function diff(?DateTime $dateTime = null): Diff
+    public static function diff(DateTime $dateTime = null): Diff
     {
         $dateTime = self::getDateTime($dateTime);
         return new Diff($dateTime);
@@ -56,7 +56,7 @@ class Date
      * @param DateTime|null $dateTime
      * @return Calculate
      */
-    public static function calculate(?DateTime $dateTime = null): Calculate
+    public static function calculate(DateTime $dateTime = null): Calculate
     {
         $dateTime = self::getDateTime($dateTime);
         return new Calculate($dateTime);
@@ -70,7 +70,7 @@ class Date
      * @param bool $cloneDateTime (optional) default true, whether to make a clone or alter the instance in place.
      * @return Modify
      */
-    public static function modify(?DateTime $dateTime = null, bool $cloneDateTime = true): Modify
+    public static function modify(DateTime $dateTime = null, bool $cloneDateTime = true): Modify
     {
         $dateTime = self::getDateTime($dateTime);
         return new Modify($dateTime, $cloneDateTime);
@@ -199,7 +199,7 @@ class Date
      * @param DateTime|null $dateTime
      * @return Timezone
      */
-    public static function timezone(?DateTime $dateTime = null): Timezone
+    public static function timezone(DateTime $dateTime = null): Timezone
     {
         $dateTime = self::getDateTime($dateTime);
         return new Timezone($dateTime);
@@ -306,7 +306,7 @@ class Date
      * @param DateTime|null $dateTime
      * @return DateTime|null
      */
-    protected static function getDateTime(?DateTime $dateTime = null): ?DateTime
+    protected static function getDateTime(DateTime $dateTime = null): ?DateTime
     {
         if (null === $dateTime) {
             $dateTime = self::nowDefault();
