@@ -8,12 +8,26 @@
     {
       "name": "Mark Morgan",
       "email": "mark.morgan@district5.co.uk"
+    },
+    {
+      "name": "Roger Thomas",
+      "email": "roger.thomas@district5.co.uk"
     }
   ],
   "require": {
-    "php": ">=7.1"
+    "php": ">=7.1",
+    "ext-calendar": "*"
   },
   "autoload": {
-    "psr-4": { "District5\\": "src/" }
+    "psr-4": {
+      "District5\\Utility\\": "src/Utility/",
+      "District5\\Date\\": "src/Date/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": { "District5Tests\\DateTests\\": "tests/DateTests/" }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8"
   }
 }

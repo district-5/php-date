@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit cacheResult="false" bootstrap="vendor/autoload.php" colors="true">
+    <testsuites>
+        <testsuite name="All Distric5 Date Tests">
+            <directory>tests/DateTests</directory>
+        </testsuite>
+    </testsuites>
+
+    <filter>
+        <whitelist>
+            <directory>src/Date</directory>
+            <exclude>
+                <directory>tests/DateTests</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+</phpunit>
