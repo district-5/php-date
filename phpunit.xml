@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<phpunit bootstrap="vendor/autoload.php" colors="true">
+<phpunit cacheResult="false" bootstrap="vendor/autoload.php" colors="true">
     <testsuites>
         <testsuite name="All Distric5 Date Tests">
             <directory>tests/DateTests</directory>
