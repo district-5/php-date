@@ -16,7 +16,8 @@
   ],
   "require": {
     "php": ">=7.1",
-    "ext-calendar": "*"
+    "ext-calendar": "*",
+    "ext-sockets": "*"
   },
   "autoload": {
     "psr-4": {

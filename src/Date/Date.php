@@ -4,6 +4,7 @@ namespace District5\Date;
 use DateTime;
 use District5\Date\Calculators\Calculate;
 use District5\Date\Calculators\Diff;
+use District5\Date\Calculators\NtpServer;
 use District5\Date\Converters\MongoConverter;
 use District5\Date\Formatters\InputFormatter;
 use District5\Date\Formatters\OutputFormatter;
@@ -300,6 +301,16 @@ class Date
     public static function month(): Month
     {
         return new Month();
+    }
+
+    /**
+     * Retrieve an instance of NtpServer. Used for reading a timestamp from an NTP server.
+     *
+     * @return NtpServer
+     */
+    public static function ntpServer(): NtpServer
+    {
+        return new NtpServer();
     }
 
     /**
