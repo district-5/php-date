@@ -19,7 +19,7 @@ This library requires no other libraries.
     }
   ],
   "require": {
-    "district-5/date": ">=1.3.0"
+    "district5/date": ">=2.0.0"
   }
 }
 ```
