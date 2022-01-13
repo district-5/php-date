@@ -3,7 +3,7 @@
   "description": "District5 Date Library",
   "keywords": ["php", "district5", "date"],
   "homepage": "https://github.com/district-5/php-date",
-  "license": "proprietary",
+  "license": "mit",
   "authors": [
     {
       "name": "District5",
