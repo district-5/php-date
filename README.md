@@ -10,18 +10,8 @@ functionality.
 
 This library requires no other libraries.
 
-```json
-{
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/district-5/php-date.git"
-    }
-  ],
-  "require": {
-    "district5/date": ">=2.0.0"
-  }
-}
+```
+composer require district5/date
 ```
 
 ### Running Unit Tests:
