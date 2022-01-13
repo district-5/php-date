@@ -645,9 +645,3 @@ Maintains a list of timezones, their offsets from UTC and a human friendly label
 ## Issues
 Log a bug report!
 
-## Questions
-
-Package Authors:
-
-  * Mark Morgan - mark.morgan@district5.co.uk
-  * Roger Thomas - roger.thomas@district5.co.uk

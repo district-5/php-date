@@ -3,15 +3,11 @@
   "description": "District5 Date Library",
   "keywords": ["php", "district5", "date"],
   "homepage": "https://github.com/district-5/php-date",
-  "license": "Proprietary",
+  "license": "proprietary",
   "authors": [
     {
-      "name": "Mark Morgan",
-      "email": "mark.morgan@district5.co.uk"
-    },
-    {
-      "name": "Roger Thomas",
-      "email": "roger.thomas@district5.co.uk"
+      "name": "District5",
+      "email": "hello@district5.co.uk"
     }
   ],
   "require": {
