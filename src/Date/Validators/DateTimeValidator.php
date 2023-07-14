@@ -423,4 +423,36 @@ class DateTimeValidator extends AbstractConstructor
     {
         return Date::output($this->dateTime)->toDMY() === Date::output($otherDate)->toDMY();
     }
+
+    /**
+     * @return bool
+     */
+    public function isFuture(): bool
+    {
+        return $this->isNewerThan(Date::nowDefault());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPast(): bool
+    {
+        return $this->isOlderThan(Date::nowDefault());
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWeekend(): bool
+    {
+        return $this->isSaturday() || $this->isSunday();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWeekday(): bool
+    {
+        return !$this->isWeekend();
+    }
 }

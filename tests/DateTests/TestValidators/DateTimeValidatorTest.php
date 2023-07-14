@@ -266,4 +266,51 @@ class DateTimeValidatorTest extends TestCase
         $this->assertTrue(Date::validateObject($now)->isSameDay($otherNow));
         $this->assertFalse(Date::validateObject($now)->isSameDay($tomorrow));
     }
+
+    public function testFutureAndPast()
+    {
+        $date = Date::modify(Date::nowDefault())->minus()->days(1);
+        $this->assertTrue(Date::validateObject($date)->isPast());
+        $this->assertFalse(Date::validateObject($date)->isFuture());
+
+        $date = Date::modify(Date::nowDefault())->plus()->days(1);
+        $this->assertTrue(Date::validateObject($date)->isFuture());
+        $this->assertFalse(Date::validateObject($date)->isPast());
+    }
+
+    public function testIsWeekend()
+    {
+        $date = Date::createYMDHISM(2019, 4, 6, 12);
+        $this->assertTrue(Date::validateObject($date)->isWeekend());
+        $date = Date::createYMDHISM(2019, 4, 7, 12);
+        $this->assertTrue(Date::validateObject($date)->isWeekend());
+        $date = Date::createYMDHISM(2019, 4, 8, 12);
+        $this->assertFalse(Date::validateObject($date)->isWeekend());
+        $date = Date::createYMDHISM(2019, 4, 9, 12);
+        $this->assertFalse(Date::validateObject($date)->isWeekend());
+        $date = Date::createYMDHISM(2019, 4, 10, 12);
+        $this->assertFalse(Date::validateObject($date)->isWeekend());
+        $date = Date::createYMDHISM(2019, 4, 11, 12);
+        $this->assertFalse(Date::validateObject($date)->isWeekend());
+        $date = Date::createYMDHISM(2019, 4, 12, 12);
+        $this->assertFalse(Date::validateObject($date)->isWeekend());
+    }
+
+    public function testIsWeekday()
+    {
+        $date = Date::createYMDHISM(2019, 4, 6, 12);
+        $this->assertFalse(Date::validateObject($date)->isWeekday());
+        $date = Date::createYMDHISM(2019, 4, 7, 12);
+        $this->assertFalse(Date::validateObject($date)->isWeekday());
+        $date = Date::createYMDHISM(2019, 4, 8, 12);
+        $this->assertTrue(Date::validateObject($date)->isWeekday());
+        $date = Date::createYMDHISM(2019, 4, 9, 12);
+        $this->assertTrue(Date::validateObject($date)->isWeekday());
+        $date = Date::createYMDHISM(2019, 4, 10, 12);
+        $this->assertTrue(Date::validateObject($date)->isWeekday());
+        $date = Date::createYMDHISM(2019, 4, 11, 12);
+        $this->assertTrue(Date::validateObject($date)->isWeekday());
+        $date = Date::createYMDHISM(2019, 4, 12, 12);
+        $this->assertTrue(Date::validateObject($date)->isWeekday());
+    }
 }
