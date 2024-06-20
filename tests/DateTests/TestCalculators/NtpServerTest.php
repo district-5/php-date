@@ -43,8 +43,6 @@ class NtpServerTest extends TestCase
 {
     public function testReadingDateObject()
     {
-        $this->markTestSkipped('Issue running with PHP 8.2.6');
-        return;
         $obj = Date::ntpServer()->getObject();
         $utcNow = Date::time();
         // We give a 2-second leeway because of disparity between the local and NTP server.
@@ -54,8 +52,6 @@ class NtpServerTest extends TestCase
 
     public function testReadingDateTimestamp()
     {
-        $this->markTestSkipped('Issue running with PHP 8.2.6');
-        return;
         $timestamp = Date::ntpServer()->getTimestamp();
         $utcNow = Date::time();
         $this->assertGreaterThan(($utcNow-5), $timestamp);

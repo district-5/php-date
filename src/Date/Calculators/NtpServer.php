@@ -120,7 +120,7 @@ class NtpServer
             return null;
         }
 
-        @socket_close($socket);
+        @stream_socket_shutdown($socket, STREAM_SHUT_RDWR);
         if (false === $data = @unpack('N12', $binary)) {
             return null;
         }

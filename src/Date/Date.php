@@ -41,6 +41,7 @@ use District5\Date\Formatters\Sorter;
 use District5\Date\Manipulators\Modify;
 use District5\Date\StaticData\Month;
 use District5\Date\StaticData\Recurring;
+use District5\Date\StaticData\StartAndEnd;
 use District5\Date\Tz\NowTimezone;
 use District5\Date\Tz\Timezone;
 use District5\Date\Validators\DateTimesValidator;
@@ -314,10 +315,11 @@ class Date
     }
 
     /**
-     * @param bool|null $asFloat
+     * @param bool $asFloat
      * @return string|float
+     * @noinspection PhpUnused
      */
-    public static function microtime($asFloat = null)
+    public static function microtime(bool $asFloat = false)
     {
         return microtime($asFloat);
     }
@@ -340,6 +342,14 @@ class Date
     public static function ntpServer(): NtpServer
     {
         return new NtpServer();
+    }
+
+    /**
+     * @return StartAndEnd
+     */
+    public static function startAndEnd(): StartAndEnd
+    {
+        return new StartAndEnd();
     }
 
     /**

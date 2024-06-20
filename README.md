@@ -53,6 +53,38 @@ $epoch = Date::epoch();
 </details>
 
 <details>
+  <summary>Start and end of key dates</summary>
+
+```php
+<?php
+// Get the utc now time
+use District5\Date\Date;
+
+$startOfDay = Date::startAndEnd()->startOfDayFromYearMonthDay(2024, 6, 1); // 2024-06-01 00:00:00.000000
+$startOfDay = Date::startAndEnd()->startOfDayFromDateTime(Date::createYMDHISM(2024, 6, 1)); // 2024-06-01 00:00:00.000000
+
+$endOfDay = Date::startAndEnd()->endOfDayFromYearMonthDay(2024, 6, 1); // 2024-06-01 23:59:59.999999
+$endOfDay = Date::startAndEnd()->endOfDayFromDateTime(Date::createYMDHISM(2024, 6, 1)); // 2024-06-01 23:59:59.999999
+
+$startOfMonth = Date::startAndEnd()->startOfMonthFromYearMonth(2024, 6); // 2024-06-01 00:00:00.000000
+$startOfMonth = Date::startAndEnd()->startOfMonthFromDateTime(Date::createYMDHISM(2024, 6, 1)); // 2024-06-01 00:00:00.000000
+
+$endOfMonth = Date::startAndEnd()->endOfMonthFromYearMonth(2024, 6); // 2024-06-30 23:59:59.999999
+$endOfMonth = Date::startAndEnd()->endOfMonthFromDateTime(Date::createYMDHISM(2024, 6, 1)); // 2024-06-30 23:59:59.999999
+
+$startOfYear = Date::startAndEnd()->startOfYearFromYear(2024); // 2024-01-01 00:00:00.000000
+$startOfYear = Date::startAndEnd()->startOfYearFromDateTime(Date::createYMDHISM(2024, 6, 1)); // 2024-01-01 00:00:00.000000
+
+$endOfYear = Date::startAndEnd()->endOfYearFromYear(2024); // 2024-12-31 23:59:59.999999
+$endOfYear = Date::startAndEnd()->endOfYearFromDateTime(Date::createYMDHISM(2024, 6, 1)); // 2024-12-31 23:59:59.999999
+
+$startOfToday = Date::startAndEnd()->startOfToday(); // xxxx-xx-xx 00:00:00.000000
+$endOfToday = Date::startAndEnd()->endOfToday(); // xxxx-xx-xx 23:59:59.999999
+```
+
+</details>
+
+<details>
   <summary>Modify a date</summary>
 
 #### General:
@@ -581,13 +613,17 @@ $str = $output->toISO8601(); // '2021-01-13T14:53:59+0000' - The ISO 8601 format
   <summary>Old library (`District5\Utility\Date` namespace)</summary>
 
 ### PHP Dates
+
 See autocomplete for full list of functions:
+
 ```php
 \District5\Utility\Date::NowPlusXHours(5);
 ```
 
 ### MongoDB UTCDateTime
+
 See autocomplete for function signatures:
+
 ```php
 use District5\Utility\DateMongo;
 
@@ -602,7 +638,9 @@ DateMongo::PHPDateTimeToMongoUTCDateTime();
 ```
 
 ### Stopwatch
+
 The stopwatch class can be instantiated and used to measure time at intervals from stopwatch start:
+
 ```php
 $stopwatch = new \District5\Utility\Stopwatch();
 $stopwatch->start();
@@ -613,6 +651,7 @@ $secondsPassed = $stopwatch->secondsPassed();
 ```
 
 You can also set a max time so a boolean check can be made to see if that time has passed. This is useful when working with cron tasks where there is a maximum execution time.
+
 ```php
 $maxTimeSeconds = 300;
 
@@ -624,9 +663,11 @@ while (!$stopwatch->hasMaxTimePassed())
     // do some work
 }
 ```
+
 In the above example you should take into account how long an item could take to process an iteration in the while loop to set the max seconds allowed less than the `max time a cron can run` - `time to process 1 loop iteration`. 
 
 ### Timezone
+
 Maintains a list of timezones, their offsets from UTC and a human friendly label. See autocomplete for full list of functions.
 
 </details>
