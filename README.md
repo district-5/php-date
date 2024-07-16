@@ -1,6 +1,8 @@
 Date
 ========================================
 
+![CI](https://github.com/district-5/php-date/actions/workflows/ci.yml/badge.svg?branch=master)
+
 ## About
 
 This library comprises two distinct libraries. The old `Date` library, and the new library. It supports most date
