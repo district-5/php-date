@@ -32,9 +32,9 @@ namespace District5\Date\Validators;
 
 use DateInterval;
 use DateTime;
-use Exception;
 use District5\Date\Abstracts\AbstractConstructor;
 use District5\Date\Date;
+use Exception;
 
 /**
  * Class DateTimeValidator
@@ -64,7 +64,7 @@ class DateTimeValidator extends AbstractConstructor
     const DAY_SUNDAY = 7;
 
     /**
-     * Is this DateTime a AM represented instance?
+     * Is this DateTime an AM represented instance?
      *
      * @return bool
      */
@@ -128,7 +128,7 @@ class DateTimeValidator extends AbstractConstructor
     }
 
     /**
-     * Is the given DateTime hour less than $provided hour number. Uses 24 hour numbers.
+     * Is the given DateTime hour less than $provided hour number. Uses 24-hour numbers.
      *
      * @param int $provided
      * @return bool
@@ -139,7 +139,7 @@ class DateTimeValidator extends AbstractConstructor
     }
 
     /**
-     * Is the given DateTime hour greater than $provided hour number. Uses 24 hour numbers.
+     * Is the given DateTime hour greater than $provided hour number. Uses 24-hour numbers.
      *
      * @param int $provided
      * @return bool
@@ -150,7 +150,7 @@ class DateTimeValidator extends AbstractConstructor
     }
 
     /**
-     * Is the given DateTime hour less than or equal to than $provided hour number. Uses 24 hour numbers.
+     * Is the given DateTime hour less than or equal to than $provided hour number. Uses 24-hour numbers.
      *
      * @param int $provided
      * @return bool
@@ -161,7 +161,7 @@ class DateTimeValidator extends AbstractConstructor
     }
 
     /**
-     * Is the given DateTime hour greater than or equal to $provided hour number. Uses 24 hour numbers.
+     * Is the given DateTime hour greater than or equal to $provided hour number. Uses 24-hour numbers.
      *
      * @param int $provided
      * @return bool
@@ -364,7 +364,7 @@ class DateTimeValidator extends AbstractConstructor
         try {
             $now = new DateTime();
             return $now->format('Y-m-d') === $this->dateTime->format('Y-m-d');
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -378,7 +378,7 @@ class DateTimeValidator extends AbstractConstructor
             $now = new DateTime();
             $now->add(new DateInterval('P1D'));
             return $now->format('Y-m-d') === $this->dateTime->format('Y-m-d');
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -392,7 +392,7 @@ class DateTimeValidator extends AbstractConstructor
             $now = new DateTime();
             $now->sub(new DateInterval('P1D'));
             return $now->format('Y-m-d') === $this->dateTime->format('Y-m-d');
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -402,9 +402,9 @@ class DateTimeValidator extends AbstractConstructor
      *
      * @param DateTime $firstDate
      * @param DateTime $lastDate
-     * @return int
+     * @return bool
      */
-    public function isBetween(DateTime $firstDate, DateTime $lastDate)
+    public function isBetween(DateTime $firstDate, DateTime $lastDate): bool
     {
         $dateOne = clone $firstDate;
         $dateTwo = clone $lastDate;
@@ -417,9 +417,9 @@ class DateTimeValidator extends AbstractConstructor
      * Is the given DateTime the same date as this $otherDate?
      *
      * @param DateTime $otherDate
-     * @return int
+     * @return bool
      */
-    public function isSameDay(DateTime $otherDate)
+    public function isSameDay(DateTime $otherDate): bool
     {
         return Date::output($this->dateTime)->toDMY() === Date::output($otherDate)->toDMY();
     }

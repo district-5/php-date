@@ -49,7 +49,7 @@ class Timezone extends AbstractConstructor
      * @param string $timezone
      * @return DateTime|false
      */
-    public function toTimezone(string $timezone)
+    public function toTimezone(string $timezone): DateTime|bool
     {
         if (TzConstants::isValidTimezone($timezone) === false) {
             return false;
@@ -58,7 +58,7 @@ class Timezone extends AbstractConstructor
             $dt = clone $this->dateTime;
             $dt->setTimezone(new DateTimeZone($timezone));
             return $dt;
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -66,14 +66,21 @@ class Timezone extends AbstractConstructor
     /**
      * Convert a datetime to a timezone from another timezone.
      *
-     * @param string $toTimezone
-     * @param string|null $fromTimezone (optional) - if not provided, will detect which to use.
+     * @param string|DateTimeZone $toTimezone
+     * @param string|DateTimeZone|null $fromTimezone (optional) - if not provided, will detect which to use.
      * @return DateTime|false
      */
-    public function toTimezoneFromTimezone(string $toTimezone, string $fromTimezone = null)
+    public function toTimezoneFromTimezone(string|DateTimeZone $toTimezone, string|DateTimeZone $fromTimezone = null): DateTime|bool
     {
-        if (TzConstants::isValidTimezone($toTimezone) === false) {
-            return false;
+        if ($toTimezone instanceof DateTimeZone) {
+            $toTimezone = $toTimezone->getName();
+        } else {
+            if (TzConstants::isValidTimezone($toTimezone) === false) {
+                return false;
+            }
+        }
+        if ($fromTimezone instanceof DateTimeZone) {
+            $fromTimezone = $fromTimezone->getName();
         }
         try {
             $dt = clone $this->dateTime;
@@ -98,13 +105,15 @@ class Timezone extends AbstractConstructor
             return $inst->toTimezone(
                 $toTimezone
             );
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
 
     /**
      * @return DateTimeZone
+     * @throws Exception
+     * @noinspection PhpUnused
      */
     public function getDefaultTimezone(): DateTimeZone
     {

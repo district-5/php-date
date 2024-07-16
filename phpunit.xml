@@ -1,18 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit cacheResult="false" bootstrap="vendor/autoload.php" colors="true">
-    <testsuites>
-        <testsuite name="All Distric5 Date Tests">
+<phpunit
+        backupGlobals="true"
+        backupStaticAttributes="false"
+        colors="true"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        forceCoversAnnotation="false"
+        processIsolation="false"
+        stopOnError="false"
+        stopOnFailure="true"
+        stopOnIncomplete="false"
+        stopOnSkipped="false"
+        timeoutForSmallTests="1"
+        timeoutForMediumTests="10"
+        timeoutForLargeTests="60"
+        bootstrap="vendor/autoload.php"
+        cacheResult="false"
+        verbose="true">
+    <coverage includeUncoveredFiles="true"
+              pathCoverage="false"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
+        <include>
+            <directory>src</directory>
+        </include>
+        <exclude>
             <directory>tests/DateTests</directory>
+        </exclude>
+        <report>
+            <html outputDirectory="build/coverage-html" lowUpperBound="50" highLowerBound="90"/>
+        </report>
+    </coverage>
+    <testsuites>
+        <testsuite name="TestSuite">
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>src/Date</directory>
-            <exclude>
-                <directory>tests/DateTests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
 </phpunit>

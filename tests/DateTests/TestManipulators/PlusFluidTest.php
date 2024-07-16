@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+<?php
 /**
  * District5 Date Library
  *
@@ -28,29 +28,56 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace District5\Date\Converters;
+namespace DateTests\TestManipulators;
 
 use DateTime;
+use District5\Date\Date;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Class Calculate
- * @package District5\Date\Converters
+ * Class PlusFluidTest
+ * @package District5Tests\DateTests\TestManipulators
  */
-abstract class ConverterAbstract
+class PlusFluidTest extends TestCase
 {
-    /**
-     * Convert a DateTime to an 'x' object.
-     *
-     * @param DateTime $dateTime
-     * @return mixed
-     */
-    abstract public function convertTo(DateTime $dateTime);
-
-    /**
-     * Convert an 'x' object to a DateTime object.
-     *
-     * @param mixed $provided
-     * @return DateTime|false
-     */
-    abstract public function convertFrom($provided);
+    public function testPlusFluidAllOptions()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d H:i:s u', '2010-01-01 00:15:09 000000');
+        $modified = Date::modify($dt)->plusFluid()->millennia(
+            1
+        )->centuries(
+            1
+        )->decades(
+            1
+        )->years(
+            1
+        )->months(
+            1
+        )->weeks(
+            1
+        )->days(
+            1
+        )->hours(
+            1
+        )->minutes(
+            1
+        )->seconds(
+            1
+        )->microseconds(
+            1
+        )->milliseconds(
+            1
+        )->hoursAndMinutes(
+            1,
+            1
+        )->hoursAndMinutesAndSeconds(
+            1,
+            1,
+            1
+        );
+        $this->assertEquals(
+            '3121-02-09 03:18:11 001001',
+            $modified->getDateTime()->format('Y-m-d H:i:s u')
+        );
+    }
 }

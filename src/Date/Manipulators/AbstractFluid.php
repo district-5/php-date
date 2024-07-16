@@ -28,58 +28,48 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace District5\Date\Formatters;
+namespace District5\Date\Manipulators;
 
 use DateTime;
-use District5\Date\Date;
 
 /**
- * Class Sorter
- * @package District5\Date\Formatters
+ * Class AbstractManipulator
+ * @package District5\Date\Manipulators
  */
-class Sorter
+abstract class AbstractFluid
 {
     /**
-     * @param DateTime ...$args
-     * @return DateTime[]|false
+     * @var DateTime
      */
-    public function sortOldestToNewest(...$args): bool|array
-    {
-        if (empty($args)) {
-            return [];
-        }
-        if (false === Date::validateArray($args)->isArrayOfDateTimes()) {
-            return false;
-        }
-        uasort($args, function ($a, $b) {
-            if ($a->getTimestamp() === $b->getTimestamp()) {
-                return 0;
-            }
+    protected DateTime $dateTime;
 
-            return ($a->getTimestamp() < $b->getTimestamp()) ? -1 : 1;
-        });
-        return array_values($args);
+    /**
+     * @var bool
+     */
+    protected bool $cloneDateTime = true;
+
+    /**
+     * Minus constructor.
+     * @param DateTime $dateTime
+     * @param bool $cloneDateTime (optional) default true, whether to make a clone or alter the instance in place.
+     */
+    public function __construct(DateTime $dateTime, bool $cloneDateTime = true)
+    {
+        $this->cloneDateTime = $cloneDateTime;
+        if ($cloneDateTime === true) {
+            $this->dateTime = clone $dateTime;
+        } else {
+            $this->dateTime = $dateTime;
+        }
     }
 
     /**
-     * @param DateTime ...$args
-     * @return DateTime[]|false
+     * Get the final DateTime instance.
+     *
+     * @return DateTime
      */
-    public function sortNewestToOldest(...$args): bool|array
+    public function getDateTime(): DateTime
     {
-        if (empty($args)) {
-            return [];
-        }
-        if (false === Date::validateArray($args)->isArrayOfDateTimes()) {
-            return false;
-        }
-        uasort($args, function ($a, $b) {
-            if ($a->getTimestamp() === $b->getTimestamp()) {
-                return 0;
-            }
-
-            return ($a->getTimestamp() > $b->getTimestamp()) ? -1 : 1;
-        });
-        return array_values($args);
+        return $this->dateTime;
     }
 }

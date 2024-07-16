@@ -31,8 +31,8 @@
 namespace District5\Date\StaticData;
 
 use DateTime;
-use District5\Date\Manipulators\RecurringDateManipulator;
 use District5\Date\Date;
+use District5\Date\Manipulators\RecurringDateManipulator;
 
 /**
  * Class Recurring
@@ -229,7 +229,7 @@ class Recurring
      */
     public function guyFawkesDay(): RecurringDateManipulator
     {
-        return $this->simpleDate('%s-11-05 00:00:00'); // Should never be forgot.
+        return $this->simpleDate('%s-11-05 00:00:00'); // Should never be forgotten.
     }
 
     /**

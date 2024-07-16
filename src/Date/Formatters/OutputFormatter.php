@@ -30,7 +30,7 @@
 
 namespace District5\Date\Formatters;
 
-use DateTime;
+use DateTimeInterface;
 use District5\Date\Abstracts\AbstractConstructor;
 
 /**
@@ -89,7 +89,7 @@ class OutputFormatter extends AbstractConstructor
     }
 
     /**
-     * Get the 24 hour format of hour and minutes of the datetime in XX:XX format
+     * Get the 24-hour format of hour and minutes of the datetime in XX:XX format
      *
      * @return string
      */
@@ -99,7 +99,7 @@ class OutputFormatter extends AbstractConstructor
     }
 
     /**
-     * Get the 24 hour format of hour, minutes and seconds of the datetime in XX:XX:XX format
+     * Get the 24-hour format of hour, minutes and seconds of the datetime in XX:XX:XX format
      *
      * @return string
      */
@@ -109,7 +109,7 @@ class OutputFormatter extends AbstractConstructor
     }
 
     /**
-     * Get the hour of the DateTime object as an integer. Uses 24 hour numbers.
+     * Get the hour of the DateTime object as an integer. Uses 24-hour numbers.
      *
      * @return int
      */
@@ -243,7 +243,7 @@ class OutputFormatter extends AbstractConstructor
      * @return int|string
      * @see OutputFormatter::toUnixTimestamp()
      */
-    public function toTimestamp(bool $asString = false)
+    public function toTimestamp(bool $asString = false): int|string
     {
         return $this->toUnixTimestamp($asString);
     }
@@ -254,11 +254,11 @@ class OutputFormatter extends AbstractConstructor
      * @param bool $asString default false, whether to return a string.
      * @return int|string
      */
-    public function toUnixTimestamp(bool $asString = false)
+    public function toUnixTimestamp(bool $asString = false): int|string
     {
         $v = $this->toFormat('U');
         if ($asString === true) {
-            return strval($v);
+            return $v;
         }
         return intval($v);
     }
@@ -269,11 +269,11 @@ class OutputFormatter extends AbstractConstructor
      * @param bool $asString default false, whether to return a string.
      * @return float|string
      */
-    public function toMicrosecondTimestamp(bool $asString = false)
+    public function toMicrosecondTimestamp(bool $asString = false): float|string
     {
         $v = $this->toFormat('U.u');
         if ($asString === true) {
-            return strval($v);
+            return $v;
         }
         return floatval($v);
     }
@@ -284,11 +284,11 @@ class OutputFormatter extends AbstractConstructor
      * @param bool $asString default false, whether to return a string.
      * @return float|string
      */
-    public function toMillisecondTimestamp(bool $asString = false)
+    public function toMillisecondTimestamp(bool $asString = false): float|string
     {
         $v = $this->toFormat('U.v');
         if ($asString === true) {
-            return strval($v);
+            return $v;
         }
         return floatval($v);
     }
@@ -298,7 +298,7 @@ class OutputFormatter extends AbstractConstructor
      */
     public function toISO8601(): string
     {
-        return $this->toFormat(DateTime::ISO8601);
+        return $this->toFormat(DateTimeInterface::ATOM);
     }
 
     /**

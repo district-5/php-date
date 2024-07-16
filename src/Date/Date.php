@@ -110,10 +110,10 @@ class Date
     /**
      * Retrieve an instance of the InputFormatter.
      *
-     * @param string|int|float $input
+     * @param float|int|string $input
      * @return InputFormatter
      */
-    public static function input($input): InputFormatter
+    public static function input(float|int|string $input): InputFormatter
     {
         return new InputFormatter($input);
     }
@@ -175,7 +175,7 @@ class Date
      * @param string|null $timezone (optional), default null
      * @return DateTime|false
      */
-    public static function createYMDHISM(int $year, int $month, int $day, int $hour = 0, int $minute = 0, int $seconds = 0, int $microseconds = 0, string $timezone = null)
+    public static function createYMDHISM(int $year, int $month, int $day, int $hour = 0, int $minute = 0, int $seconds = 0, int $microseconds = 0, string $timezone = null): DateTime|bool
     {
         if ($timezone === null) {
             $timezone = Date::getDefaultTimezone();
@@ -197,7 +197,7 @@ class Date
 
     /**
      * Get the default now date. Uses the configured timezone as set in PHP.
-     * 
+     *
      * @return DateTime
      */
     public static function nowDefault(): DateTime
@@ -285,7 +285,7 @@ class Date
      * @param string $string
      * @return DateTime|false
      */
-    public static function fromString(string $string)
+    public static function fromString(string $string): DateTime|bool
     {
         if (false === $time = strtotime($string)) {
             return false;
@@ -319,7 +319,7 @@ class Date
      * @return string|float
      * @noinspection PhpUnused
      */
-    public static function microtime(bool $asFloat = false)
+    public static function microtime(bool $asFloat = false): float|string
     {
         return microtime($asFloat);
     }

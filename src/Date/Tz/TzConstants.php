@@ -1,4 +1,5 @@
 <?php /** @noinspection SpellCheckingInspection */
+
 /**
  * District5 Date Library
  *
@@ -459,7 +460,7 @@ class TzConstants
     /**
      * @var string[]
      */
-    public static $ALL_TIMEZONES = [
+    public static array $ALL_TIMEZONES = [
         self::UTC,
         self::AFRICA_ABIDJAN,
         self::AFRICA_ACCRA,

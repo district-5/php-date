@@ -59,7 +59,7 @@ class Calculate extends AbstractConstructor
      * @param int|null $year
      * @return int
      */
-    public static function numberDaysInMonthByGivenValues(int $month=null, int $year=null): int
+    public static function numberDaysInMonthByGivenValues(int $month = null, int $year = null): int
     {
         $dt = Date::now()->default();
         if ($month === null) {
@@ -89,7 +89,7 @@ class Calculate extends AbstractConstructor
      * @param int|null $year
      * @return int
      */
-    public static function numberDaysLeftInMonthByGivenValues(int $day=null, int $month=null, int $year=null): int
+    public static function numberDaysLeftInMonthByGivenValues(int $day = null, int $month = null, int $year = null): int
     {
         $dt = Date::now()->default();
         if ($day === null) {
@@ -120,10 +120,10 @@ class Calculate extends AbstractConstructor
     {
         $otherDateTime = clone $otherDateTime;
         $diff = $this->getNewestDate(
-            $otherDateTime
-        )->getTimestamp() - $this->getOldestDate(
-            $otherDateTime
-        )->getTimestamp();
+                $otherDateTime
+            )->getTimestamp() - $this->getOldestDate(
+                $otherDateTime
+            )->getTimestamp();
         if ($diff === 0) {
             return 0;
         }
@@ -140,10 +140,10 @@ class Calculate extends AbstractConstructor
     {
         $otherDateTime = clone $otherDateTime;
         $diff = $this->getNewestDate(
-            $otherDateTime
-        )->getTimestamp() - $this->getOldestDate(
-            $otherDateTime
-        )->getTimestamp();
+                $otherDateTime
+            )->getTimestamp() - $this->getOldestDate(
+                $otherDateTime
+            )->getTimestamp();
         if ($diff === 0) {
             return 0;
         }
@@ -158,21 +158,20 @@ class Calculate extends AbstractConstructor
     public function seconds(DateTime $otherDateTime): int
     {
         $otherDateTime = clone $otherDateTime;
-        $diff = $this->getNewestDate(
-            $otherDateTime
-        )->getTimestamp() - $this->getOldestDate(
-            $otherDateTime
-        )->getTimestamp();
-        return intval($diff);
+        return $this->getNewestDate(
+                $otherDateTime
+            )->getTimestamp() - $this->getOldestDate(
+                $otherDateTime
+            )->getTimestamp();
     }
 
     /**
      * Is the given DateTime older than $provided
      * (Alias for DateTimeValidator::isOlderThan())
      *
-     * @see \District5\Date\Validators\DateTimeValidator::isOlderThan()
      * @param DateTime $provided
      * @return bool
+     * @see \District5\Date\Validators\DateTimeValidator::isOlderThan()
      */
     public function isOlderThan(DateTime $provided): bool
     {
@@ -183,9 +182,9 @@ class Calculate extends AbstractConstructor
      * Is the given DateTime newer than $provided
      * (Alias for DateTimeValidator::isNewerThan())
      *
-     * @see \District5\Date\Validators\DateTimeValidator::isNewerThan()
      * @param DateTime $provided
      * @return bool
+     * @see \District5\Date\Validators\DateTimeValidator::isNewerThan()
      */
     public function isNewerThan(DateTime $provided): bool
     {
@@ -196,10 +195,10 @@ class Calculate extends AbstractConstructor
      * Is the given DateTime older than or equal to $provided DateTime
      * (Alias for DateTimeValidator::isOlderThanOrEqualTo())
      *
-     * @see \District5\Date\Validators\DateTimeValidator::isOlderThanOrEqualTo()
      * @param DateTime $provided
      * @return bool
      * @noinspection PhpUnused
+     * @see          \District5\Date\Validators\DateTimeValidator::isOlderThanOrEqualTo()
      */
     public function isOlderThanOrEqualTo(DateTime $provided): bool
     {
@@ -210,10 +209,10 @@ class Calculate extends AbstractConstructor
      * Is the given DateTime newer than or equal to $provided DateTime
      * (Alias for DateTimeValidator::isNewerThanOrEqualTo())
      *
-     * @see \District5\Date\Validators\DateTimeValidator::isNewerThanOrEqualTo()
      * @param DateTime $provided
      * @return bool
      * @noinspection PhpUnused
+     * @see          \District5\Date\Validators\DateTimeValidator::isNewerThanOrEqualTo()
      */
     public function isNewerThanOrEqualTo(DateTime $provided): bool
     {

@@ -41,7 +41,7 @@ class DateTimesValidator
     /**
      * @var DateTime[]
      */
-    protected $dateTimes;
+    protected array $dateTimes;
 
     /**
      * DateTimesValidator constructor.

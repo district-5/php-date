@@ -31,6 +31,7 @@
 namespace District5Tests\DateTests\TestFormatters;
 
 use DateTime;
+use DateTimeInterface;
 use District5\Date\Date;
 use PHPUnit\Framework\TestCase;
 
@@ -227,7 +228,7 @@ class InputFormatterTest extends TestCase
         $this->assertEquals(
             $date->format('U'),
             Date::input(
-                $date->format(DateTime::ISO8601)
+                $date->format(DateTimeInterface::ATOM)
             )->fromISO8601()->format('U')
         );
     }

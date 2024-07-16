@@ -42,7 +42,7 @@ class NtpServer
     /**
      * @var string[]
      */
-    public static $servers = [
+    public static array $servers = [
         'time1.google.com',
         'time2.google.com',
         'time3.google.com',
@@ -54,7 +54,7 @@ class NtpServer
      *
      * @param array|null $servers
      * @param int $secondsTimeout
-     * @param float|int $millisecondTimeout
+     * @param float $millisecondTimeout
      * @return DateTime|null
      */
     public function getObject(array $servers = null, int $secondsTimeout = 1, float $millisecondTimeout = 0): ?DateTime
@@ -98,9 +98,9 @@ class NtpServer
      * @param string $server
      * @param int $secondsTimeout
      * @param float $millisecondTimeout
-     * @return int|mixed|null
+     * @return int|null
      */
-    protected function readNtpServer(string $server, int $secondsTimeout = 1, float $millisecondTimeout = 0)
+    protected function readNtpServer(string $server, int $secondsTimeout = 1, float $millisecondTimeout = 0): int|null
     {
         $socket = @stream_socket_client(
             sprintf('udp://%s:123', $server),

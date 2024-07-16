@@ -31,10 +31,10 @@
 namespace District5\Date\Manipulators;
 
 use DateTime;
-use Exception;
 use District5\Date\Calculators\Diff;
-use District5\Date\Formatters\OutputFormatter;
 use District5\Date\Date;
+use District5\Date\Formatters\OutputFormatter;
+use Exception;
 
 /**
  * Class RecurringDateManipulator
@@ -45,7 +45,7 @@ class RecurringDateManipulator
     /**
      * @var DateTime
      */
-    private $dateTime;
+    private DateTime $dateTime;
 
     /**
      * RecurringDateManipulator constructor.
@@ -68,7 +68,7 @@ class RecurringDateManipulator
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function tomorrow()
+    public function tomorrow(): DateTime|bool
     {
         return Date::modify($this->dateTime)->plus()->days(1);
     }
@@ -77,7 +77,7 @@ class RecurringDateManipulator
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function yesterday()
+    public function yesterday(): DateTime|bool
     {
         return Date::modify($this->dateTime)->minus()->days(1);
     }
@@ -86,7 +86,7 @@ class RecurringDateManipulator
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function nextMonth()
+    public function nextMonth(): DateTime|bool
     {
         return Date::modify($this->dateTime)->plus()->months(1);
     }
@@ -95,7 +95,7 @@ class RecurringDateManipulator
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function lastMonth()
+    public function lastMonth(): DateTime|bool
     {
         return Date::modify($this->dateTime)->minus()->months(1);
     }
@@ -103,7 +103,7 @@ class RecurringDateManipulator
     /**
      * @return DateTime|false
      */
-    public function nextYear()
+    public function nextYear(): DateTime|bool
     {
         return Date::modify($this->dateTime)->plus()->years(1);
     }
@@ -111,7 +111,7 @@ class RecurringDateManipulator
     /**
      * @return DateTime|false
      */
-    public function lastYear()
+    public function lastYear(): DateTime|bool
     {
         return Date::modify($this->dateTime)->minus()->years(1);
     }
@@ -137,7 +137,7 @@ class RecurringDateManipulator
             if ($dt >= $start && $dt <= $end) {
                 return true;
             }
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -148,7 +148,7 @@ class RecurringDateManipulator
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function getPrevious()
+    public function getPrevious(): DateTime|bool
     {
         try {
             $date = $this->generateNormalisedDate();
@@ -156,7 +156,7 @@ class RecurringDateManipulator
                 return $this->nextYear();
             }
             return $this->dateTime;
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -167,7 +167,7 @@ class RecurringDateManipulator
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function getNext()
+    public function getNext(): DateTime|bool
     {
         try {
             $date = $this->generateNormalisedDate();
@@ -175,7 +175,7 @@ class RecurringDateManipulator
                 return $this->nextYear();
             }
             return $this->dateTime;
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -214,7 +214,7 @@ class RecurringDateManipulator
      * @return DateTime|false
      * @throws Exception
      */
-    private function generateNormalisedDate()
+    private function generateNormalisedDate(): DateTime|bool
     {
         $dt = new DateTime();
         return DateTime::createFromFormat(

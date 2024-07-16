@@ -31,6 +31,7 @@
 namespace District5Tests\DateTests\TestFormatters;
 
 use DateTime;
+use DateTimeInterface;
 use District5\Date\Date;
 use PHPUnit\Framework\TestCase;
 
@@ -257,7 +258,7 @@ class OutputFormatterTest extends TestCase
     {
         $date = DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 22:03:40.123');
         $this->assertEquals(
-            $date->format(DateTime::ISO8601),
+            $date->format(DateTimeInterface::ATOM),
             Date::output(
                 $date
             )->toISO8601()

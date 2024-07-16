@@ -32,6 +32,7 @@
 namespace District5\Date\Formatters;
 
 use DateTime;
+use DateTimeInterface;
 use District5\Date\Date;
 
 /**
@@ -43,13 +44,13 @@ class InputFormatter
     /**
      * @var string|int|float
      */
-    protected $input;
+    protected string|int|float $input;
 
     /**
      * InputFormatter constructor.
-     * @param string|int|float $input
+     * @param float|int|string $input
      */
-    public function __construct($input)
+    public function __construct(float|int|string $input)
     {
         $this->input = $input;
     }
@@ -61,7 +62,7 @@ class InputFormatter
      * @param string $separator default '-' the separator to use.
      * @return DateTime|false
      */
-    public function fromYMD(string $separator = '-')
+    public function fromYMD(string $separator = '-'): DateTime|bool
     {
         $tmp = DateTime::createFromFormat(
             sprintf('Y%sm%sd', $separator, $separator),
@@ -80,7 +81,7 @@ class InputFormatter
      * @param string $separator default '-' the separator to use.
      * @return DateTime|false
      */
-    public function fromDMY(string $separator = '-')
+    public function fromDMY(string $separator = '-'): DateTime|bool
     {
         $tmp = DateTime::createFromFormat(
             sprintf('d%sm%sY', $separator, $separator),
@@ -99,7 +100,7 @@ class InputFormatter
      * @param string $separator default '-' the separator to use.
      * @return DateTime|false
      */
-    public function fromMDY(string $separator = '-')
+    public function fromMDY(string $separator = '-'): DateTime|bool
     {
         $tmp = DateTime::createFromFormat(
             sprintf('m%sd%sY', $separator, $separator),
@@ -115,7 +116,7 @@ class InputFormatter
      * @return DateTime|false
      * @see InputFormatter::fromUnixTimestamp()
      */
-    public function fromTimestamp()
+    public function fromTimestamp(): DateTime|bool
     {
         return $this->fromUnixTimestamp();
     }
@@ -125,7 +126,7 @@ class InputFormatter
      * @param string $timeSeparator
      * @return DateTime|false
      */
-    public function fromYMDHIS(string $dateSeparator = '-', string $timeSeparator = ':')
+    public function fromYMDHIS(string $dateSeparator = '-', string $timeSeparator = ':'): DateTime|bool
     {
         return $this->fromFormat(
             sprintf(
@@ -144,8 +145,9 @@ class InputFormatter
      * @param \MongoDB\BSON\UTCDateTime $provided
      * @return DateTime|false
      * @noinspection PhpMissingParamTypeInspection
+     * @noinspection PhpUnused
      */
-    public function fromMongoUtcDateTime($provided)
+    public function fromMongoUtcDateTime($provided): DateTime|bool
     {
         return Date::mongo()->convertFrom($provided);
     }
@@ -156,7 +158,7 @@ class InputFormatter
      * @param string $format
      * @return DateTime|false
      */
-    public function fromFormat(string $format)
+    public function fromFormat(string $format): DateTime|bool
     {
         return DateTime::createFromFormat($format, $this->input);
     }
@@ -169,9 +171,9 @@ class InputFormatter
      * @param bool $strict (optional) default true.
      * @return DateTime|false
      */
-    public function fromUnixTimestamp(bool $strict = true)
+    public function fromUnixTimestamp(bool $strict = true): DateTime|bool
     {
-        if ($strict === false && strstr($this->input, '.') !== false) {
+        if ($strict === false && str_contains($this->input, '.')) {
             return $this->fromMicrosecondTimestamp();
         }
         $tmp = DateTime::createFromFormat(
@@ -191,9 +193,9 @@ class InputFormatter
      * @param bool $strict (optional) default true.
      * @return DateTime|false
      */
-    public function fromMicrosecondTimestamp(bool $strict = true)
+    public function fromMicrosecondTimestamp(bool $strict = true): DateTime|bool
     {
-        if ($strict === false && strstr($this->input, '.') === false) {
+        if ($strict === false && !str_contains($this->input, '.')) {
             return $this->fromUnixTimestamp();
         }
         $tmp = DateTime::createFromFormat(
@@ -213,9 +215,9 @@ class InputFormatter
      * @param bool $strict (optional) default true.
      * @return DateTime|false
      */
-    public function fromMillisecondTimestamp(bool $strict = true)
+    public function fromMillisecondTimestamp(bool $strict = true): DateTime|bool
     {
-        if ($strict === false && strstr($this->input, '.') === false) {
+        if ($strict === false && !str_contains($this->input, '.')) {
             return $this->fromUnixTimestamp();
         }
         $tmp = DateTime::createFromFormat(
@@ -233,13 +235,13 @@ class InputFormatter
      *
      * @return DateTime|false
      */
-    public function fromISO8601()
+    public function fromISO8601(): DateTime|bool
     {
         $tmp = DateTime::createFromFormat(
-            DateTime::ISO8601,
+            DateTimeInterface::ATOM,
             strval($this->input)
         );
-        if ($tmp !== false && $tmp->format(DateTime::ISO8601) === strval($this->input)) {
+        if ($tmp !== false && $tmp->format(DateTimeInterface::ATOM) === strval($this->input)) {
             return $tmp;
         }
         return false;

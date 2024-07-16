@@ -32,7 +32,10 @@ namespace District5Tests\DateTests\TestManipulators;
 
 use DateTime;
 use District5\Date\Date;
+use District5\Date\Manipulators\Minus;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * Class MinusTest
@@ -486,5 +489,21 @@ class MinusTest extends TestCase
             '1999-01-01',
             $dt->format('Y-m-d')
         );
+    }
+
+    /**
+     * @return void
+     * @throws ReflectionException
+     */
+    public function testRunWithInvalidString()
+    {
+        $class = new ReflectionClass(Minus::class);
+        $method = $class->getMethod('run');
+        $method->setAccessible(true);
+
+        $date = DateTime::createFromFormat('Y-m-d H:i:s', '2010-01-01 00:15:10');
+        $minus = new Minus($date);
+        $result = $method->invokeArgs($minus, ['run', 'this isn\'t valid']);
+        $this->assertFalse($result);
     }
 }

@@ -128,4 +128,63 @@ class CalculateTest extends TestCase
         $now = DateTime::createFromFormat('Y-m-d H:i:s', '2020-02-05 01:01:00');
         $this->assertEquals(29, Date::calculate($now)->numberDaysInMonth());
     }
+
+    public function testCalculateHoursMinutesSeconds()
+    {
+        $dateOne = Date::createYMDHISM(2024, 01, 01, 12, 30, 45);
+        $dateTwo = Date::createYMDHISM(2024, 01, 01, 13, 31, 22);
+        $this->assertEquals(1, Date::calculate($dateOne)->hours($dateTwo));
+        $this->assertEquals(61, Date::calculate($dateOne)->minutes($dateTwo));
+        $this->assertEquals(3637, Date::calculate($dateOne)->seconds($dateTwo));
+
+        $dateOne = Date::createYMDHISM(2024, 01, 01, 12, 30, 45);
+        $dateTwo = Date::createYMDHISM(2024, 01, 01, 12, 31, 22);
+        $this->assertEquals(0, Date::calculate($dateOne)->hours($dateTwo));
+        $this->assertEquals(1, Date::calculate($dateOne)->minutes($dateTwo));
+        $this->assertEquals(37, Date::calculate($dateOne)->seconds($dateTwo));
+
+        $dateOne = Date::createYMDHISM(2024, 01, 01, 12, 30, 45);
+        $dateTwo = Date::createYMDHISM(2024, 01, 01, 8, 31, 22); // reversed
+        $this->assertEquals(4, Date::calculate($dateOne)->hours($dateTwo));
+        $this->assertEquals(239, Date::calculate($dateOne)->minutes($dateTwo));
+        $this->assertEquals(14363, Date::calculate($dateOne)->seconds($dateTwo));
+
+        $dateOne = Date::createYMDHISM(2024, 01, 01, 12, 30, 45);
+        $dateTwo = Date::createYMDHISM(2024, 01, 01, 12, 30, 45); // same
+        $this->assertEquals(0, Date::calculate($dateOne)->hours($dateTwo));
+        $this->assertEquals(0, Date::calculate($dateOne)->minutes($dateTwo));
+        $this->assertEquals(0, Date::calculate($dateOne)->seconds($dateTwo));
+    }
+
+    public function testIsOlderThanOrEqualTo()
+    {
+        $date = DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 22:03:40.123');
+        $this->assertTrue(
+            Date::calculate($date)->isOlderThanOrEqualTo(
+                DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 23:03:40.123')
+            )
+        );
+
+        $this->assertFalse(
+            Date::calculate($date)->isOlderThanOrEqualTo(
+                DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 22:03:40.122')
+            )
+        );
+    }
+
+    public function testIsNewerThanOrEqualTo()
+    {
+        $date = DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 22:03:40.123');
+        $this->assertTrue(
+            Date::calculate($date)->isNewerThanOrEqualTo(
+                DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 21:03:40.123')
+            )
+        );
+
+        $this->assertFalse(
+            Date::calculate($date)->isNewerThanOrEqualTo(
+                DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 22:03:40.124')
+            )
+        );
+    }
 }

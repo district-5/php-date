@@ -1,4 +1,5 @@
 <?php /** @noinspection PhpFullyQualifiedNameUsageInspection */
+
 /**
  * District5 Date Library
  *
@@ -40,7 +41,7 @@ use District5\Date\Date;
  *
  * @package District5\Date\Converters
  */
-class MongoConverter extends ConverterAbstract
+class MongoConverter
 {
     /**
      * Convert a DateTime to a UTCDateTime object.
@@ -49,7 +50,7 @@ class MongoConverter extends ConverterAbstract
      * @return \MongoDB\BSON\UTCDateTime|false
      * @noinspection PhpComposerExtensionStubsInspection
      */
-    public function convertTo(DateTime $dateTime)
+    public function convertTo(DateTime $dateTime): \MongoDB\BSON\UTCDateTime|bool
     {
         $cl = '\MongoDB\BSON\UTCDateTime';
         if (class_exists($cl) === false) {
@@ -65,14 +66,9 @@ class MongoConverter extends ConverterAbstract
      * @param \MongoDB\BSON\UTCDateTime $provided
      * @return DateTime|false
      * @noinspection PhpComposerExtensionStubsInspection
-     * @noinspection PhpMissingParamTypeInspection
      */
-    public function convertFrom($provided)
+    public function convertFrom(\MongoDB\BSON\UTCDateTime $provided): DateTime|bool
     {
-        if (!is_object($provided) || get_class($provided) !== 'MongoDB\BSON\UTCDateTime') {
-            return false;
-        }
-
         return $provided->toDateTime();
     }
 }

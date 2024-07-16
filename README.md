@@ -141,6 +141,32 @@ Date::modify($date, false)->withString('-5 seconds');
 
 #### Minus:
 
+You can chain minus events by using the `minusFluid` method instead of `minus`. This will allow you to chain multiple
+minus events together. After completion, you can call `getDateTime` to get the final DateTime object.
+
+Chained minus:
+
+```php
+<?php
+use District5\Date\Date;
+
+$date = Date::now()->utc();
+$new = Date::modify($date)
+    ->minusFluid()
+    ->millennia(1)
+    ->centuries(2)
+    ->decades(3)
+    ->years(2)
+    ->months(5)
+    ->days(10)
+    ->hours(2)
+    ->minutes(5)
+    ->seconds(10)
+    ->microseconds(2)
+    ->milliseconds(2)
+    ->getDateTime();
+```
+
 ```php
 <?php
 use District5\Date\Date;
@@ -219,6 +245,32 @@ $newDate = Date::modify($date, false)->minus()->millennia(2);
 ```
 
 #### Plus:
+
+You can chain plus events by using the `plusFluid` method instead of `plus`. This will allow you to chain multiple
+plus events together. After completion, you can call `getDateTime` to get the final DateTime object.
+
+Chained plus:
+
+```php
+<?php
+use District5\Date\Date;
+
+$date = Date::now()->utc();
+$new = Date::modify($date)
+    ->plusFluid()
+    ->millennia(1)
+    ->centuries(2)
+    ->decades(3)
+    ->years(2)
+    ->months(5)
+    ->days(10)
+    ->hours(2)
+    ->minutes(5)
+    ->seconds(10)
+    ->microseconds(2)
+    ->milliseconds(2)
+    ->getDateTime();
+```
 
 ```php
 <?php

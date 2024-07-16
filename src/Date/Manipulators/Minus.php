@@ -46,7 +46,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function hours(int $x)
+    public function hours(int $x): DateTime|bool
     {
         return $this->run(
             sprintf('PT%sH', abs($x))
@@ -59,7 +59,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function minutes(int $x)
+    public function minutes(int $x): DateTime|bool
     {
         return $this->run(
             sprintf('PT%sM', abs($x))
@@ -72,7 +72,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function seconds(int $x)
+    public function seconds(int $x): DateTime|bool
     {
         return $this->run(
             sprintf('PT%sS', abs($x))
@@ -85,7 +85,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function milliseconds(int $x)
+    public function milliseconds(int $x): DateTime|bool
     {
         $this->dateTime->modify(
             sprintf('-%s milliseconds', abs($x))
@@ -99,7 +99,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function microseconds(int $x)
+    public function microseconds(int $x): DateTime|bool
     {
         $this->dateTime->modify(
             sprintf('-%s microseconds', abs($x))
@@ -114,7 +114,7 @@ class Minus extends AbstractManipulator
      * @param int $minutes
      * @return DateTime|false
      */
-    public function hoursAndMinutes(int $hours, int $minutes)
+    public function hoursAndMinutes(int $hours, int $minutes): DateTime|bool
     {
         if (false === $this->hours($hours) || false === $this->minutes($minutes)) {
             return false;
@@ -130,7 +130,7 @@ class Minus extends AbstractManipulator
      * @param int $seconds
      * @return DateTime|false
      */
-    public function hoursAndMinutesAndSeconds(int $hours, int $minutes, int $seconds)
+    public function hoursAndMinutesAndSeconds(int $hours, int $minutes, int $seconds): DateTime|bool
     {
         if (false === $this->hours($hours) || false === $this->minutes($minutes) || false === $this->seconds($seconds)) {
             return false;
@@ -144,7 +144,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function days(int $x)
+    public function days(int $x): DateTime|bool
     {
         return $this->run(
             sprintf('P%sD', abs($x))
@@ -157,7 +157,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function weeks(int $x)
+    public function weeks(int $x): DateTime|bool
     {
         return $this->days(
             (7 * $x)
@@ -170,7 +170,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function months(int $x)
+    public function months(int $x): DateTime|bool
     {
         $startDay = intval($this->dateTime->format('j'));
         $this->dateTime->modify(
@@ -191,7 +191,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function years(int $x)
+    public function years(int $x): DateTime|bool
     {
         return $this->run(
             sprintf('P%sY', abs($x))
@@ -204,7 +204,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function decades(int $x)
+    public function decades(int $x): DateTime|bool
     {
         return $this->years((abs($x) * 10));
     }
@@ -215,7 +215,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function centuries(int $x)
+    public function centuries(int $x): DateTime|bool
     {
         return $this->years((abs($x) * 100));
     }
@@ -226,7 +226,7 @@ class Minus extends AbstractManipulator
      * @param int $x
      * @return DateTime|false
      */
-    public function millennia(int $x)
+    public function millennia(int $x): DateTime|bool
     {
         return $this->years((abs($x) * 1000));
     }
@@ -237,14 +237,14 @@ class Minus extends AbstractManipulator
      * @param string $str
      * @return DateTime|false
      */
-    protected function run(string $str)
+    protected function run(string $str): DateTime|bool
     {
         try {
             $this->dateTime->sub(
                 new DateInterval($str)
             );
             return $this->dateTime;
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }

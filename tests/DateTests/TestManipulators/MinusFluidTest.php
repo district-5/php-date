@@ -28,58 +28,57 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace District5\Date\Formatters;
+namespace DateTests\TestManipulators;
 
 use DateTime;
 use District5\Date\Date;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Class Sorter
- * @package District5\Date\Formatters
+ * Class MinusFluidTest
+ * @package District5Tests\DateTests\TestManipulators
  */
-class Sorter
+class MinusFluidTest extends TestCase
 {
-    /**
-     * @param DateTime ...$args
-     * @return DateTime[]|false
-     */
-    public function sortOldestToNewest(...$args): bool|array
+    public function testMinusFluidAllOptions()
     {
-        if (empty($args)) {
-            return [];
-        }
-        if (false === Date::validateArray($args)->isArrayOfDateTimes()) {
-            return false;
-        }
-        uasort($args, function ($a, $b) {
-            if ($a->getTimestamp() === $b->getTimestamp()) {
-                return 0;
-            }
-
-            return ($a->getTimestamp() < $b->getTimestamp()) ? -1 : 1;
-        });
-        return array_values($args);
-    }
-
-    /**
-     * @param DateTime ...$args
-     * @return DateTime[]|false
-     */
-    public function sortNewestToOldest(...$args): bool|array
-    {
-        if (empty($args)) {
-            return [];
-        }
-        if (false === Date::validateArray($args)->isArrayOfDateTimes()) {
-            return false;
-        }
-        uasort($args, function ($a, $b) {
-            if ($a->getTimestamp() === $b->getTimestamp()) {
-                return 0;
-            }
-
-            return ($a->getTimestamp() > $b->getTimestamp()) ? -1 : 1;
-        });
-        return array_values($args);
+        $dt = DateTime::createFromFormat('Y-m-d H:i:s u', '2010-01-01 12:15:09 000000');
+        $modified = Date::modify($dt)->minusFluid()->millennia(
+            1
+        )->centuries(
+            1
+        )->decades(
+            1
+        )->years(
+            1
+        )->months(
+            1
+        )->weeks(
+            1
+        )->days(
+            1
+        )->hours(
+            1
+        )->minutes(
+            1
+        )->seconds(
+            1
+        )->microseconds(
+            1
+        )->milliseconds(
+            1
+        )->hoursAndMinutes(
+            1,
+            1
+        )->hoursAndMinutesAndSeconds(
+            1,
+            1,
+            1
+        );
+        // '2010-01-01 12:15:09 000000'
+        $this->assertEquals(
+            '0898-11-23 09:12:06 998999',
+            $modified->getDateTime()->format('Y-m-d H:i:s u')
+        );
     }
 }

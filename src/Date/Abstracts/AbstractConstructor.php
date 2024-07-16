@@ -41,7 +41,7 @@ abstract class AbstractConstructor
     /**
      * @var DateTime
      */
-    protected $dateTime;
+    protected DateTime $dateTime;
 
     /**
      * Constructor.

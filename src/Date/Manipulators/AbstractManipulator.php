@@ -41,19 +41,19 @@ abstract class AbstractManipulator
     /**
      * @var DateTime
      */
-    protected $dateTime;
+    protected DateTime $dateTime;
 
     /**
      * @var bool
      */
-    protected $cloneDateTime = true;
+    protected bool $cloneDateTime = true;
 
     /**
      * Minus constructor.
      * @param DateTime $dateTime
      * @param bool $cloneDateTime (optional) default true, whether to make a clone or alter the instance in place.
      */
-    public function __construct(DateTime $dateTime, $cloneDateTime = true)
+    public function __construct(DateTime $dateTime, bool $cloneDateTime = true)
     {
         $this->cloneDateTime = $cloneDateTime;
         if ($cloneDateTime === true) {
@@ -69,5 +69,5 @@ abstract class AbstractManipulator
      * @param string $str
      * @return DateTime|false
      */
-    abstract protected function run(string $str);
+    abstract protected function run(string $str): DateTime|bool;
 }

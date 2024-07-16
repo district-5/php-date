@@ -41,6 +41,7 @@ class Month
 {
     /**
      * @return DateTime
+     * @noinspection PhpUnused
      */
     public function firstDateInCurrentMonth(): DateTime
     {
@@ -73,6 +74,7 @@ class Month
 
     /**
      * @return DateTime
+     * @noinspection PhpUnused
      */
     public function lastDateInCurrentMonth(): DateTime
     {

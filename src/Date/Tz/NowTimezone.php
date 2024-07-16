@@ -44,7 +44,7 @@ class NowTimezone
      * @param string $offset
      * @return DateTime|false
      */
-    public function fromOffset(string $offset)
+    public function fromOffset(string $offset): DateTime|bool
     {
         if (in_array($offset, ['0', '00', '0000', '00:00', '+0', '+00', '+0000', '+00:00'])) {
             try {
@@ -52,7 +52,7 @@ class NowTimezone
                     'now',
                     new DateTimeZone('+0')
                 );
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
             return false;
         }
@@ -76,7 +76,7 @@ class NowTimezone
                 'now',
                 new DateTimeZone($offset)
             );
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -86,7 +86,7 @@ class NowTimezone
      * @return DateTime|false
      * @see TzConstants
      */
-    public function inTimezone(string $timezone)
+    public function inTimezone(string $timezone): DateTime|bool
     {
         if (TzConstants::isValidTimezone($timezone) === false) {
             return false;
@@ -96,7 +96,7 @@ class NowTimezone
                 'now',
                 new DateTimeZone($timezone)
             );
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -105,7 +105,7 @@ class NowTimezone
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function london()
+    public function london(): DateTime|bool
     {
         return $this->inTimezone(
             TzConstants::EUROPE_LONDON
@@ -116,7 +116,7 @@ class NowTimezone
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function pacific()
+    public function pacific(): DateTime|bool
     {
         return $this->inTimezone(
             TzConstants::AMERICA_LOS_ANGELES
@@ -127,7 +127,7 @@ class NowTimezone
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function eastern()
+    public function eastern(): DateTime|bool
     {
         return $this->inTimezone(
             TzConstants::AMERICA_NEW_YORK
@@ -138,7 +138,7 @@ class NowTimezone
      * @return DateTime|false
      * @noinspection PhpUnused
      */
-    public function central()
+    public function central(): DateTime|bool
     {
         return $this->inTimezone(
             TzConstants::AMERICA_CHICAGO
@@ -148,14 +148,14 @@ class NowTimezone
     /**
      * @return DateTime|false
      */
-    public function utc()
+    public function utc(): DateTime|bool
     {
         try {
             return new DateTime(
                 'now',
                 new DateTimeZone(TzConstants::UTC)
             );
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }

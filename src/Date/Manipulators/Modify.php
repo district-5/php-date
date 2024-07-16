@@ -36,7 +36,6 @@ use Exception;
 /**
  * Class Modify
  * @package District5\Date\Manipulators
- * @method ddd
  */
 class Modify extends AbstractManipulator
 {
@@ -49,7 +48,7 @@ class Modify extends AbstractManipulator
      * @see DateTime::modify()
      * @see https://www.php.net/manual/en/datetime.formats.relative.php
      */
-    public function withString(string $content)
+    public function withString(string $content): DateTime|bool
     {
         return $this->run(
             $content
@@ -68,11 +67,33 @@ class Modify extends AbstractManipulator
     }
 
     /**
+     * @return PlusFluid
+     */
+    public function plusFluid(): PlusFluid
+    {
+        return new PlusFluid(
+            $this->dateTime,
+            $this->cloneDateTime
+        );
+    }
+
+    /**
      * @return Minus
      */
     public function minus(): Minus
     {
         return new Minus(
+            $this->dateTime,
+            $this->cloneDateTime
+        );
+    }
+
+    /**
+     * @return MinusFluid
+     */
+    public function minusFluid(): MinusFluid
+    {
+        return new MinusFluid(
             $this->dateTime,
             $this->cloneDateTime
         );
@@ -90,6 +111,17 @@ class Modify extends AbstractManipulator
     }
 
     /**
+     * Alias for plusFluid
+     *
+     * @return PlusFluid
+     * @see Modify::plus()
+     */
+    public function addFluid(): PlusFluid
+    {
+        return $this->plusFluid();
+    }
+
+    /**
      * Alias for minus
      *
      * @return Minus
@@ -101,12 +133,45 @@ class Modify extends AbstractManipulator
     }
 
     /**
+     * Alias for minusFluid
+     *
+     * @return MinusFluid
+     * @see Modify::minus()
+     */
+    public function subtractFluid(): MinusFluid
+    {
+        return $this->minusFluid();
+    }
+
+    /**
+     * Alias for minus
+     *
+     * @return Minus
+     * @see Modify::minus()
+     */
+    public function sub(): Minus
+    {
+        return $this->minus();
+    }
+
+    /**
+     * Alias for minusFluid
+     *
+     * @return MinusFluid
+     * @see Modify::minus()
+     */
+    public function subFluid(): MinusFluid
+    {
+        return $this->minusFluid();
+    }
+
+    /**
      * Set the hour of the time on the datetime.
      *
      * @param int $hour
      * @return DateTime|false
      */
-    public function setHours(int $hour)
+    public function setHours(int $hour): DateTime|bool
     {
         if ($this->cloneDateTime === false) {
             $this->dateTime->setTime(
@@ -135,7 +200,7 @@ class Modify extends AbstractManipulator
      * @param int $minutes
      * @return DateTime|false
      */
-    public function setMinutes(int $minutes)
+    public function setMinutes(int $minutes): DateTime|bool
     {
         if ($this->cloneDateTime === false) {
             $this->dateTime->setTime(
@@ -164,7 +229,7 @@ class Modify extends AbstractManipulator
      * @param int $seconds
      * @return DateTime|false
      */
-    public function setSeconds(int $seconds)
+    public function setSeconds(int $seconds): DateTime|bool
     {
         if ($this->cloneDateTime === false) {
             $this->dateTime->setTime(
@@ -193,7 +258,7 @@ class Modify extends AbstractManipulator
      * @param int $microseconds
      * @return DateTime|false
      */
-    public function setMicroseconds(int $microseconds)
+    public function setMicroseconds(int $microseconds): DateTime|bool
     {
         if ($this->cloneDateTime === false) {
             $this->dateTime->setTime(
@@ -225,7 +290,7 @@ class Modify extends AbstractManipulator
      * @param int $microseconds
      * @return DateTime|false
      */
-    public function setTime(int $hour, int $minutes, int $seconds = 0, int $microseconds = 0)
+    public function setTime(int $hour, int $minutes, int $seconds = 0, int $microseconds = 0): DateTime|bool
     {
         if ($this->cloneDateTime === false) {
             $this->dateTime->setTime($hour, $minutes, $seconds, $microseconds);
@@ -251,7 +316,7 @@ class Modify extends AbstractManipulator
      * @param int|null $year
      * @return DateTime|false
      */
-    public function setDate(int $day = null, int $month = null, int $year = null)
+    public function setDate(int $day = null, int $month = null, int $year = null): DateTime|bool
     {
         if ($day === null) {
             $day = intval($this->dateTime->format('j'));
@@ -280,7 +345,7 @@ class Modify extends AbstractManipulator
      * @param string $str
      * @return DateTime|false
      */
-    protected function run(string $str)
+    protected function run(string $str): DateTime|bool
     {
         try {
             $dt = $this->dateTime;
@@ -290,7 +355,7 @@ class Modify extends AbstractManipulator
             return $dt->modify(
                 $str
             );
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }

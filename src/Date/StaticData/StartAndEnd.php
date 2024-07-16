@@ -44,11 +44,12 @@ class StartAndEnd
      * @param int $month
      * @param int $day
      * @return DateTime
+     * @noinspection PhpUnused
      */
     public function startOfDayFromYearMonthDay(int $year, int $month, int $day): DateTime
     {
         return $this->startOfMonthFromDateTime(
-            Date::createYMDHISM($year, $month, $day, 0, 0, 0, 0)
+            Date::createYMDHISM($year, $month, $day)
         );
     }
 
@@ -58,7 +59,7 @@ class StartAndEnd
      */
     public function startOfDayFromDateTime(DateTime $dateTime): DateTime
     {
-        return Date::modify($dateTime)->setTime(0, 0, 0, 0);
+        return Date::modify($dateTime)->setTime(0, 0);
     }
 
     /**
@@ -66,11 +67,12 @@ class StartAndEnd
      * @param int $month
      * @param int $day
      * @return DateTime
+     * @noinspection PhpUnused
      */
     public function endOfDayFromYearMonthDay(int $year, int $month, int $day): DateTime
     {
         return $this->endOfMonthFromDateTime(
-            Date::createYMDHISM($year, $month, $day, 0, 0, 0, 0)
+            Date::createYMDHISM($year, $month, $day)
         );
     }
 
@@ -91,7 +93,7 @@ class StartAndEnd
     public function startOfMonthFromYearMonth(int $year, int $month): DateTime
     {
         return $this->startOfMonthFromDateTime(
-            Date::createYMDHISM($year, $month, 1, 0, 0, 0, 0)
+            Date::createYMDHISM($year, $month, 1)
         );
     }
 
@@ -103,7 +105,7 @@ class StartAndEnd
     {
         return Date::modify(
             Date::modify($dateTime)->setDate(1)
-        )->setTime(0, 0, 0, 0);
+        )->setTime(0, 0);
     }
 
     /**
@@ -114,7 +116,7 @@ class StartAndEnd
     public function endOfMonthFromYearMonth(int $year, int $month): DateTime
     {
         return $this->endOfMonthFromDateTime(
-            Date::createYMDHISM($year, $month, 1, 0, 0, 0, 0)
+            Date::createYMDHISM($year, $month, 1)
         );
     }
 
@@ -139,7 +141,7 @@ class StartAndEnd
     public function startOfYearFromYear(int $year): DateTime
     {
         return $this->startOfMonthFromDateTime(
-            Date::createYMDHISM($year, 1, 1, 0, 0, 0, 0)
+            Date::createYMDHISM($year, 1, 1)
         );
     }
 
@@ -150,7 +152,7 @@ class StartAndEnd
     public function startOfYearFromDateTime(DateTime $dateTime): DateTime
     {
         return $this->startOfMonthFromDateTime(
-            Date::createYMDHISM(intval($dateTime->format('Y')), 1, 1, 0, 0, 0, 0)
+            Date::createYMDHISM(intval($dateTime->format('Y')), 1, 1)
         );
     }
 
@@ -161,7 +163,7 @@ class StartAndEnd
     public function endOfYearFromYear(int $year): DateTime
     {
         return $this->endOfMonthFromDateTime(
-            Date::createYMDHISM($year, 12, 1, 0, 0, 0, 0)
+            Date::createYMDHISM($year, 12, 1)
         );
     }
 
@@ -172,7 +174,7 @@ class StartAndEnd
     public function endOfYearFromDateTime(DateTime $dateTime): DateTime
     {
         return $this->endOfMonthFromDateTime(
-            Date::createYMDHISM(intval($dateTime->format('Y')), 12, 31, 0, 0, 0, 0)
+            Date::createYMDHISM(intval($dateTime->format('Y')), 12, 31)
         );
     }
 

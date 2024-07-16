@@ -42,13 +42,13 @@ class StringFormatValidator
     /**
      * @var string|int|float
      */
-    protected $input;
+    protected string|int|float $input;
 
     /**
      * OutputFormatter constructor.
      * @param string|int|float $input
      */
-    public function __construct($input)
+    public function __construct(string|int|float $input)
     {
         $this->input = $input;
     }
@@ -100,7 +100,7 @@ class StringFormatValidator
                 return false;
             }
             return $dt->format($format) === $this->input;
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return false;
     }
@@ -115,10 +115,11 @@ class StringFormatValidator
         if ($totalLength !== 5 && $totalLength !== 8 || !ctype_digit(str_replace(':', '', $given))) {
             return false;
         }
-        $dt = false;
+
         if ($totalLength === 5) {
             $dt = DateTime::createFromFormat('Y-m-d H:i:s', sprintf('2020-01-01 %s:00', $given));
-        } elseif ($totalLength === 8) {
+        } else {
+            // length is 8
             $dt = DateTime::createFromFormat('Y-m-d H:i:s', sprintf('2020-01-01 %s', $given));
         }
 
@@ -127,9 +128,9 @@ class StringFormatValidator
         }
         if ($totalLength === 5) {
             return $dt->format('H:i') === $this->input;
-        } elseif ($totalLength === 8) {
-            return $dt->format('H:i:s') === $this->input;
         }
-        return false;
+
+        // length is 8
+        return $dt->format('H:i:s') === $this->input;
     }
 }
