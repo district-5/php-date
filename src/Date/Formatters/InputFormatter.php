@@ -153,6 +153,19 @@ class InputFormatter
     }
 
     /**
+     * Create a DateTime from a Mongo ObjectId.
+     *
+     * @param \MongoDB\BSON\ObjectId $provided
+     * @return DateTime|false
+     * @noinspection PhpMissingParamTypeInspection
+     * @noinspection PhpUnused
+     */
+    public function fromMongoObjectId($provided): DateTime|bool
+    {
+        return Date::mongo()->fromObjectId($provided);
+    }
+
+    /**
      * Create a DateTime from a given format.
      *
      * @param string $format

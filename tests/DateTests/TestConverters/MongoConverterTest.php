@@ -39,7 +39,7 @@ use PHPUnit\Framework\TestCase;
  */
 class MongoConverterTest extends TestCase
 {
-    public function testConvertBetweenMongoFormat()
+    public function testConvertBetweenMongoUTCDateTimeFormat()
     {
         if (class_exists('\MongoDB\BSON\UTCDateTime') === false) {
             $this->markTestSkipped('\MongoDB\BSON\UTCDateTime class is not available. Skipping test.');
@@ -53,5 +53,20 @@ class MongoConverterTest extends TestCase
         $this->assertEquals($millisecondTimestamp, Date::output($dateAgain)->toMillisecondTimestamp());
 
         $this->assertEquals($dt->format('Y-m-d H:i:s v'), $dateAgain->format('Y-m-d H:i:s v'));
+    }
+
+    public function testConvertBetweenMongoObjectIdFormat()
+    {
+        if (class_exists('\MongoDB\BSON\ObjectId') === false) {
+            $this->markTestSkipped('\MongoDB\BSON\ObjectId class is not available. Skipping test.');
+        }
+        $millisecondTimestamp = '1610543228.632';
+        $dt = Date::input($millisecondTimestamp)->fromMillisecondTimestamp();
+        $objectId = Date::mongo()->toObjectId($dt);
+        $this->assertInstanceOf('\MongoDB\BSON\ObjectId', $objectId);
+        $this->assertEquals($dt->getTimestamp(), hexdec(substr($objectId, 0, 8)));
+
+        $toDateTime = Date::mongo()->fromObjectId($objectId);
+        $this->assertEquals($dt->getTimestamp(), $toDateTime->getTimestamp());
     }
 }

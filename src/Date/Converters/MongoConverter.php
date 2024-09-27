@@ -71,4 +71,39 @@ class MongoConverter
     {
         return $provided->toDateTime();
     }
+
+    /**
+     * Convert a DateTime to a Mongo ObjectId.
+     *
+     * @param DateTime $dateTime
+     * @return \MongoDB\BSON\ObjectId|false
+     * @noinspection PhpComposerExtensionStubsInspection
+     */
+    public function toObjectId(DateTime $dateTime): \MongoDB\BSON\ObjectId|bool
+    {
+        $cl = '\MongoDB\BSON\ObjectId';
+        if (class_exists($cl) === false) {
+            return false;
+        }
+
+        $ts = strtotime($dateTime->format('Y-m-d H:i:s'));
+        if ($ts === false) {
+            return false;
+        }
+        $ts = str_pad(dechex($ts), 8, '0', STR_PAD_LEFT);
+
+        return new $cl($ts . '0000000000000000');
+    }
+
+    /**
+     * Convert a Mongo ObjectId to a DateTime object.
+     *
+     * @param \MongoDB\BSON\ObjectId $objectId
+     * @return DateTime|false
+     * @noinspection PhpComposerExtensionStubsInspection
+     */
+    public function fromObjectId(\MongoDB\BSON\ObjectId $objectId): DateTime|bool
+    {
+        return Date::input($objectId->getTimestamp())->fromTimestamp();
+    }
 }
