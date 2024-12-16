@@ -316,7 +316,7 @@ class Modify extends AbstractManipulator
      * @param int|null $year
      * @return DateTime|false
      */
-    public function setDate(int $day = null, int $month = null, int $year = null): DateTime|bool
+    public function setDate(?int $day = null, ?int $month = null, ?int $year = null): DateTime|bool
     {
         if ($day === null) {
             $day = intval($this->dateTime->format('j'));

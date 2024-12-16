@@ -59,7 +59,7 @@ class Calculate extends AbstractConstructor
      * @param int|null $year
      * @return int
      */
-    public static function numberDaysInMonthByGivenValues(int $month = null, int $year = null): int
+    public static function numberDaysInMonthByGivenValues(?int $month = null, ?int $year = null): int
     {
         $dt = Date::now()->default();
         if ($month === null) {
@@ -89,7 +89,7 @@ class Calculate extends AbstractConstructor
      * @param int|null $year
      * @return int
      */
-    public static function numberDaysLeftInMonthByGivenValues(int $day = null, int $month = null, int $year = null): int
+    public static function numberDaysLeftInMonthByGivenValues(?int $day = null, ?int $month = null, ?int $year = null): int
     {
         $dt = Date::now()->default();
         if ($day === null) {

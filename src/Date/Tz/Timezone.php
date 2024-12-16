@@ -70,7 +70,7 @@ class Timezone extends AbstractConstructor
      * @param string|DateTimeZone|null $fromTimezone (optional) - if not provided, will detect which to use.
      * @return DateTime|false
      */
-    public function toTimezoneFromTimezone(string|DateTimeZone $toTimezone, string|DateTimeZone $fromTimezone = null): DateTime|bool
+    public function toTimezoneFromTimezone(string|DateTimeZone $toTimezone, string|DateTimeZone|null $fromTimezone = null): DateTime|bool
     {
         if ($toTimezone instanceof DateTimeZone) {
             $toTimezone = $toTimezone->getName();

@@ -49,7 +49,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function millennia(DateTime $otherDateTime = null): int
+    public function millennia(?DateTime $otherDateTime = null): int
     {
         $years = $this->dateTime->diff(
             $this->getDateTimeToUse($otherDateTime)
@@ -67,7 +67,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return DateTime
      */
-    protected function getDateTimeToUse(DateTime $otherDateTime = null): DateTime
+    protected function getDateTimeToUse(?DateTime $otherDateTime = null): DateTime
     {
         if (null === $otherDateTime) {
             return Date::now()->default();
@@ -81,7 +81,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function centuries(DateTime $otherDateTime = null): int
+    public function centuries(?DateTime $otherDateTime = null): int
     {
         $years = $this->dateTime->diff(
             $this->getDateTimeToUse($otherDateTime)
@@ -99,7 +99,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function decades(DateTime $otherDateTime = null): int
+    public function decades(?DateTime $otherDateTime = null): int
     {
         $years = $this->dateTime->diff(
             $this->getDateTimeToUse($otherDateTime)
@@ -117,7 +117,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function years(DateTime $otherDateTime = null): int
+    public function years(?DateTime $otherDateTime = null): int
     {
         $toUse = $this->getDateTimeToUse($otherDateTime);
 
@@ -130,7 +130,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function months(DateTime $otherDateTime = null): int
+    public function months(?DateTime $otherDateTime = null): int
     {
         $diff = $this->dateTime->diff(
             $this->getDateTimeToUse($otherDateTime)
@@ -145,7 +145,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function weeks(DateTime $otherDateTime = null): int
+    public function weeks(?DateTime $otherDateTime = null): int
     {
         $days = $this->days($otherDateTime);
         if ($days > 0) {
@@ -160,7 +160,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function days(DateTime $otherDateTime = null): int
+    public function days(?DateTime $otherDateTime = null): int
     {
         $toUse = $this->getDateTimeToUse($otherDateTime);
         $diff = date_diff(
@@ -176,7 +176,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function hours(DateTime $otherDateTime = null): int
+    public function hours(?DateTime $otherDateTime = null): int
     {
         if (0 === $diff = $this->getSecondsBetweenDates($this->getDateTimeToUse($otherDateTime))) {
             return 0;
@@ -205,7 +205,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function minutes(DateTime $otherDateTime = null): int
+    public function minutes(?DateTime $otherDateTime = null): int
     {
         if (0 === $diff = $this->getSecondsBetweenDates($this->getDateTimeToUse($otherDateTime))) {
             return 0;
@@ -219,7 +219,7 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return int
      */
-    public function seconds(DateTime $otherDateTime = null): int
+    public function seconds(?DateTime $otherDateTime = null): int
     {
         return $this->getSecondsBetweenDates(
             $this->getDateTimeToUse($otherDateTime)

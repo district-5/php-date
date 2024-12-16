@@ -57,7 +57,7 @@ class NtpServer
      * @param float $millisecondTimeout
      * @return DateTime|null
      */
-    public function getObject(array $servers = null, int $secondsTimeout = 1, float $millisecondTimeout = 0): ?DateTime
+    public function getObject(?array $servers = null, int $secondsTimeout = 1, float $millisecondTimeout = 0): ?DateTime
     {
         $time = self::getTimestamp($servers, $secondsTimeout, $millisecondTimeout);
         if ($time === null) {
@@ -75,7 +75,7 @@ class NtpServer
      * @param float $millisecondTimeout
      * @return int|null
      */
-    public function getTimestamp(array $servers = null, int $secondsTimeout = 1, float $millisecondTimeout = 0): ?int
+    public function getTimestamp(?array $servers = null, int $secondsTimeout = 1, float $millisecondTimeout = 0): ?int
     {
         if (null === $servers) {
             $servers = self::$servers;
