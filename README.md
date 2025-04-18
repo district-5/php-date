@@ -1,7 +1,6 @@
 Date
 ========================================
 
-![CI](https://github.com/district-5/php-date/actions/workflows/ci.yml/badge.svg?branch=master)
 [![CI](https://github.com/district-5/php-date/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/district-5/php-date/actions)
 [![Latest Stable Version](http://poser.pugx.org/district5/date/v)](https://packagist.org/packages/district5/date)
 [![PHP Version Require](http://poser.pugx.org/district5/date/require/php)](https://packagist.org/packages/district5/date)
