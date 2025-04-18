@@ -4,3 +4,5 @@ build/
 .vagrant
 vendor
 composer.lock
+coverage.xml
+junit.xml
