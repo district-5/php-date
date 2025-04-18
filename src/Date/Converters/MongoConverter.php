@@ -57,7 +57,7 @@ class MongoConverter
             return false;
         }
 
-        return new $cl((Date::output($dateTime)->toMillisecondTimestamp() * 1000));
+        return new $cl(intval((Date::output($dateTime)->toMillisecondTimestamp() * 1000)));
     }
 
     /**
