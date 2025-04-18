@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit
         backupGlobals="true"
-        backupStaticAttributes="false"
         colors="true"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        forceCoversAnnotation="false"
         processIsolation="false"
         stopOnError="false"
         stopOnFailure="true"
@@ -16,20 +11,14 @@
         timeoutForMediumTests="10"
         timeoutForLargeTests="60"
         bootstrap="vendor/autoload.php"
-        cacheResult="false"
-        verbose="true">
+        cacheResult="false">
     <coverage includeUncoveredFiles="true"
               pathCoverage="false"
               ignoreDeprecatedCodeUnits="true"
               disableCodeCoverageIgnore="true">
-        <include>
-            <directory>src</directory>
-        </include>
-        <exclude>
-            <directory>tests/DateTests</directory>
-        </exclude>
         <report>
-            <html outputDirectory="build/coverage-html" lowUpperBound="50" highLowerBound="90"/>
+            <html outputDirectory="build/html" lowUpperBound="50" highLowerBound="90"/>
+            <clover outputFile="coverage.xml" />
         </report>
     </coverage>
     <testsuites>
@@ -37,4 +26,15 @@
             <directory>tests/</directory>
         </testsuite>
     </testsuites>
+    <logging>
+        <testdoxHtml outputFile="build/testdox.html"/>
+    </logging>
+    <source>
+        <include>
+            <directory>src</directory>
+        </include>
+        <exclude>
+            <directory>tests</directory>
+        </exclude>
+    </source>
 </phpunit>
