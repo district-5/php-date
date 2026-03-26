@@ -112,4 +112,46 @@ class SorterTest extends TestCase
             $latest = $v->getTimestamp();
         }
     }
+
+    public function testNewest()
+    {
+        $dt = Date::now()->utc();
+        $older = Date::modify($dt)->minus()->hours(1);
+        $oldest = Date::modify($dt)->minus()->hours(3);
+
+        $result = Date::sorter()->newest([$dt, $oldest, $older]);
+        $this->assertNotNull($result);
+        $this->assertEquals($dt->getTimestamp(), $result->getTimestamp());
+    }
+
+    public function testNewestWithEmptyArray()
+    {
+        $this->assertNull(Date::sorter()->newest([]));
+    }
+
+    public function testNewestWithInvalidArray()
+    {
+        $this->assertNull(Date::sorter()->newest(['not-a-datetime']));
+    }
+
+    public function testOldest()
+    {
+        $dt = Date::now()->utc();
+        $older = Date::modify($dt)->minus()->hours(1);
+        $oldest = Date::modify($dt)->minus()->hours(3);
+
+        $result = Date::sorter()->oldest([$dt, $oldest, $older]);
+        $this->assertNotNull($result);
+        $this->assertEquals($oldest->getTimestamp(), $result->getTimestamp());
+    }
+
+    public function testOldestWithEmptyArray()
+    {
+        $this->assertNull(Date::sorter()->oldest([]));
+    }
+
+    public function testOldestWithInvalidArray()
+    {
+        $this->assertNull(Date::sorter()->oldest(['not-a-datetime']));
+    }
 }

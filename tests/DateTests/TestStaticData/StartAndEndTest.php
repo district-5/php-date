@@ -204,4 +204,44 @@ class StartAndEndTest extends TestCase
             $startAndEnd->endOfToday()->format('Y-m-d H:i:s')
         );
     }
+
+    public function testStartOfYesterday()
+    {
+        $startAndEnd = Date::startAndEnd();
+        $yesterday = (new DateTime())->modify('-1 day');
+        $this->assertEquals(
+            $yesterday->format('Y-m-d 00:00:00'),
+            $startAndEnd->startOfYesterday()->format('Y-m-d H:i:s')
+        );
+    }
+
+    public function testEndOfYesterday()
+    {
+        $startAndEnd = Date::startAndEnd();
+        $yesterday = (new DateTime())->modify('-1 day');
+        $this->assertEquals(
+            $yesterday->format('Y-m-d 23:59:59'),
+            $startAndEnd->endOfYesterday()->format('Y-m-d H:i:s')
+        );
+    }
+
+    public function testStartOfTomorrow()
+    {
+        $startAndEnd = Date::startAndEnd();
+        $tomorrow = (new DateTime())->modify('+1 day');
+        $this->assertEquals(
+            $tomorrow->format('Y-m-d 00:00:00'),
+            $startAndEnd->startOfTomorrow()->format('Y-m-d H:i:s')
+        );
+    }
+
+    public function testEndOfTomorrow()
+    {
+        $startAndEnd = Date::startAndEnd();
+        $tomorrow = (new DateTime())->modify('+1 day');
+        $this->assertEquals(
+            $tomorrow->format('Y-m-d 23:59:59'),
+            $startAndEnd->endOfTomorrow()->format('Y-m-d H:i:s')
+        );
+    }
 }

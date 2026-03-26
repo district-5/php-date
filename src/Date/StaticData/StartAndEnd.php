@@ -195,4 +195,36 @@ class StartAndEnd
         $date = Date::nowDefault();
         return $this->endOfDayFromDateTime($date);
     }
+
+    /**
+     * @return DateTime
+     */
+    public function startOfYesterday(): DateTime
+    {
+        return $this->startOfDayFromDateTime(Date::modify(Date::nowDefault())->minus()->days(1));
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function endOfYesterday(): DateTime
+    {
+        return $this->endOfDayFromDateTime(Date::modify(Date::nowDefault())->minus()->days(1));
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function startOfTomorrow(): DateTime
+    {
+        return $this->startOfDayFromDateTime(Date::modify(Date::nowDefault())->plus()->days(1));
+    }
+
+    /**
+     * @return DateTime
+     */
+    public function endOfTomorrow(): DateTime
+    {
+        return $this->endOfDayFromDateTime(Date::modify(Date::nowDefault())->plus()->days(1));
+    }
 }

@@ -275,4 +275,46 @@ class OutputFormatterTest extends TestCase
             )->toFormat('Y-m-d H:i:s.u')
         );
     }
+
+    public function testGetDayOfWeek()
+    {
+        // 2019-03-20 is a Wednesday (ISO day 3)
+        $date = DateTime::createFromFormat('Y-m-d', '2019-03-20');
+        $this->assertEquals(3, Date::output($date)->getDayOfWeek());
+
+        // 2019-04-08 is a Monday (ISO day 1)
+        $date = DateTime::createFromFormat('Y-m-d', '2019-04-08');
+        $this->assertEquals(1, Date::output($date)->getDayOfWeek());
+
+        // 2019-04-14 is a Sunday (ISO day 7)
+        $date = DateTime::createFromFormat('Y-m-d', '2019-04-14');
+        $this->assertEquals(7, Date::output($date)->getDayOfWeek());
+    }
+
+    public function testGetDayName()
+    {
+        $date = DateTime::createFromFormat('Y-m-d', '2019-04-08');
+        $this->assertEquals('Monday', Date::output($date)->getDayName());
+
+        $date = DateTime::createFromFormat('Y-m-d', '2019-04-14');
+        $this->assertEquals('Sunday', Date::output($date)->getDayName());
+    }
+
+    public function testGetMonthName()
+    {
+        $date = DateTime::createFromFormat('Y-m-d', '2019-01-15');
+        $this->assertEquals('January', Date::output($date)->getMonthName());
+
+        $date = DateTime::createFromFormat('Y-m-d', '2019-12-15');
+        $this->assertEquals('December', Date::output($date)->getMonthName());
+    }
+
+    public function testToYMDHIS()
+    {
+        $date = DateTime::createFromFormat('Y-m-d H:i:s', '2019-03-20 22:03:40');
+
+        $this->assertEquals('2019-03-20 22:03:40', Date::output($date)->toYMDHIS());
+        $this->assertEquals('2019/03/20 22:03:40', Date::output($date)->toYMDHIS('/'));
+        $this->assertEquals('2019-03-20 22|03|40', Date::output($date)->toYMDHIS('-', '|'));
+    }
 }

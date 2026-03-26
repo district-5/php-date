@@ -82,4 +82,36 @@ class Sorter
         });
         return array_values($args);
     }
+
+    /**
+     * Return the newest DateTime from an array of DateTimes, or null if the array is
+     * empty or does not contain only DateTime objects.
+     *
+     * @param DateTime[] $dateTimes
+     * @return DateTime|null
+     */
+    public function newest(array $dateTimes): ?DateTime
+    {
+        $sorted = $this->sortNewestToOldest(...$dateTimes);
+        if ($sorted === false || empty($sorted)) {
+            return null;
+        }
+        return $sorted[0];
+    }
+
+    /**
+     * Return the oldest DateTime from an array of DateTimes, or null if the array is
+     * empty or does not contain only DateTime objects.
+     *
+     * @param DateTime[] $dateTimes
+     * @return DateTime|null
+     */
+    public function oldest(array $dateTimes): ?DateTime
+    {
+        $sorted = $this->sortOldestToNewest(...$dateTimes);
+        if ($sorted === false || empty($sorted)) {
+            return null;
+        }
+        return $sorted[0];
+    }
 }

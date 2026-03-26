@@ -40,6 +40,50 @@ use District5\Date\Abstracts\AbstractConstructor;
 class OutputFormatter extends AbstractConstructor
 {
     /**
+     * Get the day of the week as an ISO-8601 integer (1=Monday, 7=Sunday).
+     *
+     * @return int
+     */
+    public function getDayOfWeek(): int
+    {
+        return intval($this->toFormat('N'));
+    }
+
+    /**
+     * Get the full English name of the day of the week (e.g. "Monday").
+     *
+     * @return string
+     */
+    public function getDayName(): string
+    {
+        return $this->toFormat('l');
+    }
+
+    /**
+     * Get the full English name of the month (e.g. "January").
+     *
+     * @return string
+     */
+    public function getMonthName(): string
+    {
+        return $this->toFormat('F');
+    }
+
+    /**
+     * Convert a DateTime to a combined date-time string (e.g. "2019-03-20 22:03:40").
+     *
+     * @param string $dateSeparator default '-' the separator between date components.
+     * @param string $timeSeparator default ':' the separator between time components.
+     * @return string
+     */
+    public function toYMDHIS(string $dateSeparator = '-', string $timeSeparator = ':'): string
+    {
+        return $this->toFormat(
+            sprintf('Y%sm%sd H%si%ss', $dateSeparator, $dateSeparator, $timeSeparator, $timeSeparator)
+        );
+    }
+
+    /**
      * Get the suffix for the day. For example, day 1 is 'st', day 2 is 'nd', day 3 is 'rd', day 4 is 'th
      * @return string
      */

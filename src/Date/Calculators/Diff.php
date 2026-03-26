@@ -225,4 +225,20 @@ class Diff extends AbstractConstructor
             $this->getDateTimeToUse($otherDateTime)
         );
     }
+
+    /**
+     * Get the number of whole milliseconds difference between the original date and this $otherDateTime
+     *
+     * @param DateTime|null $otherDateTime
+     * @return int
+     */
+    public function milliseconds(?DateTime $otherDateTime = null): int
+    {
+        $toUse = $this->getDateTimeToUse($otherDateTime);
+        $newest = $this->getNewestDate($toUse);
+        $oldest = $this->getOldestDate($toUse);
+        $newestMicros = intval($newest->format('U')) * 1_000_000 + intval($newest->format('u'));
+        $oldestMicros = intval($oldest->format('U')) * 1_000_000 + intval($oldest->format('u'));
+        return intval(($newestMicros - $oldestMicros) / 1000);
+    }
 }

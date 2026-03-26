@@ -273,4 +273,18 @@ class DiffTest extends TestCase
             Date::diff($oldest2)->hours($newest2)
         );
     }
+
+    public function testMillisecondDiff()
+    {
+        $dateA = DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 22:01:40.000000');
+        $dateB = DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 22:01:40.500000');
+        $this->assertEquals(500, Date::diff($dateA)->milliseconds($dateB));
+        $this->assertEquals(500, Date::diff($dateB)->milliseconds($dateA));
+
+        $dateC = DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 22:01:41.000000');
+        $this->assertEquals(1000, Date::diff($dateA)->milliseconds($dateC));
+
+        $dateSame = DateTime::createFromFormat('Y-m-d H:i:s.u', '2019-03-20 22:01:40.000000');
+        $this->assertEquals(0, Date::diff($dateA)->milliseconds($dateSame));
+    }
 }

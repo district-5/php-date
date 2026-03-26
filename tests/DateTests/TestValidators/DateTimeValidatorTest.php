@@ -323,6 +323,28 @@ class DateTimeValidatorTest extends TestCase
         $this->assertFalse(Date::validateObject($now)->isSameDay($tomorrow));
     }
 
+    public function testSameMonth()
+    {
+        $dateA = DateTime::createFromFormat('Y-m-d', '2019-03-01');
+        $dateB = DateTime::createFromFormat('Y-m-d', '2019-03-31');
+        $dateC = DateTime::createFromFormat('Y-m-d', '2019-04-01');
+        $dateD = DateTime::createFromFormat('Y-m-d', '2020-03-01');
+
+        $this->assertTrue(Date::validateObject($dateA)->isSameMonth($dateB));
+        $this->assertFalse(Date::validateObject($dateA)->isSameMonth($dateC));
+        $this->assertFalse(Date::validateObject($dateA)->isSameMonth($dateD));
+    }
+
+    public function testSameYear()
+    {
+        $dateA = DateTime::createFromFormat('Y-m-d', '2019-01-01');
+        $dateB = DateTime::createFromFormat('Y-m-d', '2019-12-31');
+        $dateC = DateTime::createFromFormat('Y-m-d', '2020-01-01');
+
+        $this->assertTrue(Date::validateObject($dateA)->isSameYear($dateB));
+        $this->assertFalse(Date::validateObject($dateA)->isSameYear($dateC));
+    }
+
     public function testFutureAndPast()
     {
         $date = Date::modify(Date::nowDefault())->minus()->days(1);

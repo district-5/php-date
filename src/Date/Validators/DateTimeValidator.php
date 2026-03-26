@@ -425,6 +425,28 @@ class DateTimeValidator extends AbstractConstructor
     }
 
     /**
+     * Is the given DateTime in the same calendar month and year as $otherDate?
+     *
+     * @param DateTime $otherDate
+     * @return bool
+     */
+    public function isSameMonth(DateTime $otherDate): bool
+    {
+        return $this->dateTime->format('Y-m') === $otherDate->format('Y-m');
+    }
+
+    /**
+     * Is the given DateTime in the same calendar year as $otherDate?
+     *
+     * @param DateTime $otherDate
+     * @return bool
+     */
+    public function isSameYear(DateTime $otherDate): bool
+    {
+        return $this->dateTime->format('Y') === $otherDate->format('Y');
+    }
+
+    /**
      * @return bool
      */
     public function isFuture(): bool
