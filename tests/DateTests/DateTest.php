@@ -32,7 +32,6 @@ namespace District5Tests\DateTests;
 
 use DateTime;
 use District5\Date\Date;
-use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -66,23 +65,19 @@ class DateTest extends TestCase
 
     public function testCreateYMDHISM()
     {
-        try {
-            $dt = Date::now()->utc();
-            $this->assertEquals(
-                $dt->format('U.u'),
-                Date::createYMDHISM(
-                    intval($dt->format('Y')),
-                    intval($dt->format('m')),
-                    intval($dt->format('d')),
-                    intval($dt->format('H')),
-                    intval($dt->format('i')),
-                    intval($dt->format('s')),
-                    intval($dt->format('u'))
-                )->format('U.u')
-            );
-        } catch (Exception $e) {
-            $this->fail();
-        }
+        $dt = Date::now()->utc();
+        $this->assertEquals(
+            $dt->format('U.u'),
+            Date::createYMDHISM(
+                intval($dt->format('Y')),
+                intval($dt->format('m')),
+                intval($dt->format('d')),
+                intval($dt->format('H')),
+                intval($dt->format('i')),
+                intval($dt->format('s')),
+                intval($dt->format('u'))
+            )->format('U.u')
+        );
     }
 
     public function testNowDefaultMatchesExpanded()

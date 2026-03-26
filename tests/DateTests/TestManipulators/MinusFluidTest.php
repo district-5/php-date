@@ -28,7 +28,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace DateTests\TestManipulators;
+namespace District5Tests\DateTests\TestManipulators;
 
 use DateTime;
 use District5\Date\Date;

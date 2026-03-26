@@ -491,6 +491,56 @@ class MinusTest extends TestCase
         );
     }
 
+    public function testMinusSingleDecadeInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->minus()->decades(1);
+        $this->assertEquals(
+            '2009-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
+    public function testMinusFourDecadesInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->minus()->decades(4);
+        $this->assertEquals(
+            '1979-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
+    public function testMinusSingleCenturyInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->minus()->centuries(1);
+        $this->assertEquals(
+            '1919-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
+    public function testMinusFourCenturiesInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->minus()->centuries(4);
+        $this->assertEquals(
+            '1619-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
+    public function testMinusOneMillenniaInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->minus()->millennia(1);
+        $this->assertEquals(
+            '1019-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
     /**
      * @return void
      * @throws ReflectionException
@@ -499,7 +549,6 @@ class MinusTest extends TestCase
     {
         $class = new ReflectionClass(Minus::class);
         $method = $class->getMethod('run');
-        $method->setAccessible(true);
 
         $date = DateTime::createFromFormat('Y-m-d H:i:s', '2010-01-01 00:15:10');
         $minus = new Minus($date);

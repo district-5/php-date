@@ -28,7 +28,7 @@
  * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-namespace DateTests\TestStaticData;
+namespace District5Tests\DateTests\TestStaticData;
 
 use DateTime;
 use DateTimeZone;

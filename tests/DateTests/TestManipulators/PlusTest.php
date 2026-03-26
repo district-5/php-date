@@ -212,9 +212,9 @@ class PlusTest extends TestCase
             Date::modify($dt)->plus()->months(1)->format('Y-m-d')
         );
 
-        $dt = DateTime::createFromFormat('Y-m-d', '2020-01-29');
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-01-29');
         $this->assertEquals(
-            '2020-02-29',
+            '2019-02-28',
             Date::modify($dt)->plus()->months(1)->format('Y-m-d')
         );
     }
@@ -453,10 +453,10 @@ class PlusTest extends TestCase
             $dt->format('Y-m-d')
         );
 
-        $dt = DateTime::createFromFormat('Y-m-d', '2020-01-29');
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-01-29');
         Date::modify($dt, false)->plus()->months(1);
         $this->assertEquals(
-            '2020-02-29',
+            '2019-02-28',
             $dt->format('Y-m-d')
         );
     }
@@ -491,6 +491,66 @@ class PlusTest extends TestCase
         );
     }
 
+    public function testAddSingleDecadeInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->plus()->decades(1);
+        $this->assertEquals(
+            '2029-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
+    public function testAddFourDecadesInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->plus()->decades(4);
+        $this->assertEquals(
+            '2059-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
+    public function testAddSingleCenturyInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->plus()->centuries(1);
+        $this->assertEquals(
+            '2119-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
+    public function testAddFourCenturiesInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->plus()->centuries(4);
+        $this->assertEquals(
+            '2419-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
+    public function testAddOneMillenniaInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->plus()->millennia(1);
+        $this->assertEquals(
+            '3019-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
+    public function testAddFourMillenniaInPlace()
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', '2019-09-30');
+        Date::modify($dt, false)->plus()->millennia(4);
+        $this->assertEquals(
+            '6019-09-30',
+            $dt->format('Y-m-d')
+        );
+    }
+
     /**
      * @return void
      * @throws ReflectionException
@@ -499,7 +559,6 @@ class PlusTest extends TestCase
     {
         $class = new ReflectionClass(Plus::class);
         $method = $class->getMethod('run');
-        $method->setAccessible(true);
 
         $date = DateTime::createFromFormat('Y-m-d H:i:s', '2010-01-01 00:15:10');
         $minus = new Plus($date);

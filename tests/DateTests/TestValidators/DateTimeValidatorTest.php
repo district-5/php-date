@@ -43,19 +43,23 @@ class DateTimeValidatorTest extends TestCase
 {
     public function testIsTodayTomorrowYesterday()
     {
-        $newer = new DateTime();
-        $tomorrow = clone $newer;
+        $today = new DateTime();
+        $tomorrow = clone $today;
         $tomorrow->add(new DateInterval('P1D'));
-        $older = clone $newer;
-        $older->sub(new DateInterval('P1D'));
-        $twoDaysAgo = clone $newer;
-        $twoDaysAgo->sub(new DateInterval('P2D'));
-        $between = clone $newer;
-        $between->sub(new DateInterval('PT1H'));
+        $yesterday = clone $today;
+        $yesterday->sub(new DateInterval('P1D'));
 
-        $this->assertTrue(Date::validateObject($newer)->isToday());
-        $this->assertTrue(Date::validateObject($older)->isYesterday());
+        $this->assertTrue(Date::validateObject($today)->isToday());
+        $this->assertFalse(Date::validateObject($today)->isYesterday());
+        $this->assertFalse(Date::validateObject($today)->isTomorrow());
+
+        $this->assertTrue(Date::validateObject($yesterday)->isYesterday());
+        $this->assertFalse(Date::validateObject($yesterday)->isToday());
+        $this->assertFalse(Date::validateObject($yesterday)->isTomorrow());
+
         $this->assertTrue(Date::validateObject($tomorrow)->isTomorrow());
+        $this->assertFalse(Date::validateObject($tomorrow)->isToday());
+        $this->assertFalse(Date::validateObject($tomorrow)->isYesterday());
     }
 
     public function testDateTimeBetween()
@@ -224,6 +228,31 @@ class DateTimeValidatorTest extends TestCase
         );
     }
 
+    public static function monthProvider(): array
+    {
+        return [
+            'January'   => ['2019-01-15', 'isJanuary'],
+            'February'  => ['2019-02-15', 'isFebruary'],
+            'March'     => ['2019-03-15', 'isMarch'],
+            'April'     => ['2019-04-15', 'isApril'],
+            'May'       => ['2019-05-15', 'isMay'],
+            'June'      => ['2019-06-15', 'isJune'],
+            'July'      => ['2019-07-15', 'isJuly'],
+            'August'    => ['2019-08-15', 'isAugust'],
+            'September' => ['2019-09-15', 'isSeptember'],
+            'October'   => ['2019-10-15', 'isOctober'],
+            'November'  => ['2019-11-15', 'isNovember'],
+            'December'  => ['2019-12-15', 'isDecember'],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('monthProvider')]
+    public function testIsCorrectMonth(string $date, string $method): void
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', $date);
+        $this->assertTrue(Date::validateObject($dt)->$method());
+    }
+
     public function testMonths()
     {
         $this->assertFalse(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2019-02-15'))->isJanuary());
@@ -240,8 +269,30 @@ class DateTimeValidatorTest extends TestCase
         $this->assertFalse(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2019-01-15'))->isDecember());
     }
 
+    public static function dayProvider(): array
+    {
+        // Week of 2019-04-08 (Mon) through 2019-04-14 (Sun)
+        return [
+            'Monday'    => ['2019-04-08', 'isMonday'],
+            'Tuesday'   => ['2019-04-09', 'isTuesday'],
+            'Wednesday' => ['2019-04-10', 'isWednesday'],
+            'Thursday'  => ['2019-04-11', 'isThursday'],
+            'Friday'    => ['2019-04-12', 'isFriday'],
+            'Saturday'  => ['2019-04-13', 'isSaturday'],
+            'Sunday'    => ['2019-04-14', 'isSunday'],
+        ];
+    }
+
+    #[\PHPUnit\Framework\Attributes\DataProvider('dayProvider')]
+    public function testIsCorrectDay(string $date, string $method): void
+    {
+        $dt = DateTime::createFromFormat('Y-m-d', $date);
+        $this->assertTrue(Date::validateObject($dt)->$method());
+    }
+
     public function testDays()
     {
+        // 2019-04-07 = Sunday, 2019-04-08 = Monday, ..., 2019-04-13 = Saturday
         $this->assertFalse(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2019-04-07'))->isMonday());
         $this->assertFalse(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2019-04-08'))->isTuesday());
         $this->assertFalse(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2019-04-09'))->isWednesday());
@@ -253,9 +304,14 @@ class DateTimeValidatorTest extends TestCase
 
     public function testLeapYear()
     {
+        $this->assertTrue(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2000-06-15'))->isLeapYear());
+        $this->assertTrue(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2004-06-15'))->isLeapYear());
+        $this->assertTrue(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2024-06-15'))->isLeapYear());
+
         $this->assertFalse(Date::validateObject(DateTime::createFromFormat('Y-m-d', '1997-12-15'))->isLeapYear());
         $this->assertFalse(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2001-12-15'))->isLeapYear());
         $this->assertFalse(Date::validateObject(DateTime::createFromFormat('Y-m-d', '2005-12-15'))->isLeapYear());
+        $this->assertFalse(Date::validateObject(DateTime::createFromFormat('Y-m-d', '1900-06-15'))->isLeapYear());
     }
 
     public function testSameDay()
