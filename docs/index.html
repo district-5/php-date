@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>District5 Date Library — Documentation</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/php.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sidebar-width: 260px;
+      --accent: #4f46e5;
+      --accent-light: #eef2ff;
+      --border: #e5e7eb;
+      --text: #111827;
+      --muted: #6b7280;
+      --bg: #ffffff;
+      --sidebar-bg: #f9fafb;
+      --code-bg: #f6f8fa;
+      --radius: 8px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      display: flex;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      width: var(--sidebar-width);
+      min-height: 100vh;
+      background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      overflow-y: auto;
+      padding: 0 0 2rem;
+    }
+
+    #sidebar .logo {
+      display: block;
+      padding: 1.25rem 1.25rem 1rem;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: .5rem;
+    }
+    #sidebar .logo span { display: block; font-size: .75rem; font-weight: 400; color: var(--muted); }
+
+    #sidebar nav a {
+      display: block;
+      padding: .3rem 1.25rem;
+      font-size: .85rem;
+      color: var(--muted);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: color .15s, border-color .15s, background .15s;
+    }
+    #sidebar nav a:hover { color: var(--accent); background: var(--accent-light); }
+    #sidebar nav a.active { color: var(--accent); border-left-color: var(--accent); font-weight: 600; background: var(--accent-light); }
+
+    #sidebar nav .section-label {
+      padding: 1rem 1.25rem .25rem;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: #9ca3af;
+    }
+
+    /* ── Main content ── */
+    #content {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      max-width: 900px;
+      padding: 3rem 3rem 6rem;
+    }
+
+    /* ── Headings ── */
+    h1 { font-size: 2rem; font-weight: 800; margin-bottom: .5rem; }
+    h2 { font-size: 1.4rem; font-weight: 700; margin: 2.5rem 0 .75rem; padding-top: 1rem; }
+    h3 { font-size: 1.05rem; font-weight: 600; margin: 1.5rem 0 .5rem; color: var(--accent); }
+    h4 { font-size: .9rem; font-weight: 600; margin: 1rem 0 .4rem; }
+
+    .subtitle { color: var(--muted); font-size: 1.05rem; margin-bottom: 2rem; }
+
+    /* ── Dividers ── */
+    .section { border-top: 1px solid var(--border); margin-top: 2.5rem; padding-top: .5rem; }
+
+    /* ── Code blocks ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+      overflow-x: auto;
+      margin: .75rem 0 1rem;
+      font-size: .85rem;
+      line-height: 1.6;
+    }
+    code { font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; font-size: .85em; }
+    p code, li code {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .1em .35em;
+    }
+
+    /* ── Tables ── */
+    table { width: 100%; border-collapse: collapse; margin: .75rem 0 1.25rem; font-size: .875rem; }
+    th { background: var(--code-bg); text-align: left; padding: .55rem .75rem; border: 1px solid var(--border); font-weight: 600; }
+    td { padding: .5rem .75rem; border: 1px solid var(--border); vertical-align: top; }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    /* ── Note boxes ── */
+    .note {
+      background: var(--accent-light);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: .75rem 1rem;
+      margin: .75rem 0;
+      font-size: .875rem;
+    }
+    .note strong { color: var(--accent); }
+
+    /* ── Badge ── */
+    .badge {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 600;
+      padding: .15em .5em;
+      border-radius: 999px;
+      background: var(--accent-light);
+      color: var(--accent);
+      vertical-align: middle;
+      margin-left: .4em;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+      color: #fff;
+      border-radius: 12px;
+      padding: 2rem 2rem 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+    .hero h1 { color: #fff; font-size: 1.75rem; }
+    .hero .subtitle { color: rgba(255,255,255,.8); margin-bottom: .75rem; }
+    .hero .pills { display: flex; gap: .5rem; flex-wrap: wrap; margin-top: 1rem; }
+    .hero .pill {
+      background: rgba(255,255,255,.15);
+      color: #fff;
+      border-radius: 999px;
+      padding: .25em .8em;
+      font-size: .78rem;
+      font-weight: 500;
+    }
+
+    p { margin-bottom: .75rem; }
+    ul, ol { padding-left: 1.5rem; margin-bottom: .75rem; }
+    li { margin-bottom: .2rem; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════ SIDEBAR ═══════════════ -->
+<aside id="sidebar">
+  <a class="logo" href="#top">
+    District5 / date
+    <span>PHP Date Library</span>
+  </a>
+  <nav id="nav">
+    <div class="section-label">Getting Started</div>
+    <a href="#installation">Installation</a>
+    <a href="#quickstart">Quick Start</a>
+
+    <div class="section-label">Current Time</div>
+    <a href="#now">Getting the Current Time</a>
+
+    <div class="section-label">Creating Dates</div>
+    <a href="#create">Creating DateTimes</a>
+    <a href="#input">Parsing Strings &amp; Timestamps</a>
+
+    <div class="section-label">Formatting</div>
+    <a href="#output">Formatting Output</a>
+
+    <div class="section-label">Manipulation</div>
+    <a href="#modify">Modify</a>
+    <a href="#plus">Adding Time</a>
+    <a href="#minus">Subtracting Time</a>
+
+    <div class="section-label">Calculations</div>
+    <a href="#diff">Differences</a>
+    <a href="#calculate">Calendar Calculations</a>
+
+    <div class="section-label">Querying</div>
+    <a href="#validate-object">Validating DateTime Objects</a>
+    <a href="#validate-string">Validating Strings</a>
+    <a href="#validate-array">Validating Arrays</a>
+
+    <div class="section-label">Utilities</div>
+    <a href="#timezone">Timezones</a>
+    <a href="#sorting">Sorting</a>
+    <a href="#month">Month Helpers</a>
+    <a href="#startend">Start &amp; End of Periods</a>
+    <a href="#recurring">Recurring Dates</a>
+    <a href="#mongo">MongoDB Integration</a>
+    <a href="#ntp">NTP Server</a>
+  </nav>
+</aside>
+
+<!-- ═══════════════ CONTENT ═══════════════ -->
+<main id="content">
+
+  <div class="hero" id="top">
+    <h1>District5 Date Library</h1>
+    <p class="subtitle">A fluent, intuitive PHP wrapper around <code style="background:rgba(255,255,255,.2);border:none">DateTime</code> — zero dependencies, PHP 8.1+.</p>
+    <div class="pills">
+      <span class="pill">PHP 8.1+</span>
+      <span class="pill">MIT License</span>
+      <span class="pill">No Dependencies</span>
+      <span class="pill">Fluent API</span>
+    </div>
+  </div>
+
+  <!-- ── Installation ── -->
+  <section class="section" id="installation">
+    <h2>Installation</h2>
+    <p>Install via Composer:</p>
+    <pre><code class="language-bash">composer require district5/date</code></pre>
+    <p>All functionality is accessed through the <code>District5\Date\Date</code> facade class using static methods.</p>
+    <pre><code class="language-php">use District5\Date\Date;</code></pre>
+  </section>
+
+  <!-- ── Quick Start ── -->
+  <section class="section" id="quickstart">
+    <h2>Quick Start</h2>
+    <pre><code class="language-php">use District5\Date\Date;
+
+// Get current time in UTC
+$now = Date::nowUtc();
+
+// Add 3 days
+$future = Date::modify($now)->plus()->days(3);
+
+// Format the result
+echo Date::output($future)->toYMD();  // e.g. 2026-04-02
+
+// How many days until then?
+echo Date::diff($now)->days($future);  // 3</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- CURRENT TIME                            -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="now">
+    <h2>Getting the Current Time</h2>
+    <p>Use <code>Date::now()</code> to obtain a <code>NowTimezone</code> helper, or the convenience shortcuts for the most common cases.</p>
+
+    <h3>Convenience shortcuts</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+// Current time in the server's default timezone as a DateTime
+$default = Date::nowDefault();
+
+// Current time in UTC
+$utc = Date::nowUtc();
+
+// Current Unix timestamp (int)
+$ts = Date::time();
+
+// Current microtime as float or string
+$float  = Date::microtime(true);   // float
+$string = Date::microtime(false);  // string</code></pre>
+
+    <h3>NowTimezone — named timezone shortcuts</h3>
+    <pre><code class="language-php">$now = Date::now();
+
+$utc     = $now->utc();              // UTC
+$london  = $now->london();           // Europe/London
+$eastern = $now->eastern();          // America/New_York
+$central = $now->central();          // America/Chicago
+$pacific = $now->pacific();          // America/Los_Angeles
+$default = $now->default();          // Server default timezone
+
+// Any IANA timezone string
+$tokyo   = $now->inTimezone('Asia/Tokyo');
+
+// From a UTC offset string (e.g. +0100, -0500)
+$offset  = $now->fromOffset('+0200');</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- CREATING DATES                          -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="create">
+    <h2>Creating DateTimes</h2>
+
+    <h3>From year / month / day components</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+// Date only (time defaults to 00:00:00)
+$date = Date::createYMDHISM(2026, 1, 15);
+
+// Date + time
+$datetime = Date::createYMDHISM(2026, 1, 15, 14, 30, 0);
+
+// Date + time + microseconds + timezone
+$dt = Date::createYMDHISM(2026, 1, 15, 14, 30, 0, 500000, 'America/New_York');</code></pre>
+
+    <h3>Unix epoch</h3>
+    <pre><code class="language-php">// Returns a DateTime set to 1970-01-01 00:00:00 UTC
+$epoch = Date::epoch();</code></pre>
+
+    <h3>From a string (auto-detect common formats)</h3>
+    <pre><code class="language-php">$dt = Date::fromString('2026-03-30 14:30:00');  // DateTime or false</code></pre>
+
+    <h3>Calculate someone's age</h3>
+    <pre><code class="language-php">$dob = Date::createYMDHISM(1990, 6, 15);
+$age = Date::age($dob);  // int — full years since the given date</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- INPUT / PARSING                         -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="input">
+    <h2>Parsing Strings &amp; Timestamps</h2>
+    <p>Use <code>Date::input($value)</code> to wrap a string, integer, or float and then call the relevant parser. All methods return <code>DateTime|false</code>.</p>
+
+    <h3>Date-only strings</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$dt = Date::input('2026-03-30')->fromYMD();              // default separator '-'
+$dt = Date::input('2026/03/30')->fromYMD('/');
+
+$dt = Date::input('30-03-2026')->fromDMY();              // DD-MM-YYYY
+$dt = Date::input('03-30-2026')->fromMDY();              // MM-DD-YYYY</code></pre>
+
+    <h3>Date + time strings</h3>
+    <pre><code class="language-php">$dt = Date::input('2026-03-30 14:30:00')->fromYMDHIS();
+// Custom separators
+$dt = Date::input('2026/03/30 14:30:00')->fromYMDHIS('/', ':');</code></pre>
+
+    <h3>ISO 8601</h3>
+    <pre><code class="language-php">$dt = Date::input('2026-03-30T14:30:00+0000')->fromISO8601();</code></pre>
+
+    <h3>Unix timestamps</h3>
+    <pre><code class="language-php">$dt = Date::input(1743340200)->fromUnixTimestamp();
+$dt = Date::input(1743340200)->fromTimestamp();        // alias</code></pre>
+
+    <h3>Millisecond &amp; microsecond timestamps</h3>
+    <pre><code class="language-php">$dt = Date::input(1743340200123)->fromMillisecondTimestamp();
+$dt = Date::input(1743340200123456)->fromMicrosecondTimestamp();</code></pre>
+
+    <h3>Custom format</h3>
+    <pre><code class="language-php">$dt = Date::input('30/03/2026')->fromFormat('d/m/Y');
+$dt = Date::input('March 30, 2026')->fromFormat('F j, Y');</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- OUTPUT / FORMATTING                     -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="output">
+    <h2>Formatting Output</h2>
+    <p>Use <code>Date::output($dateTime)</code> to wrap a <code>DateTime</code> and extract components or formatted strings.</p>
+
+    <h3>Extract date/time components</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$dt  = Date::createYMDHISM(2026, 3, 30, 14, 30, 45);
+$out = Date::output($dt);
+
+$out->getYear();         // 2026
+$out->getMonth();        // 3
+$out->getDay();          // 30
+$out->getWeek();         // ISO week number, e.g. 14
+$out->getDayOfWeek();    // 1 (Mon) – 7 (Sun)
+$out->getDayName();      // "Monday"
+$out->getMonthName();    // "March"
+$out->getDaySuffix();    // "th" (st / nd / rd / th)
+
+$out->getHour();         // 14
+$out->getMinutes();      // 30
+$out->getSeconds();      // 45
+$out->getMicroseconds(); // 0
+$out->getMilliseconds(); // 0</code></pre>
+
+    <h3>Date format strings</h3>
+    <pre><code class="language-php">$out->toYMD();                  // "2026-03-30"
+$out->toYMD(true, '/');         // "2026/03/30"
+$out->toYMD(false);             // "20260330"
+
+$out->toDMY();                  // "30-03-2026"
+$out->toMDY();                  // "03-30-2026"
+
+$out->toYMDHIS();               // "2026-03-30 14:30:45"</code></pre>
+
+    <h3>Time format strings</h3>
+    <pre><code class="language-php">$out->toTimeHM();               // "14:30"
+$out->toTimeHMS();              // "14:30:45"
+$out->getHourMinutes();         // "14:30"  (alias)
+$out->getHourMinutesSeconds();  // "14:30:45"  (alias)</code></pre>
+
+    <h3>ISO 8601 &amp; custom formats</h3>
+    <pre><code class="language-php">$out->toISO8601();              // "2026-03-30T14:30:45+0000"
+$out->toFormat('l, F j Y');    // "Monday, March 30 2026"  (any PHP date format)</code></pre>
+
+    <h3>Timestamps</h3>
+    <pre><code class="language-php">$out->toUnixTimestamp();             // int
+$out->toUnixTimestamp(true);         // string
+$out->toTimestamp();                 // int  (alias)
+
+$out->toMillisecondTimestamp();      // float  e.g. 1743340245.000
+$out->toMicrosecondTimestamp();      // float  e.g. 1743340245.000000</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- MODIFY                                  -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="modify">
+    <h2>Modify</h2>
+    <p><code>Date::modify($dt)</code> returns a <code>Modify</code> object. By default it clones the DateTime so the original is untouched. Pass <code>false</code> as the second argument to mutate in place.</p>
+
+    <h3>Set date or time components</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$dt = Date::createYMDHISM(2026, 3, 30, 14, 30, 0);
+
+// Change only specific date parts (pass null to leave unchanged)
+$new = Date::modify($dt)->setDate(1, null, 2027);   // day=1, same month, year=2027
+
+// Change time
+$new = Date::modify($dt)->setTime(9, 0);            // 09:00:00
+$new = Date::modify($dt)->setTime(9, 0, 30, 0);     // 09:00:30.000000
+
+// Set individual time components
+$new = Date::modify($dt)->setHours(23);
+$new = Date::modify($dt)->setMinutes(59);
+$new = Date::modify($dt)->setSeconds(0);
+$new = Date::modify($dt)->setMicroseconds(500000);</code></pre>
+
+    <h3>Free-form string modification</h3>
+    <pre><code class="language-php">// Same syntax as PHP's DateTime::modify()
+$new = Date::modify($dt)->withString('+5 days');
+$new = Date::modify($dt)->withString('next Friday');
+$new = Date::modify($dt)->withString('last day of this month');</code></pre>
+
+    <h3>Mutate in place</h3>
+    <pre><code class="language-php">// $dt itself is modified, no clone
+Date::modify($dt, false)->setHours(0);</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- PLUS                                    -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="plus">
+    <h2>Adding Time</h2>
+    <p>Access addition via <code>Date::modify($dt)->plus()</code> (returns <code>DateTime|false</code>) or the chainable fluid API via <code>Date::modify($dt)->plusFluid()</code>.</p>
+
+    <h3>Single additions</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$dt = Date::nowUtc();
+
+Date::modify($dt)->plus()->microseconds(500);
+Date::modify($dt)->plus()->milliseconds(500);
+Date::modify($dt)->plus()->seconds(30);
+Date::modify($dt)->plus()->minutes(15);
+Date::modify($dt)->plus()->hours(2);
+Date::modify($dt)->plus()->hoursAndMinutes(1, 30);
+Date::modify($dt)->plus()->hoursAndMinutesAndSeconds(1, 30, 15);
+Date::modify($dt)->plus()->days(7);
+Date::modify($dt)->plus()->weeks(2);
+Date::modify($dt)->plus()->months(3);
+Date::modify($dt)->plus()->years(1);
+Date::modify($dt)->plus()->decades(1);
+Date::modify($dt)->plus()->centuries(1);
+Date::modify($dt)->plus()->millennia(1);
+
+// Aliases — add() and addFluid() work identically
+Date::modify($dt)->add()->days(3);</code></pre>
+
+    <h3>Chainable (fluid) additions</h3>
+    <pre><code class="language-php">$result = Date::modify($dt)
+    ->plusFluid()
+    ->years(1)
+    ->months(2)
+    ->days(10)
+    ->hours(3)
+    ->minutes(30)
+    ->seconds(0)
+    ->getDateTime();  // returns the final DateTime</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- MINUS                                   -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="minus">
+    <h2>Subtracting Time</h2>
+    <p>Mirror of the addition API. Use <code>->minus()</code> / <code>->subtract()</code> / <code>->sub()</code> for single steps, or <code>->minusFluid()</code> / <code>->subtractFluid()</code> / <code>->subFluid()</code> for chaining.</p>
+
+    <h3>Single subtractions</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$dt = Date::nowUtc();
+
+Date::modify($dt)->minus()->microseconds(500);
+Date::modify($dt)->minus()->milliseconds(500);
+Date::modify($dt)->minus()->seconds(30);
+Date::modify($dt)->minus()->minutes(15);
+Date::modify($dt)->minus()->hours(2);
+Date::modify($dt)->minus()->hoursAndMinutes(1, 30);
+Date::modify($dt)->minus()->hoursAndMinutesAndSeconds(1, 30, 15);
+Date::modify($dt)->minus()->days(7);
+Date::modify($dt)->minus()->weeks(2);
+Date::modify($dt)->minus()->months(3);
+Date::modify($dt)->minus()->years(1);
+Date::modify($dt)->minus()->decades(1);</code></pre>
+
+    <h3>Chainable (fluid) subtractions</h3>
+    <pre><code class="language-php">$result = Date::modify($dt)
+    ->minusFluid()
+    ->years(1)
+    ->months(6)
+    ->days(15)
+    ->getDateTime();</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- DIFF                                    -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="diff">
+    <h2>Differences Between Dates</h2>
+    <p><code>Date::diff($dateTime)</code> returns a <code>Diff</code> object. Pass a second DateTime to each method to compute the absolute difference as complete units.</p>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$start = Date::createYMDHISM(2020, 1, 1);
+$end   = Date::createYMDHISM(2026, 3, 30);
+
+$diff = Date::diff($start);
+
+$diff->milliseconds($end);  // int — total ms difference
+$diff->seconds($end);
+$diff->minutes($end);
+$diff->hours($end);
+$diff->days($end);
+$diff->weeks($end);
+$diff->months($end);
+$diff->years($end);          // 6
+$diff->decades($end);
+$diff->centuries($end);
+$diff->millennia($end);</code></pre>
+    <div class="note"><strong>Note:</strong> All diff values are the absolute difference expressed in complete units (floor).</div>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- CALCULATE                               -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="calculate">
+    <h2>Calendar Calculations</h2>
+    <p><code>Date::calculate($dateTime)</code> returns a <code>Calculate</code> object for the given date.</p>
+
+    <h3>Days in a month</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$dt   = Date::createYMDHISM(2026, 2, 10);
+$calc = Date::calculate($dt);
+
+$calc->numberDaysInMonth();      // 28  (Feb 2026 — not a leap year)
+$calc->numberDaysLeftInMonth();  // 18  (days remaining in Feb after the 10th)
+
+// Static helpers — no DateTime required
+use District5\Date\Calculators\Calculate;
+
+Calculate::numberDaysInMonthByGivenValues(2, 2024);       // 29  (leap year)
+Calculate::numberDaysLeftInMonthByGivenValues(10, 2, 2026); // 18</code></pre>
+
+    <h3>Comparison helpers</h3>
+    <pre><code class="language-php">$earlier = Date::createYMDHISM(2024, 1, 1);
+$later   = Date::createYMDHISM(2026, 1, 1);
+
+$calc = Date::calculate($earlier);
+
+$calc->isOlderThan($later);              // true
+$calc->isNewerThan($later);              // false
+$calc->isOlderThanOrEqualTo($later);     // true
+$calc->isNewerThanOrEqualTo($later);     // false
+
+// Hours / minutes / seconds between two dates (absolute)
+$calc->hours($later);    // int
+$calc->minutes($later);  // int
+$calc->seconds($later);  // int</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- VALIDATE OBJECT                         -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="validate-object">
+    <h2>Validating DateTime Objects</h2>
+    <p><code>Date::validateObject($dateTime)</code> returns a <code>DateTimeValidator</code> with boolean query methods.</p>
+
+    <h3>Time of day</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$dt = Date::createYMDHISM(2026, 3, 30, 9, 0, 0);
+$v  = Date::validateObject($dt);
+
+$v->isAM();   // true
+$v->isPM();   // false</code></pre>
+
+    <h3>Day of week</h3>
+    <pre><code class="language-php">$v->isMonday();    $v->isTuesday();   $v->isWednesday();
+$v->isThursday();  $v->isFriday();    $v->isSaturday();  $v->isSunday();
+
+// Generic (1 = Monday … 7 = Sunday)
+$v->isDayOfWeekX(5);  // true if Friday</code></pre>
+
+    <h3>Month</h3>
+    <pre><code class="language-php">$v->isJanuary();   $v->isFebruary();  $v->isMarch();
+$v->isApril();     $v->isMay();       $v->isJune();
+$v->isJuly();      $v->isAugust();    $v->isSeptember();
+$v->isOctober();   $v->isNovember();  $v->isDecember();
+
+// Generic (1 = January … 12 = December)
+$v->isMonthNumberX(3);  // true if March</code></pre>
+
+    <h3>Relative to today</h3>
+    <pre><code class="language-php">$v->isYesterday();  // true if date is yesterday
+$v->isToday();      // true if date is today
+$v->isTomorrow();   // true if date is tomorrow</code></pre>
+
+    <h3>Leap year &amp; comparisons</h3>
+    <pre><code class="language-php">$v->isLeapYear();                    // true/false
+
+$other = Date::createYMDHISM(2020, 1, 1);
+$v->isOlderThan($other);
+$v->isNewerThan($other);
+$v->isOlderThanOrEqualTo($other);
+$v->isNewerThanOrEqualTo($other);
+
+$v->isHourLessThan(12);              // true if hour < 12
+$v->isHourGreaterThan(8);            // true if hour > 8</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- VALIDATE STRING                         -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="validate-string">
+    <h2>Validating Strings</h2>
+    <p><code>Date::validateString($input)</code> returns a <code>StringFormatValidator</code> that checks whether the string can be parsed as various date formats.</p>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$v = Date::validateString('2026-03-30');
+
+$v->isValidYMD();        // true  (YYYY-MM-DD)
+$v->isValidDMY();        // false (DD-MM-YYYY)
+$v->isValidMDY();        // false (MM-DD-YYYY)
+$v->isValidYMDHIS();     // false (YYYY-MM-DD HH:MM:SS)
+$v->isValidISO8601();    // false
+$v->isValidUnixTimestamp();        // false
+$v->isValidMillisecondTimestamp(); // false
+$v->isValidMicrosecondTimestamp(); // false</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- VALIDATE ARRAY                          -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="validate-array">
+    <h2>Validating Arrays of DateTimes</h2>
+    <p><code>Date::validateArray($dateTimes)</code> returns a <code>DateTimesValidator</code> that works over a collection.</p>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$dates = [
+    Date::createYMDHISM(2026, 1, 1),
+    Date::createYMDHISM(2026, 6, 15),
+    Date::createYMDHISM(2025, 12, 25),
+];
+
+$v = Date::validateArray($dates);
+
+$v->allAreValid();       // true — all elements are DateTime instances
+$v->hasAny();            // true — array is non-empty
+$v->count();             // 3</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- TIMEZONE                                -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="timezone">
+    <h2>Timezones</h2>
+    <p>Convert DateTime objects between timezones using <code>Date::timezone($dt)</code>.</p>
+
+    <h3>Convert to a timezone</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+use District5\Date\Tz\TzConstants;
+
+$utc = Date::nowUtc();
+$tz  = Date::timezone($utc);
+
+// Using an IANA string
+$ny = $tz->toTimezone('America/New_York');
+
+// Using TzConstants
+$london = $tz->toTimezone(TzConstants::EUROPE_LONDON);</code></pre>
+
+    <h3>Convert from one timezone to another</h3>
+    <pre><code class="language-php">// Convert a DateTime that is in Europe/London to America/New_York
+$converted = Date::timezone($dt)->toTimezoneFromTimezone(
+    TzConstants::AMERICA_NEW_YORK,  // to
+    TzConstants::EUROPE_LONDON       // from (optional, uses $dt's tz if omitted)
+);</code></pre>
+
+    <h3>Selected TzConstants</h3>
+    <table>
+      <thead><tr><th>Constant</th><th>Value</th></tr></thead>
+      <tbody>
+        <tr><td><code>TzConstants::UTC</code></td><td>UTC</td></tr>
+        <tr><td><code>TzConstants::EUROPE_LONDON</code></td><td>Europe/London</td></tr>
+        <tr><td><code>TzConstants::EUROPE_PARIS</code></td><td>Europe/Paris</td></tr>
+        <tr><td><code>TzConstants::AMERICA_NEW_YORK</code></td><td>America/New_York</td></tr>
+        <tr><td><code>TzConstants::AMERICA_CHICAGO</code></td><td>America/Chicago</td></tr>
+        <tr><td><code>TzConstants::AMERICA_LOS_ANGELES</code></td><td>America/Los_Angeles</td></tr>
+        <tr><td><code>TzConstants::ASIA_TOKYO</code></td><td>Asia/Tokyo</td></tr>
+        <tr><td><code>TzConstants::AUSTRALIA_SYDNEY</code></td><td>Australia/Sydney</td></tr>
+      </tbody>
+    </table>
+    <div class="note"><strong>Tip:</strong> <code>TzConstants</code> covers all standard IANA timezones. Use your IDE's autocomplete to browse the full list.</div>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- SORTING                                 -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="sorting">
+    <h2>Sorting</h2>
+    <p>Use <code>Date::sorter()</code> to sort arrays of DateTime objects or find extremes.</p>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$a = Date::createYMDHISM(2025, 6, 1);
+$b = Date::createYMDHISM(2024, 1, 15);
+$c = Date::createYMDHISM(2026, 12, 31);
+
+$sorter = Date::sorter();
+
+// Sort — variadic arguments
+$asc  = $sorter->sortOldestToNewest($a, $b, $c);   // [$b, $a, $c]
+$desc = $sorter->sortNewestToOldest($a, $b, $c);   // [$c, $a, $b]
+
+// Find the oldest / newest from an array
+$oldest = $sorter->oldest([$a, $b, $c]);  // $b (Jan 2024)
+$newest = $sorter->newest([$a, $b, $c]);  // $c (Dec 2026)</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- MONTH                                   -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="month">
+    <h2>Month Helpers</h2>
+    <p>Use <code>Date::month()</code> to query information about months.</p>
+
+    <h3>First and last day of a month</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$month = Date::month();
+
+// By month number (and optional year — defaults to current year)
+$first = $month->firstDateInMonth(3, 2026);  // 2026-03-01 00:00:00
+$last  = $month->lastDateInMonth(3, 2026);   // 2026-03-31 00:00:00
+
+// From a DateTime
+$dt    = Date::createYMDHISM(2026, 2, 15);
+$first = $month->firstDateInMonthFromDateTime($dt);  // 2026-02-01
+$last  = $month->lastDateInMonthFromDateTime($dt);   // 2026-02-28
+
+// For the current month
+$first = $month->firstDateInCurrentMonth();
+$last  = $month->lastDateInCurrentMonth();</code></pre>
+
+    <h3>Number of days in a month</h3>
+    <pre><code class="language-php">$month->numberDaysInMonth(2, 2024);               // 29 (leap year)
+$month->numberDaysInMonth(2, 2026);               // 28
+
+$dt = Date::createYMDHISM(2026, 2, 1);
+$month->numberDaysInMonthFromDateTime($dt);       // 28</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- START AND END                           -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="startend">
+    <h2>Start &amp; End of Periods</h2>
+    <p>Use <code>Date::startAndEnd()</code> to obtain boundary DateTimes for days, months, and years.</p>
+
+    <h3>Day boundaries</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$se = Date::startAndEnd();
+
+// 2026-03-30 00:00:00
+$start = $se->startOfDayFromYearMonthDay(2026, 3, 30);
+
+// 2026-03-30 23:59:59
+$end   = $se->endOfDayFromYearMonthDay(2026, 3, 30);
+
+// From a DateTime
+$dt    = Date::createYMDHISM(2026, 3, 30, 14, 0, 0);
+$start = $se->startOfDayFromDateTime($dt);
+$end   = $se->endOfDayFromDateTime($dt);
+
+// Today / yesterday / tomorrow shortcuts
+$se->startOfToday();     $se->endOfToday();
+$se->startOfYesterday(); $se->endOfYesterday();
+$se->startOfTomorrow();  $se->endOfTomorrow();</code></pre>
+
+    <h3>Month boundaries</h3>
+    <pre><code class="language-php">// 2026-03-01 00:00:00
+$start = $se->startOfMonthFromYearMonth(2026, 3);
+// 2026-03-31 23:59:59
+$end   = $se->endOfMonthFromYearMonth(2026, 3);
+
+// From a DateTime
+$start = $se->startOfMonthFromDateTime($dt);
+$end   = $se->endOfMonthFromDateTime($dt);</code></pre>
+
+    <h3>Year boundaries</h3>
+    <pre><code class="language-php">// 2026-01-01 00:00:00
+$start = $se->startOfYearFromYear(2026);
+// 2026-12-31 23:59:59
+$end   = $se->endOfYearFromYear(2026);
+
+// From a DateTime
+$start = $se->startOfYearFromDateTime($dt);
+$end   = $se->endOfYearFromDateTime($dt);</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- RECURRING                               -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="recurring">
+    <h2>Recurring Dates</h2>
+    <p>Use <code>Date::recurring()</code> to work with fixed annual dates. Each helper returns a <code>RecurringDateManipulator</code>.</p>
+
+    <h3>Available dates</h3>
+    <table>
+      <thead><tr><th>Method</th><th>Date</th></tr></thead>
+      <tbody>
+        <tr><td><code>newYearsDay()</code></td><td>January 1st</td></tr>
+        <tr><td><code>newYearsEve()</code></td><td>December 31st</td></tr>
+        <tr><td><code>valentinesDay()</code></td><td>February 14th</td></tr>
+        <tr><td><code>stDwynwensDay()</code></td><td>January 25th</td></tr>
+        <tr><td><code>christmasEve()</code></td><td>December 24th</td></tr>
+        <tr><td><code>christmasDay()</code></td><td>December 25th</td></tr>
+        <tr><td><code>boxingDay()</code></td><td>December 26th</td></tr>
+        <tr><td><code>starWarsDay()</code></td><td>May 4th</td></tr>
+      </tbody>
+    </table>
+
+    <h3>RecurringDateManipulator methods</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$christmas = Date::recurring()->christmasDay();
+
+$christmas->thisYear();    // 2026-12-25 00:00:00
+$christmas->nextYear();    // 2027-12-25 00:00:00
+$christmas->getNext();     // next upcoming occurrence (this or next year)
+$christmas->getPrevious(); // most recent past occurrence</code></pre>
+
+    <h3>Example — how many days until Christmas?</h3>
+    <pre><code class="language-php">$nextXmas = Date::recurring()->christmasDay()->getNext();
+$today    = Date::nowUtc();
+$days     = Date::diff($today)->days($nextXmas);
+echo "Christmas is in {$days} days.";</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- MONGODB                                 -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="mongo">
+    <h2>MongoDB Integration</h2>
+    <p>Requires the <code>mongodb/mongodb</code> PHP extension. Use <code>Date::mongo()</code> to convert between PHP <code>DateTime</code> and MongoDB BSON types.</p>
+
+    <h3>UTCDateTime</h3>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$dt    = Date::nowUtc();
+$mongo = Date::mongo();
+
+// DateTime → MongoDB\BSON\UTCDateTime
+$bson = $mongo->convertTo($dt);
+
+// MongoDB\BSON\UTCDateTime → DateTime
+$dt   = $mongo->convertFrom($bson);</code></pre>
+
+    <h3>ObjectId</h3>
+    <pre><code class="language-php">// DateTime → MongoDB\BSON\ObjectId  (timestamp-seeded)
+$objectId = $mongo->toObjectId($dt);
+
+// MongoDB\BSON\ObjectId → DateTime  (extracts creation timestamp)
+$dt       = $mongo->fromObjectId($objectId);</code></pre>
+
+    <h3>Parsing from InputFormatter</h3>
+    <pre><code class="language-php">// If you have a raw UTCDateTime or ObjectId as a variable $raw:
+$dt = Date::input($raw)->fromMongoUtcDateTime($raw);
+$dt = Date::input($raw)->fromMongoObjectId($raw);</code></pre>
+  </section>
+
+  <!-- ─────────────────────────────────────── -->
+  <!-- NTP                                     -->
+  <!-- ─────────────────────────────────────── -->
+  <section class="section" id="ntp">
+    <h2>NTP Server</h2>
+    <p>Retrieve the current time from a Network Time Protocol server using <code>Date::ntpServer()</code>. Requires the <code>ext-sockets</code> PHP extension.</p>
+    <pre><code class="language-php">use District5\Date\Date;
+
+$ntp = Date::ntpServer();
+
+// Fetch Unix timestamp from pool.ntp.org (default)
+$timestamp = $ntp->getUnixTimestamp();           // int|false
+
+// Fetch from a custom NTP server
+$timestamp = $ntp->getUnixTimestamp('time.google.com');
+
+// Convert directly to a DateTime
+$dt = $ntp->getDateTime();                       // DateTime|false
+$dt = $ntp->getDateTime('time.cloudflare.com');</code></pre>
+    <div class="note"><strong>Note:</strong> NTP lookups make a UDP socket connection to the server on port 123. Ensure your server allows outbound UDP on that port.</div>
+  </section>
+
+</main>
+
+<!-- ── Active nav highlight on scroll ── -->
+<script>
+  hljs.highlightAll();
+
+  const sections = document.querySelectorAll('section[id], div[id="top"]');
+  const links    = document.querySelectorAll('#nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`#nav a[href="#${entry.target.id}"]`);
+        if (match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -75% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
