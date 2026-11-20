@@ -79,7 +79,13 @@ class OutputFormatter extends AbstractConstructor
     public function toYMDHIS(string $dateSeparator = '-', string $timeSeparator = ':'): string
     {
         return $this->toFormat(
-            sprintf('Y%sm%sd H%si%ss', $dateSeparator, $dateSeparator, $timeSeparator, $timeSeparator)
+            sprintf(
+                'Y%sm%sd H%si%ss',
+                self::escapeFormatLiteral($dateSeparator),
+                self::escapeFormatLiteral($dateSeparator),
+                self::escapeFormatLiteral($timeSeparator),
+                self::escapeFormatLiteral($timeSeparator)
+            )
         );
     }
 
@@ -193,7 +199,8 @@ class OutputFormatter extends AbstractConstructor
     }
 
     /**
-     * Get the milliseconds of the DateTime object as an integer. Be aware that this is rounded!
+     * Get the milliseconds of the DateTime object as an integer. Be aware that this is truncated, not
+     * rounded (e.g. 123999 microseconds gives 123).
      *
      * @return int
      */
@@ -211,13 +218,8 @@ class OutputFormatter extends AbstractConstructor
      */
     public function toTimeHMS(string $separator = ':'): string
     {
-        return $this->toFormat(
-            sprintf(
-                'H%si%ss',
-                $separator,
-                $separator
-            )
-        );
+        $sep = self::escapeFormatLiteral($separator);
+        return $this->toFormat(sprintf('H%si%ss', $sep, $sep));
     }
 
     /**
@@ -229,12 +231,7 @@ class OutputFormatter extends AbstractConstructor
      */
     public function toTimeHM(string $separator = ':'): string
     {
-        return $this->toFormat(
-            sprintf(
-                'H%si',
-                $separator
-            )
-        );
+        return $this->toFormat(sprintf('H%si', self::escapeFormatLiteral($separator)));
     }
 
     /**
@@ -247,7 +244,8 @@ class OutputFormatter extends AbstractConstructor
     public function toYMD(bool $useSeparators = true, string $separator = '-'): string
     {
         if ($useSeparators === true) {
-            return $this->toFormat(sprintf('Y%sm%sd', $separator, $separator));
+            $sep = self::escapeFormatLiteral($separator);
+            return $this->toFormat(sprintf('Y%sm%sd', $sep, $sep));
         }
         return $this->toFormat('Ymd');
     }
@@ -262,7 +260,8 @@ class OutputFormatter extends AbstractConstructor
     public function toDMY(bool $useSeparators = true, string $separator = '-'): string
     {
         if ($useSeparators === true) {
-            return $this->toFormat(sprintf('d%sm%sY', $separator, $separator));
+            $sep = self::escapeFormatLiteral($separator);
+            return $this->toFormat(sprintf('d%sm%sY', $sep, $sep));
         }
         return $this->toFormat('dmY');
     }
@@ -277,7 +276,8 @@ class OutputFormatter extends AbstractConstructor
     public function toMDY(bool $useSeparators = true, string $separator = '-'): string
     {
         if ($useSeparators === true) {
-            return $this->toFormat(sprintf('m%sd%sY', $separator, $separator));
+            $sep = self::escapeFormatLiteral($separator);
+            return $this->toFormat(sprintf('m%sd%sY', $sep, $sep));
         }
         return $this->toFormat('mdY');
     }
@@ -309,32 +309,64 @@ class OutputFormatter extends AbstractConstructor
 
     /**
      * Convert a DateTime to {seconds}.{microsecond} format.
+     * Pre-1970 values are signed decimals, e.g. 1969-12-31 23:59:59.5 is -0.5 / '-0.500000'.
      *
      * @param bool $asString default false, whether to return a string.
      * @return float|string
      */
     public function toMicrosecondTimestamp(bool $asString = false): float|string
     {
-        $v = $this->toFormat('U.u');
-        if ($asString === true) {
-            return $v;
-        }
-        return floatval($v);
+        return $this->toFractionalTimestamp(intval($this->toFormat('u')), 1000000, 6, $asString);
     }
 
     /**
-     * Convert a DateTime to {seconds}.{millisecond} format.
+     * Convert a DateTime to {seconds}.{millisecond} format. Milliseconds are truncated, not rounded.
+     * Pre-1970 values are signed decimals, e.g. 1969-12-31 23:59:59.500 is -0.5 / '-0.500'.
      *
      * @param bool $asString default false, whether to return a string.
      * @return float|string
      */
     public function toMillisecondTimestamp(bool $asString = false): float|string
     {
-        $v = $this->toFormat('U.v');
-        if ($asString === true) {
-            return $v;
+        return $this->toFractionalTimestamp(intval($this->toFormat('v')), 1000, 3, $asString);
+    }
+
+    /**
+     * Build a signed decimal seconds value from the whole-second timestamp plus a non-negative fraction.
+     *
+     * @param int $fraction the fractional part, in units of 1/$unit seconds (always >= 0)
+     * @param int $unit
+     * @param int $digits
+     * @param bool $asString
+     * @return float|string
+     */
+    private function toFractionalTimestamp(int $fraction, int $unit, int $digits, bool $asString): float|string
+    {
+        $total = $this->dateTime->getTimestamp() * $unit + $fraction;
+        if ($asString === false) {
+            return floatval($total / $unit);
         }
-        return floatval($v);
+        $abs = abs($total);
+        return sprintf(
+            '%s%d.%0' . $digits . 'd',
+            $total < 0 ? '-' : '',
+            intdiv($abs, $unit),
+            $abs % $unit
+        );
+    }
+
+    /**
+     * Escape every character of a string so that DateTime::format() outputs it literally.
+     *
+     * @param string $value
+     * @return string
+     */
+    private static function escapeFormatLiteral(string $value): string
+    {
+        if ($value === '') {
+            return '';
+        }
+        return '\\' . implode('\\', str_split($value));
     }
 
     /**

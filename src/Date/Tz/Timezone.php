@@ -33,7 +33,6 @@ namespace District5\Date\Tz;
 use DateTime;
 use DateTimeZone;
 use District5\Date\Abstracts\AbstractConstructor;
-use District5\Date\Date;
 use Exception;
 
 /**
@@ -46,65 +45,67 @@ class Timezone extends AbstractConstructor
      * Convert a datetime to a specific timezone. This method is obviously timezone aware based upon
      * the timezone contained within the original DateTime object.
      *
-     * @param string $timezone
+     * A string must be one of the identifiers in TzConstants. Any DateTimeZone object is accepted,
+     * including offset based zones such as new DateTimeZone('+05:30').
+     *
+     * @param string|DateTimeZone $timezone
      * @return DateTime|false
      */
-    public function toTimezone(string $timezone): DateTime|bool
+    public function toTimezone(string|DateTimeZone $timezone): DateTime|bool
     {
+        $tz = $this->resolveTimezone($timezone);
+        if ($tz === false) {
+            return false;
+        }
+        $dt = clone $this->dateTime;
+        $dt->setTimezone($tz);
+        return $dt;
+    }
+
+    /**
+     * Convert a datetime to a timezone from another timezone. The wall clock time of the DateTime (ignoring
+     * its own timezone) is interpreted as being in $fromTimezone, and then converted to $toTimezone.
+     *
+     * @param string|DateTimeZone $toTimezone
+     * @param string|DateTimeZone|null $fromTimezone (optional) - if not provided, the timezone of the DateTime is used.
+     * @return DateTime|false false if either timezone is invalid.
+     */
+    public function toTimezoneFromTimezone(string|DateTimeZone $toTimezone, string|DateTimeZone|null $fromTimezone = null): DateTime|bool
+    {
+        $toTz = $this->resolveTimezone($toTimezone);
+        if ($toTz === false) {
+            return false;
+        }
+        $fromTz = $this->resolveTimezone($fromTimezone ?? $this->dateTime->getTimezone());
+        if ($fromTz === false) {
+            return false;
+        }
+        $newDt = DateTime::createFromFormat(
+            'Y-m-d H:i:s.u',
+            $this->dateTime->format('Y-m-d H:i:s.u'),
+            $fromTz
+        );
+        if ($newDt === false) {
+            return false;
+        }
+        $newDt->setTimezone($toTz);
+        return $newDt;
+    }
+
+    /**
+     * @param string|DateTimeZone $timezone
+     * @return DateTimeZone|false
+     */
+    private function resolveTimezone(string|DateTimeZone $timezone): DateTimeZone|bool
+    {
+        if ($timezone instanceof DateTimeZone) {
+            return clone $timezone;
+        }
         if (TzConstants::isValidTimezone($timezone) === false) {
             return false;
         }
         try {
-            $dt = clone $this->dateTime;
-            $dt->setTimezone(new DateTimeZone($timezone));
-            return $dt;
-        } catch (Exception) {
-        }
-        return false;
-    }
-
-    /**
-     * Convert a datetime to a timezone from another timezone.
-     *
-     * @param string|DateTimeZone $toTimezone
-     * @param string|DateTimeZone|null $fromTimezone (optional) - if not provided, will detect which to use.
-     * @return DateTime|false
-     */
-    public function toTimezoneFromTimezone(string|DateTimeZone $toTimezone, string|DateTimeZone|null $fromTimezone = null): DateTime|bool
-    {
-        if ($toTimezone instanceof DateTimeZone) {
-            $toTimezone = $toTimezone->getName();
-        } else {
-            if (TzConstants::isValidTimezone($toTimezone) === false) {
-                return false;
-            }
-        }
-        if ($fromTimezone instanceof DateTimeZone) {
-            $fromTimezone = $fromTimezone->getName();
-        }
-        try {
-            $dt = clone $this->dateTime;
-            if ($fromTimezone === null) {
-                $newDt = Date::now()->inTimezone($dt->getTimezone()->getName());
-            } else {
-                $newDt = Date::now()->inTimezone($fromTimezone);
-            }
-            Date::modify($newDt, false)->setDate(
-                intval($dt->format('j')),
-                intval($dt->format('n')),
-                intval($dt->format('Y'))
-            );
-            Date::modify($newDt, false)->setTime(
-                intval($dt->format('G')),
-                intval($dt->format('i')),
-                intval($dt->format('s')),
-                intval($dt->format('u'))
-            );
-
-            $inst = new Timezone($newDt);
-            return $inst->toTimezone(
-                $toTimezone
-            );
+            return new DateTimeZone($timezone);
         } catch (Exception) {
         }
         return false;

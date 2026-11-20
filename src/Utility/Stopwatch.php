@@ -50,7 +50,7 @@ class Stopwatch
      *
      * @param int|null $maxTimeSeconds
      */
-    public function __construct(int $maxTimeSeconds = null)
+    public function __construct(?int $maxTimeSeconds = null)
     {
         $this->reset($maxTimeSeconds);
     }
@@ -86,7 +86,7 @@ class Stopwatch
         $this->_isRunning = false;
     }
 
-    public function reset(int $maxTimeSeconds = null)
+    public function reset(?int $maxTimeSeconds = null)
     {
         $this->_startTime = -1;
         $this->_isRunning = false;

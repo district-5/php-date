@@ -51,13 +51,9 @@ class Sorter
         if (false === Date::validateArray($args)->isArrayOfDateTimes()) {
             return false;
         }
-        uasort($args, function ($a, $b) {
-            if ($a->getTimestamp() === $b->getTimestamp()) {
-                return 0;
-            }
-
-            return ($a->getTimestamp() < $b->getTimestamp()) ? -1 : 1;
-        });
+        // Compare the DateTime objects directly so microseconds count. The sort is stable, so equal
+        // instants (including the same instant in different timezones) keep their original order.
+        uasort($args, fn (DateTime $a, DateTime $b): int => $a <=> $b);
         return array_values($args);
     }
 
@@ -73,13 +69,8 @@ class Sorter
         if (false === Date::validateArray($args)->isArrayOfDateTimes()) {
             return false;
         }
-        uasort($args, function ($a, $b) {
-            if ($a->getTimestamp() === $b->getTimestamp()) {
-                return 0;
-            }
-
-            return ($a->getTimestamp() > $b->getTimestamp()) ? -1 : 1;
-        });
+        // Compare the DateTime objects directly so microseconds count. The sort is stable.
+        uasort($args, fn (DateTime $a, DateTime $b): int => $b <=> $a);
         return array_values($args);
     }
 

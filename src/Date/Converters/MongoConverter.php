@@ -57,7 +57,9 @@ class MongoConverter
             return false;
         }
 
-        return new $cl(intval((Date::output($dateTime)->toMillisecondTimestamp() * 1000)));
+        // Integer maths avoids float rounding errors (e.g. ...440 becoming ...439).
+        $milliseconds = $dateTime->getTimestamp() * 1000 + intval($dateTime->format('v'));
+        return new $cl($milliseconds);
     }
 
     /**
@@ -86,8 +88,8 @@ class MongoConverter
             return false;
         }
 
-        $ts = strtotime($dateTime->format('Y-m-d H:i:s'));
-        if ($ts === false) {
+        $ts = $dateTime->getTimestamp();
+        if ($ts < 0 || $ts > 0xFFFFFFFF) {
             return false;
         }
         $ts = str_pad(dechex($ts), 8, '0', STR_PAD_LEFT);

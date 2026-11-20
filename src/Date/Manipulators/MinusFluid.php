@@ -46,7 +46,7 @@ class MinusFluid extends AbstractFluid
      */
     public function hours(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->hours($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->hours($x);
         return $this;
     }
 
@@ -58,7 +58,7 @@ class MinusFluid extends AbstractFluid
      */
     public function minutes(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->minutes($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->minutes($x);
         return $this;
     }
 
@@ -70,7 +70,7 @@ class MinusFluid extends AbstractFluid
      */
     public function seconds(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->seconds($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->seconds($x);
         return $this;
     }
 
@@ -82,7 +82,7 @@ class MinusFluid extends AbstractFluid
      */
     public function milliseconds(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->milliseconds($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->milliseconds($x);
         return $this;
     }
 
@@ -94,7 +94,7 @@ class MinusFluid extends AbstractFluid
      */
     public function microseconds(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->microseconds($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->microseconds($x);
         return $this;
     }
 
@@ -107,7 +107,7 @@ class MinusFluid extends AbstractFluid
      */
     public function hoursAndMinutes(int $hours, int $minutes): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->hoursAndMinutes($hours, $minutes);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->hoursAndMinutes($hours, $minutes);
         return $this;
     }
 
@@ -121,7 +121,7 @@ class MinusFluid extends AbstractFluid
      */
     public function hoursAndMinutesAndSeconds(int $hours, int $minutes, int $seconds): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->hoursAndMinutesAndSeconds($hours, $minutes, $seconds);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->hoursAndMinutesAndSeconds($hours, $minutes, $seconds);
         return $this;
     }
 
@@ -133,7 +133,7 @@ class MinusFluid extends AbstractFluid
      */
     public function days(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->days($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->days($x);
         return $this;
     }
 
@@ -145,7 +145,7 @@ class MinusFluid extends AbstractFluid
      */
     public function weeks(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->weeks($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->weeks($x);
         return $this;
     }
 
@@ -157,7 +157,7 @@ class MinusFluid extends AbstractFluid
      */
     public function months(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->months($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->months($x);
         return $this;
     }
 
@@ -169,7 +169,7 @@ class MinusFluid extends AbstractFluid
      */
     public function years(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->years($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->years($x);
         return $this;
     }
 
@@ -181,7 +181,7 @@ class MinusFluid extends AbstractFluid
      */
     public function decades(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->decades($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->decades($x);
         return $this;
     }
 
@@ -193,7 +193,7 @@ class MinusFluid extends AbstractFluid
      */
     public function centuries(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->centuries($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->centuries($x);
         return $this;
     }
 
@@ -205,7 +205,7 @@ class MinusFluid extends AbstractFluid
      */
     public function millennia(int $x): MinusFluid
     {
-        $this->dateTime = Date::modify($this->dateTime)->minus()->millennia($x);
+        $this->dateTime = Date::modify($this->dateTime, $this->cloneDateTime)->minus()->millennia($x);
         return $this;
     }
 }

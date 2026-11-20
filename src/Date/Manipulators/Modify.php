@@ -173,24 +173,11 @@ class Modify extends AbstractManipulator
      */
     public function setHours(int $hour): DateTime|bool
     {
-        if ($this->cloneDateTime === false) {
-            $this->dateTime->setTime(
-                $hour,
-                intval($this->dateTime->format('i')),
-                intval($this->dateTime->format('s')),
-                intval($this->dateTime->format('u'))
-            );
-            return $this->dateTime;
-        }
-        $dt = clone $this->dateTime;
-        $newString = $dt->format('Y-m-d');
-        $newString .= ' ' . str_pad(strval($hour), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad($this->dateTime->format('i'), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad($this->dateTime->format('s'), 2, '0', STR_PAD_LEFT);
-        $newString .= '.' . str_pad($this->dateTime->format('u'), 6, '0', STR_PAD_LEFT);
-        return DateTime::createFromFormat(
-            'Y-m-d H:i:s.u',
-            $newString
+        return $this->applyTime(
+            $hour,
+            intval($this->dateTime->format('i')),
+            intval($this->dateTime->format('s')),
+            intval($this->dateTime->format('u'))
         );
     }
 
@@ -202,24 +189,11 @@ class Modify extends AbstractManipulator
      */
     public function setMinutes(int $minutes): DateTime|bool
     {
-        if ($this->cloneDateTime === false) {
-            $this->dateTime->setTime(
-                intval($this->dateTime->format('H')),
-                $minutes,
-                intval($this->dateTime->format('s')),
-                intval($this->dateTime->format('u'))
-            );
-            return $this->dateTime;
-        }
-        $dt = clone $this->dateTime;
-        $newString = $dt->format('Y-m-d');
-        $newString .= ' ' . str_pad($this->dateTime->format('H'), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad(strval($minutes), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad($this->dateTime->format('s'), 2, '0', STR_PAD_LEFT);
-        $newString .= '.' . str_pad($this->dateTime->format('u'), 6, '0', STR_PAD_LEFT);
-        return DateTime::createFromFormat(
-            'Y-m-d H:i:s.u',
-            $newString
+        return $this->applyTime(
+            intval($this->dateTime->format('H')),
+            $minutes,
+            intval($this->dateTime->format('s')),
+            intval($this->dateTime->format('u'))
         );
     }
 
@@ -231,24 +205,11 @@ class Modify extends AbstractManipulator
      */
     public function setSeconds(int $seconds): DateTime|bool
     {
-        if ($this->cloneDateTime === false) {
-            $this->dateTime->setTime(
-                intval($this->dateTime->format('H')),
-                intval($this->dateTime->format('i')),
-                $seconds,
-                intval($this->dateTime->format('u'))
-            );
-            return $this->dateTime;
-        }
-        $dt = clone $this->dateTime;
-        $newString = $dt->format('Y-m-d');
-        $newString .= ' ' . str_pad($this->dateTime->format('H'), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad($this->dateTime->format('i'), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad(strval($seconds), 2, '0', STR_PAD_LEFT);
-        $newString .= '.' . str_pad($this->dateTime->format('u'), 6, '0', STR_PAD_LEFT);
-        return DateTime::createFromFormat(
-            'Y-m-d H:i:s.u',
-            $newString
+        return $this->applyTime(
+            intval($this->dateTime->format('H')),
+            intval($this->dateTime->format('i')),
+            $seconds,
+            intval($this->dateTime->format('u'))
         );
     }
 
@@ -260,24 +221,11 @@ class Modify extends AbstractManipulator
      */
     public function setMicroseconds(int $microseconds): DateTime|bool
     {
-        if ($this->cloneDateTime === false) {
-            $this->dateTime->setTime(
-                intval($this->dateTime->format('H')),
-                intval($this->dateTime->format('i')),
-                intval($this->dateTime->format('s')),
-                $microseconds
-            );
-            return $this->dateTime;
-        }
-        $dt = clone $this->dateTime;
-        $newString = $dt->format('Y-m-d');
-        $newString .= ' ' . str_pad($this->dateTime->format('H'), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad($this->dateTime->format('i'), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad($this->dateTime->format('s'), 2, '0', STR_PAD_LEFT);
-        $newString .= '.' . str_pad(strval($microseconds), 6, '0', STR_PAD_LEFT);
-        return DateTime::createFromFormat(
-            'Y-m-d H:i:s.u',
-            $newString
+        return $this->applyTime(
+            intval($this->dateTime->format('H')),
+            intval($this->dateTime->format('i')),
+            intval($this->dateTime->format('s')),
+            $microseconds
         );
     }
 
@@ -292,20 +240,7 @@ class Modify extends AbstractManipulator
      */
     public function setTime(int $hour, int $minutes, int $seconds = 0, int $microseconds = 0): DateTime|bool
     {
-        if ($this->cloneDateTime === false) {
-            $this->dateTime->setTime($hour, $minutes, $seconds, $microseconds);
-            return $this->dateTime;
-        }
-        $dt = clone $this->dateTime;
-        $newString = $dt->format('Y-m-d');
-        $newString .= ' ' . str_pad(strval($hour), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad(strval($minutes), 2, '0', STR_PAD_LEFT);
-        $newString .= ':' . str_pad(strval($seconds), 2, '0', STR_PAD_LEFT);
-        $newString .= '.' . str_pad(strval($microseconds), 6, '0', STR_PAD_LEFT);
-        return DateTime::createFromFormat(
-            'Y-m-d H:i:s.u',
-            $newString
-        );
+        return $this->applyTime($hour, $minutes, $seconds, $microseconds);
     }
 
     /**
@@ -327,15 +262,39 @@ class Modify extends AbstractManipulator
         if ($year === null) {
             $year = intval($this->dateTime->format('Y'));
         }
-        if ($this->cloneDateTime === false) {
-            $dt = $this->dateTime;
-        } else {
-            $dt = clone $this->dateTime;
-        }
+        // Validate against a copy first, so an invalid date never alters the original in place.
+        $dt = clone $this->dateTime;
         $dt->setDate($year, $month, $day);
         if (intval($dt->format('Y')) !== $year || intval($dt->format('n')) !== $month || intval($dt->format('j')) !== $day) {
             return false;
         }
+        if ($this->cloneDateTime === false) {
+            $this->dateTime->setDate($year, $month, $day);
+            return $this->dateTime;
+        }
+        return $dt;
+    }
+
+    /**
+     * Validate and apply a time to the DateTime (or a clone of it), preserving the timezone.
+     * Out of range values return false and leave the DateTime untouched.
+     *
+     * @param int $hour 0-23
+     * @param int $minutes 0-59
+     * @param int $seconds 0-59
+     * @param int $microseconds 0-999999
+     * @return DateTime|false
+     */
+    private function applyTime(int $hour, int $minutes, int $seconds, int $microseconds): DateTime|bool
+    {
+        if ($hour < 0 || $hour > 23
+            || $minutes < 0 || $minutes > 59
+            || $seconds < 0 || $seconds > 59
+            || $microseconds < 0 || $microseconds > 999999) {
+            return false;
+        }
+        $dt = $this->cloneDateTime === true ? clone $this->dateTime : $this->dateTime;
+        $dt->setTime($hour, $minutes, $seconds, $microseconds);
         return $dt;
     }
 
