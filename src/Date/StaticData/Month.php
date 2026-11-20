@@ -32,6 +32,7 @@ namespace District5\Date\StaticData;
 
 use DateTime;
 use District5\Date\Date;
+use InvalidArgumentException;
 
 /**
  * Class Month
@@ -60,16 +61,17 @@ class Month
     }
 
     /**
-     * @param int $monthNumber
+     * @param int $monthNumber 1 (January) to 12 (December)
      * @param int|null $year
      * @return DateTime
+     * @throws InvalidArgumentException if $monthNumber is not between 1 and 12, or the date cannot be created
      */
     public function firstDateInMonth(int $monthNumber, ?int $year = null): DateTime
     {
         if ($year === null) {
             $year = Date::output(Date::nowDefault())->getYear();
         }
-        return Date::createYMDHISM($year, $monthNumber, 1);
+        return $this->createDate($year, $monthNumber, 1);
     }
 
     /**
@@ -80,10 +82,12 @@ class Month
     {
         $now = Date::nowDefault();
         $output = Date::output($now);
-        return Date::createYMDHISM(
-            $output->getYear(),
-            $output->getMonth(),
-            1,
+        $year = $output->getYear();
+        $month = $output->getMonth();
+        return $this->createDate(
+            $year,
+            $month,
+            $this->numberDaysInMonth($month, $year),
             23,
             59,
             59,
@@ -92,9 +96,10 @@ class Month
     }
 
     /**
-     * @param int $monthNumber
+     * @param int $monthNumber 1 (January) to 12 (December)
      * @param int|null $year
      * @return int
+     * @throws InvalidArgumentException if $monthNumber is not between 1 and 12, or the date cannot be created
      */
     public function numberDaysInMonth(int $monthNumber, ?int $year = null): int
     {
@@ -107,16 +112,17 @@ class Month
     }
 
     /**
-     * @param int $monthNumber
+     * @param int $monthNumber 1 (January) to 12 (December)
      * @param int|null $year
      * @return DateTime
+     * @throws InvalidArgumentException if $monthNumber is not between 1 and 12, or the date cannot be created
      */
     public function lastDateInMonth(int $monthNumber, ?int $year = null): DateTime
     {
         if ($year === null) {
             $year = Date::output(Date::nowDefault())->getYear();
         }
-        $date = Date::createYMDHISM($year, $monthNumber, 1);
+        $date = $this->createDate($year, $monthNumber, 1);
         $nextMonth = Date::modify($date)->plus()->months(1);
         return Date::modify($nextMonth)->minus()->days(1);
     }
@@ -143,5 +149,34 @@ class Month
             $output->getMonth(),
             $output->getYear()
         );
+    }
+
+    /**
+     * Create a DateTime in the default timezone, rejecting invalid month numbers rather than rolling them over.
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @param int $hour
+     * @param int $minute
+     * @param int $second
+     * @param int $microsecond
+     * @return DateTime
+     * @throws InvalidArgumentException
+     */
+    private function createDate(int $year, int $month, int $day, int $hour = 0, int $minute = 0, int $second = 0, int $microsecond = 0): DateTime
+    {
+        if ($month < 1 || $month > 12) {
+            throw new InvalidArgumentException(
+                sprintf('Month number must be between 1 and 12, %d given.', $month)
+            );
+        }
+        $date = Date::createYMDHISM($year, $month, $day, $hour, $minute, $second, $microsecond);
+        if (!$date instanceof DateTime) {
+            throw new InvalidArgumentException(
+                sprintf('Unable to create date for %04d-%02d-%02d.', $year, $month, $day)
+            );
+        }
+        return $date;
     }
 }

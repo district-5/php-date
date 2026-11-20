@@ -31,6 +31,8 @@
 namespace District5\Date;
 
 use DateTime;
+use DateTimeZone;
+use Exception;
 use District5\Date\Calculators\Calculate;
 use District5\Date\Calculators\Diff;
 use District5\Date\Calculators\NtpServer;
@@ -180,8 +182,9 @@ class Date
         if ($timezone === null) {
             $timezone = Date::getDefaultTimezone();
         }
-        $date = Date::now()->inTimezone($timezone);
-        if ($date === false) {
+        try {
+            $date = new DateTime('now', new DateTimeZone($timezone));
+        } catch (Exception) {
             return false;
         }
 
@@ -302,7 +305,8 @@ class Date
     {
         return DateTime::createFromFormat(
             'Y-m-d H:i:s.u',
-            '1970-01-01 00:00:00.000'
+            '1970-01-01 00:00:00.000',
+            new DateTimeZone('UTC')
         );
     }
 

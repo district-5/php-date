@@ -74,32 +74,23 @@ class StringFormatValidator
      */
     public function isYmd(bool $hasSeparator = true, bool $fourCharacterYear = true, bool $twoCharacterMonth = true, bool $twoCharacterDay = true, string $separator = '-'): bool
     {
-        try {
-            $format = '';
-            if ($fourCharacterYear) {
-                $format .= 'Y' . $separator;
-            } else {
-                $format .= 'y' . $separator;
-            }
-            if ($twoCharacterMonth) {
-                $format .= 'm' . $separator;
-            } else {
-                $format .= 'n' . $separator;
-            }
-            if ($twoCharacterDay) {
-                $format .= 'd';
-            } else {
-                $format .= 'j';
-            }
+        // Each character of the separator is escaped so that it is matched literally, even if it is a
+        // DateTime format code (e.g. 'd' or 'h').
+        $sep = '';
+        if ($hasSeparator && $separator !== '') {
+            $sep = '\\' . implode('\\', str_split($separator));
+        }
+        $format = ($fourCharacterYear ? 'Y' : 'y') . $sep
+            . ($twoCharacterMonth ? 'm' : 'n') . $sep
+            . ($twoCharacterDay ? 'd' : 'j');
 
-            if (!$hasSeparator) {
-                $format = str_replace($separator, '', $format);
-            }
-            $dt = DateTime::createFromFormat($format, $this->input);
+        $input = strval($this->input);
+        try {
+            $dt = DateTime::createFromFormat($format, $input);
             if (!$dt) {
                 return false;
             }
-            return $dt->format($format) === $this->input;
+            return $dt->format($format) === $input;
         } catch (Exception) {
         }
         return false;
@@ -110,7 +101,7 @@ class StringFormatValidator
      */
     public function isTwentyFourHourTimeString(): bool
     {
-        $given = $this->input;
+        $given = strval($this->input);
         $totalLength = strlen($given);
         if ($totalLength !== 5 && $totalLength !== 8 || !ctype_digit(str_replace(':', '', $given))) {
             return false;
@@ -127,10 +118,10 @@ class StringFormatValidator
             return false;
         }
         if ($totalLength === 5) {
-            return $dt->format('H:i') === $this->input;
+            return $dt->format('H:i') === $given;
         }
 
         // length is 8
-        return $dt->format('H:i:s') === $this->input;
+        return $dt->format('H:i:s') === $given;
     }
 }

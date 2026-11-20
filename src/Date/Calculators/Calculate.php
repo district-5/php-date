@@ -31,6 +31,7 @@
 namespace District5\Date\Calculators;
 
 use DateTime;
+use InvalidArgumentException;
 use District5\Date\Abstracts\AbstractConstructor;
 use District5\Date\Date;
 use District5\Date\Traits\NewestOldestTrait;
@@ -88,12 +89,13 @@ class Calculate extends AbstractConstructor
      * @param int|null $month
      * @param int|null $year
      * @return int
+     * @throws InvalidArgumentException if the month is not 1-12, or the day is not a valid day in that month
      */
     public static function numberDaysLeftInMonthByGivenValues(?int $day = null, ?int $month = null, ?int $year = null): int
     {
         $dt = Date::now()->default();
         if ($day === null) {
-            $day = intval(($dt)->format('n'));
+            $day = intval(($dt)->format('j'));
         }
         if ($month === null) {
             $month = intval(($dt)->format('n'));
@@ -101,17 +103,22 @@ class Calculate extends AbstractConstructor
         if ($year === null) {
             $year = intval(($dt)->format('Y'));
         }
+        if ($month < 1 || $month > 12) {
+            throw new InvalidArgumentException(sprintf('Invalid month "%d", expected 1-12', $month));
+        }
         $total = self::numberDaysInMonthByGivenValues(
             $month,
             $year
         );
-        if ($day > $total) {
-            return false;
+        if ($day < 1 || $day > $total) {
+            throw new InvalidArgumentException(sprintf('Invalid day "%d", expected 1-%d', $day, $total));
         }
         return $total - $day;
     }
 
     /**
+     * Get the number of hours between the dates, rounded to the nearest hour.
+     *
      * @param DateTime $otherDateTime
      * @return int
      * @noinspection PhpUnused
@@ -132,6 +139,8 @@ class Calculate extends AbstractConstructor
     }
 
     /**
+     * Get the number of minutes between the dates, rounded to the nearest minute.
+     *
      * @param DateTime $otherDateTime
      * @return int
      * @noinspection PhpUnused

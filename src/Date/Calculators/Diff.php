@@ -30,6 +30,7 @@
 
 namespace District5\Date\Calculators;
 
+use DateInterval;
 use DateTime;
 use District5\Date\Abstracts\AbstractConstructor;
 use District5\Date\Date;
@@ -51,9 +52,7 @@ class Diff extends AbstractConstructor
      */
     public function millennia(?DateTime $otherDateTime = null): int
     {
-        $years = $this->dateTime->diff(
-            $this->getDateTimeToUse($otherDateTime)
-        )->y;
+        $years = $this->orderedDiff($otherDateTime)->y;
         if ($years < 1000) {
             return 0;
         }
@@ -67,6 +66,18 @@ class Diff extends AbstractConstructor
      * @param DateTime|null $otherDateTime
      * @return DateTime
      */
+    /**
+     * Get the DateInterval from the oldest to the newest of the two dates, so the result does not depend on argument order.
+     *
+     * @param DateTime|null $otherDateTime
+     * @return DateInterval
+     */
+    protected function orderedDiff(?DateTime $otherDateTime = null): DateInterval
+    {
+        $other = $this->getDateTimeToUse($otherDateTime);
+        return $this->getOldestDate($other)->diff($this->getNewestDate($other));
+    }
+
     protected function getDateTimeToUse(?DateTime $otherDateTime = null): DateTime
     {
         if (null === $otherDateTime) {
@@ -83,9 +94,7 @@ class Diff extends AbstractConstructor
      */
     public function centuries(?DateTime $otherDateTime = null): int
     {
-        $years = $this->dateTime->diff(
-            $this->getDateTimeToUse($otherDateTime)
-        )->y;
+        $years = $this->orderedDiff($otherDateTime)->y;
         if ($years < 100) {
             return 0;
         }
@@ -101,9 +110,7 @@ class Diff extends AbstractConstructor
      */
     public function decades(?DateTime $otherDateTime = null): int
     {
-        $years = $this->dateTime->diff(
-            $this->getDateTimeToUse($otherDateTime)
-        )->y;
+        $years = $this->orderedDiff($otherDateTime)->y;
         if ($years < 10) {
             return 0;
         }
@@ -119,9 +126,7 @@ class Diff extends AbstractConstructor
      */
     public function years(?DateTime $otherDateTime = null): int
     {
-        $toUse = $this->getDateTimeToUse($otherDateTime);
-
-        return $this->dateTime->diff($toUse)->y;
+        return $this->orderedDiff($otherDateTime)->y;
     }
 
     /**
@@ -132,9 +137,7 @@ class Diff extends AbstractConstructor
      */
     public function months(?DateTime $otherDateTime = null): int
     {
-        $diff = $this->dateTime->diff(
-            $this->getDateTimeToUse($otherDateTime)
-        );
+        $diff = $this->orderedDiff($otherDateTime);
 
         return $diff->m + ($diff->y * 12);
     }
@@ -171,7 +174,7 @@ class Diff extends AbstractConstructor
     }
 
     /**
-     * Get the number of whole hours difference between the original date and this $otherDateTime
+     * Get the number of hours difference, rounded to the nearest hour, between the original date and this $otherDateTime
      *
      * @param DateTime|null $otherDateTime
      * @return int
@@ -200,7 +203,7 @@ class Diff extends AbstractConstructor
     }
 
     /**
-     * Get the number of whole minutes difference between the original date and this $otherDateTime
+     * Get the number of minutes difference, rounded to the nearest minute, between the original date and this $otherDateTime
      *
      * @param DateTime|null $otherDateTime
      * @return int

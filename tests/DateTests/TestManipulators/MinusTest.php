@@ -31,8 +31,10 @@
 namespace District5Tests\DateTests\TestManipulators;
 
 use DateTime;
+use DateTimeZone;
 use District5\Date\Date;
 use District5\Date\Manipulators\Minus;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -554,5 +556,115 @@ class MinusTest extends TestCase
         $minus = new Minus($date);
         $result = $method->invokeArgs($minus, ['run', 'this isn\'t valid']);
         $this->assertFalse($result);
+    }
+
+    public static function minusEdgeCaseProvider(): array
+    {
+        return [
+            'months: Mar 31 - 1 clamps to Feb 28' => ['months', [1], '2025-03-31 10:00:00.000000', 'UTC', '2025-02-28 10:00:00.000000 UTC'],
+            'months: Mar 31 - 1 clamps to Feb 29 in leap year' => ['months', [1], '2024-03-31 10:00:00.000000', 'UTC', '2024-02-29 10:00:00.000000 UTC'],
+            'months: Mar 30 - 1 clamps to Feb 28' => ['months', [1], '2025-03-30 00:00:00.000000', 'UTC', '2025-02-28 00:00:00.000000 UTC'],
+            'months: Oct 31 - 1 clamps to Sep 30' => ['months', [1], '2025-10-31 00:00:00.000000', 'UTC', '2025-09-30 00:00:00.000000 UTC'],
+            'months: Feb 29 - 12 clamps to Feb 28' => ['months', [12], '2024-02-29 00:00:00.000000', 'UTC', '2023-02-28 00:00:00.000000 UTC'],
+            'months: Jan 15 - 1 crosses year' => ['months', [1], '2025-01-15 00:00:00.000000', 'UTC', '2024-12-15 00:00:00.000000 UTC'],
+            'months: zero is a no-op' => ['months', [0], '2025-03-31 00:00:00.000000', 'UTC', '2025-03-31 00:00:00.000000 UTC'],
+            'months: negative uses absolute value' => ['months', [-1], '2025-02-15 00:00:00.000000', 'UTC', '2025-01-15 00:00:00.000000 UTC'],
+            'days: year boundary' => ['days', [1], '2026-01-01 23:00:00.000000', 'UTC', '2025-12-31 23:00:00.000000 UTC'],
+            'days: onto leap day' => ['days', [1], '2024-03-01 00:00:00.000000', 'UTC', '2024-02-29 00:00:00.000000 UTC'],
+            'days: non leap year' => ['days', [1], '2025-03-01 00:00:00.000000', 'UTC', '2025-02-28 00:00:00.000000 UTC'],
+            'days: zero is a no-op' => ['days', [0], '2025-06-01 12:00:00.000000', 'UTC', '2025-06-01 12:00:00.000000 UTC'],
+            'days: negative uses absolute value' => ['days', [-3], '2025-01-15 00:00:00.000000', 'UTC', '2025-01-12 00:00:00.000000 UTC'],
+            'days: across spring DST keeps wall clock' => ['days', [1], '2025-03-30 12:00:00.000000', 'Europe/London', '2025-03-29 12:00:00.000000 GMT'],
+            'days: across autumn DST keeps wall clock' => ['days', [1], '2025-10-26 12:00:00.000000', 'Europe/London', '2025-10-25 12:00:00.000000 BST'],
+            'weeks: negative uses absolute value' => ['weeks', [-1], '2025-01-15 00:00:00.000000', 'UTC', '2025-01-08 00:00:00.000000 UTC'],
+            'weeks: year boundary' => ['weeks', [1], '2026-01-04 00:00:00.000000', 'UTC', '2025-12-28 00:00:00.000000 UTC'],
+            'hours: spring DST gap is elapsed time' => ['hours', [2], '2025-03-30 03:30:00.000000', 'Europe/London', '2025-03-30 00:30:00.000000 GMT'],
+            'hours: autumn DST repeated hour is elapsed time' => ['hours', [2], '2025-10-26 02:30:00.000000', 'Europe/London', '2025-10-26 01:30:00.000000 BST'],
+            'hours: negative uses absolute value' => ['hours', [-2], '2025-01-15 10:00:00.000000', 'UTC', '2025-01-15 08:00:00.000000 UTC'],
+            'hours: day boundary' => ['hours', [25], '2025-01-15 10:00:00.000000', 'UTC', '2025-01-14 09:00:00.000000 UTC'],
+            'minutes: year boundary' => ['minutes', [1], '2026-01-01 00:00:00.000000', 'UTC', '2025-12-31 23:59:00.000000 UTC'],
+            'minutes: negative uses absolute value' => ['minutes', [-90], '2025-01-15 10:00:00.000000', 'UTC', '2025-01-15 08:30:00.000000 UTC'],
+            'seconds: year boundary' => ['seconds', [1], '2026-01-01 00:00:00.000000', 'UTC', '2025-12-31 23:59:59.000000 UTC'],
+            'seconds: zero is a no-op' => ['seconds', [0], '2025-12-31 23:59:59.500000', 'UTC', '2025-12-31 23:59:59.500000 UTC'],
+            'milliseconds: borrow from previous year' => ['milliseconds', [1], '2026-01-01 00:00:00.000500', 'UTC', '2025-12-31 23:59:59.999500 UTC'],
+            'milliseconds: negative uses absolute value' => ['milliseconds', [-5], '2025-01-15 00:00:00.010000', 'UTC', '2025-01-15 00:00:00.005000 UTC'],
+            'microseconds: borrow from previous year' => ['microseconds', [1], '2026-01-01 00:00:00.000000', 'UTC', '2025-12-31 23:59:59.999999 UTC'],
+            'microseconds: negative uses absolute value' => ['microseconds', [-7], '2025-01-15 00:00:00.000010', 'UTC', '2025-01-15 00:00:00.000003 UTC'],
+            'hoursAndMinutes: crosses midnight' => ['hoursAndMinutes', [1, 30], '2026-01-01 00:30:00.000000', 'UTC', '2025-12-31 23:00:00.000000 UTC'],
+            'hoursAndMinutesAndSeconds: crosses midnight' => ['hoursAndMinutesAndSeconds', [0, 59, 61], '2026-01-01 00:00:01.000000', 'UTC', '2025-12-31 23:00:00.000000 UTC'],
+            'years: Dec 31' => ['years', [1], '2025-12-31 00:00:00.000000', 'UTC', '2024-12-31 00:00:00.000000 UTC'],
+            'years: zero is a no-op' => ['years', [0], '2024-12-31 00:00:00.000000', 'UTC', '2024-12-31 00:00:00.000000 UTC'],
+            'decades: negative uses absolute value' => ['decades', [-1], '2025-01-15 00:00:00.000000', 'UTC', '2015-01-15 00:00:00.000000 UTC'],
+            'centuries: negative uses absolute value' => ['centuries', [-1], '2025-01-15 00:00:00.000000', 'UTC', '1925-01-15 00:00:00.000000 UTC'],
+            'millennia: negative uses absolute value' => ['millennia', [-1], '2025-01-15 00:00:00.000000', 'UTC', '1025-01-15 00:00:00.000000 UTC'],
+        ];
+    }
+
+    #[DataProvider('minusEdgeCaseProvider')]
+    public function testMinusEdgeCasesDoNotMutateInput(string $method, array $args, string $input, string $timezone, string $expected)
+    {
+        $format = 'Y-m-d H:i:s.u T';
+        $dt = new DateTime($input, new DateTimeZone($timezone));
+        $before = $dt->format($format);
+
+        $result = Date::modify($dt)->minus()->{$method}(...$args);
+
+        $this->assertInstanceOf(DateTime::class, $result);
+        $this->assertNotSame($dt, $result);
+        $this->assertEquals($expected, $result->format($format));
+        $this->assertEquals($before, $dt->format($format), 'Input DateTime was mutated in clone mode');
+    }
+
+    #[DataProvider('minusEdgeCaseProvider')]
+    public function testMinusEdgeCasesInPlaceMutateInput(string $method, array $args, string $input, string $timezone, string $expected)
+    {
+        $format = 'Y-m-d H:i:s.u T';
+        $dt = new DateTime($input, new DateTimeZone($timezone));
+
+        $result = Date::modify($dt, false)->minus()->{$method}(...$args);
+
+        $this->assertSame($dt, $result);
+        $this->assertEquals($expected, $dt->format($format));
+    }
+
+    public static function minusOverflowProvider(): array
+    {
+        return [
+            'hours' => ['hours', [PHP_INT_MIN]],
+            'minutes' => ['minutes', [PHP_INT_MIN]],
+            'seconds' => ['seconds', [PHP_INT_MIN]],
+            'days' => ['days', [PHP_INT_MIN]],
+            'years' => ['years', [PHP_INT_MIN]],
+            'hoursAndMinutes (hours invalid)' => ['hoursAndMinutes', [PHP_INT_MIN, 1]],
+            'hoursAndMinutes (minutes invalid)' => ['hoursAndMinutes', [1, PHP_INT_MIN]],
+            'hoursAndMinutesAndSeconds (seconds invalid)' => ['hoursAndMinutesAndSeconds', [1, 1, PHP_INT_MIN]],
+            'hoursAndMinutesAndSeconds (minutes invalid)' => ['hoursAndMinutesAndSeconds', [1, PHP_INT_MIN, 1]],
+        ];
+    }
+
+    /**
+     * abs(PHP_INT_MIN) overflows to a float, which produces an invalid DateInterval spec, so the
+     * manipulator must report failure with false rather than throwing.
+     */
+    #[DataProvider('minusOverflowProvider')]
+    public function testMinusReturnsFalseWhenIntervalCannotBeBuilt(string $method, array $args)
+    {
+        $dt = new DateTime('2025-01-15 00:00:00', new DateTimeZone('UTC'));
+        $this->assertFalse(Date::modify($dt)->minus()->{$method}(...$args));
+        $this->assertEquals('2025-01-15 00:00:00', $dt->format('Y-m-d H:i:s'));
+
+        // In place mode must not partially apply (e.g. the hours) before failing.
+        $this->assertFalse(Date::modify($dt, false)->minus()->{$method}(...$args));
+        $this->assertEquals('2025-01-15 00:00:00', $dt->format('Y-m-d H:i:s'));
+    }
+
+    public function testMinusChainedCallsOnSameInstanceAccumulate()
+    {
+        $dt = new DateTime('2025-03-31 00:00:00', new DateTimeZone('UTC'));
+        $minus = Date::modify($dt)->minus();
+        $minus->months(1);
+        $result = $minus->days(1);
+        $this->assertEquals('2025-02-27', $result->format('Y-m-d'));
+        $this->assertEquals('2025-03-31', $dt->format('Y-m-d'));
     }
 }

@@ -3,42 +3,53 @@ on: [push]
 
 jobs:
   unit-test:
-    name: Unit testing
+    name: Unit testing (PHP ${{ matrix.php }})
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ["8.4", "8.5", "8.6"]
+
     concurrency:
-      group: tests-group
+      group: tests-group-${{ github.ref }}-${{ matrix.php }}
       cancel-in-progress: true
 
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Install composer dependencies
-        uses: php-actions/composer@v6
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php_version: 8.4
-          php_extensions: "xdebug mongodb calendar sockets"
+          php-version: ${{ matrix.php }}
+          extensions: mongodb, calendar, sockets
+          coverage: xdebug
+          tools: composer
+
+      - name: Install composer dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
 
       - name: Run unit tests
-        uses: php-actions/phpunit@v3
         env:
           XDEBUG_MODE: coverage
-        with:
-          version: latest
-          php_version: latest
-          php_extensions: "xdebug mongodb calendar sockets"
-          args: "-d date.timezone=UTC --coverage-clover ./coverage.xml --log-junit junit.xml"
-          configuration: phpunit.xml
-          testsuite: TestSuite
-          bootstrap: vendor/autoload.php
+        run: >-
+          vendor/bin/phpunit
+          -d date.timezone=UTC
+          --configuration phpunit.xml
+          --testsuite TestSuite
+          --bootstrap vendor/autoload.php
+          --coverage-clover ./coverage.xml
+          --log-junit junit.xml
+
       - name: Upload coverage to Codecov
+        if: ${{ matrix.php == '8.4' }}
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: district-5/php-date
       - name: Upload test results to Codecov
-        if: ${{ !cancelled() }}
+        if: ${{ !cancelled() && matrix.php == '8.4' }}
         uses: codecov/test-results-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}

@@ -32,7 +32,6 @@
 namespace District5\Date\Formatters;
 
 use DateTime;
-use DateTimeInterface;
 use District5\Date\Date;
 
 /**
@@ -57,59 +56,44 @@ class InputFormatter
 
     /**
      * Convert a string of YYYY-MM-DD to a DateTime object. Optionally specifying the separator
-     * between the characters using the `$separator` param. Defaults to '-''
+     * between the characters using the `$separator` param. Defaults to '-'. The separator is always
+     * treated literally, even if it contains characters that are DateTime format codes.
      *
      * @param string $separator default '-' the separator to use.
      * @return DateTime|false
      */
     public function fromYMD(string $separator = '-'): DateTime|bool
     {
-        $tmp = DateTime::createFromFormat(
-            sprintf('Y%sm%sd', $separator, $separator),
-            strval($this->input)
-        );
-        if ($tmp !== false && $tmp->format(sprintf('Y%sm%sd', $separator, $separator)) === strval($this->input)) {
-            return $tmp;
-        }
-        return false;
+        $sep = self::escapeFormatLiteral($separator);
+        return $this->fromStrictFormat(sprintf('Y%sm%sd', $sep, $sep));
     }
 
     /**
      * Convert a string of DD-MM-YYYY to a DateTime object. Optionally specifying the separator
-     * between the characters using the `$separator` param. Defaults to '-'
+     * between the characters using the `$separator` param. Defaults to '-'. The separator is always
+     * treated literally.
      *
      * @param string $separator default '-' the separator to use.
      * @return DateTime|false
      */
     public function fromDMY(string $separator = '-'): DateTime|bool
     {
-        $tmp = DateTime::createFromFormat(
-            sprintf('d%sm%sY', $separator, $separator),
-            strval($this->input)
-        );
-        if ($tmp !== false && $tmp->format(sprintf('d%sm%sY', $separator, $separator)) === strval($this->input)) {
-            return $tmp;
-        }
-        return false;
+        $sep = self::escapeFormatLiteral($separator);
+        return $this->fromStrictFormat(sprintf('d%sm%sY', $sep, $sep));
     }
 
     /**
      * Convert a string of MM-DD-YYYY Optionally specifying the separator
-     * between the characters using the `$separator` param. Defaults to '-'
+     * between the characters using the `$separator` param. Defaults to '-'. The separator is always
+     * treated literally.
      *
      * @param string $separator default '-' the separator to use.
      * @return DateTime|false
      */
     public function fromMDY(string $separator = '-'): DateTime|bool
     {
-        $tmp = DateTime::createFromFormat(
-            sprintf('m%sd%sY', $separator, $separator),
-            strval($this->input)
-        );
-        if ($tmp !== false && $tmp->format(sprintf('m%sd%sY', $separator, $separator)) === strval($this->input)) {
-            return $tmp;
-        }
-        return false;
+        $sep = self::escapeFormatLiteral($separator);
+        return $this->fromStrictFormat(sprintf('m%sd%sY', $sep, $sep));
     }
 
     /**
@@ -122,21 +106,19 @@ class InputFormatter
     }
 
     /**
+     * Convert a string of YYYY-MM-DD HH:MM:SS to a DateTime object. Values that PHP would otherwise
+     * silently roll over (e.g. '2023-02-29 10:00:00' or '2024-01-01 24:00:00') are rejected.
+     * Separators are always treated literally.
+     *
      * @param string $dateSeparator
      * @param string $timeSeparator
      * @return DateTime|false
      */
     public function fromYMDHIS(string $dateSeparator = '-', string $timeSeparator = ':'): DateTime|bool
     {
-        return $this->fromFormat(
-            sprintf(
-                'Y%sm%sd H%si%ss',
-                $dateSeparator,
-                $dateSeparator,
-                $timeSeparator,
-                $timeSeparator
-            )
-        );
+        $d = self::escapeFormatLiteral($dateSeparator);
+        $t = self::escapeFormatLiteral($timeSeparator);
+        return $this->fromStrictFormat(sprintf('Y%sm%sd H%si%ss', $d, $d, $t, $t));
     }
 
     /**
@@ -166,14 +148,15 @@ class InputFormatter
     }
 
     /**
-     * Create a DateTime from a given format.
+     * Create a DateTime from a given format. This is a thin wrapper around DateTime::createFromFormat() and
+     * performs no strictness checks.
      *
      * @param string $format
      * @return DateTime|false
      */
     public function fromFormat(string $format): DateTime|bool
     {
-        return DateTime::createFromFormat($format, $this->input);
+        return DateTime::createFromFormat($format, $this->inputAsString());
     }
 
     /**
@@ -186,21 +169,20 @@ class InputFormatter
      */
     public function fromUnixTimestamp(bool $strict = true): DateTime|bool
     {
-        if ($strict === false && str_contains($this->input, '.')) {
+        $input = $this->inputAsString();
+        if ($strict === false && str_contains($input, '.')) {
             return $this->fromMicrosecondTimestamp();
         }
-        $tmp = DateTime::createFromFormat(
-            'U',
-            strval($this->input)
-        );
-        if (false !== $tmp && $tmp->format('U') === strval($this->input)) {
+        $tmp = DateTime::createFromFormat('U', $input);
+        if (false !== $tmp && $tmp->format('U') === $input) {
             return $tmp;
         }
         return false;
     }
 
     /**
-     * Convert a microsecond timestamp to a DateTime object.
+     * Convert a microsecond timestamp ({seconds}.{6 digit microseconds}) to a DateTime object.
+     * Negative values are read as a signed decimal, so '-0.500000' is half a second before the epoch.
      * If $strict = true, non microsecond timestamps will return false.
      *
      * @param bool $strict (optional) default true.
@@ -208,21 +190,20 @@ class InputFormatter
      */
     public function fromMicrosecondTimestamp(bool $strict = true): DateTime|bool
     {
-        if ($strict === false && !str_contains($this->input, '.')) {
+        if ($strict === false && !str_contains($this->inputAsString(), '.')) {
             return $this->fromUnixTimestamp();
         }
-        $tmp = DateTime::createFromFormat(
-            'U.u',
-            strval($this->input)
-        );
-        if ($tmp !== false && $tmp->format('U.u') === strval($this->input)) {
+        $input = $this->inputAsString(6);
+        $tmp = self::fromFractionalTimestamp($input, 6);
+        if ($tmp !== false && Date::output($tmp)->toMicrosecondTimestamp(true) === $input) {
             return $tmp;
         }
         return false;
     }
 
     /**
-     * Convert a millisecond timestamp to a DateTime object.
+     * Convert a millisecond timestamp ({seconds}.{3 digit milliseconds}) to a DateTime object.
+     * Negative values are read as a signed decimal, so '-0.500' is half a second before the epoch.
      * If $strict = true, non millisecond timestamps will return false.
      *
      * @param bool $strict (optional) default true.
@@ -230,33 +211,126 @@ class InputFormatter
      */
     public function fromMillisecondTimestamp(bool $strict = true): DateTime|bool
     {
-        if ($strict === false && !str_contains($this->input, '.')) {
+        if ($strict === false && !str_contains($this->inputAsString(), '.')) {
             return $this->fromUnixTimestamp();
         }
-        $tmp = DateTime::createFromFormat(
-            'U.v',
-            strval($this->input)
-        );
-        if ($tmp !== false && $tmp->format('U.v') === strval($this->input)) {
+        $input = $this->inputAsString(3);
+        $tmp = self::fromFractionalTimestamp($input, 3);
+        if ($tmp !== false && Date::output($tmp)->toMillisecondTimestamp(true) === $input) {
             return $tmp;
         }
         return false;
     }
 
     /**
-     * Convert an ISO 8601 string to a DateTime object
+     * Convert an ISO 8601 string to a DateTime object. Accepted forms are
+     * YYYY-MM-DDTHH:MM:SS[.fraction](Z|+HH:MM|-HH:MM|+HHMM|-HHMM). The fraction may have 1 to 9 digits;
+     * anything beyond microsecond precision is truncated. Invalid calendar or clock values are rejected.
      *
      * @return DateTime|false
      */
     public function fromISO8601(): DateTime|bool
     {
-        $tmp = DateTime::createFromFormat(
-            DateTimeInterface::ATOM,
-            strval($this->input)
-        );
-        if ($tmp !== false && $tmp->format(DateTimeInterface::ATOM) === strval($this->input)) {
+        $pattern = '/^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})(?:\.(\d{1,9}))?(?:(Z)|([+-])(\d{2}):?(\d{2}))$/D';
+        if (preg_match($pattern, $this->inputAsString(), $m) !== 1) {
+            return false;
+        }
+        $fraction = str_pad(substr($m[3], 0, 6), 6, '0');
+        if ($m[4] === 'Z') {
+            $offset = '+00:00';
+        } else {
+            if (intval($m[6]) > 23 || intval($m[7]) > 59) {
+                return false;
+            }
+            $sign = ($m[6] === '00' && $m[7] === '00') ? '+' : $m[5];
+            $offset = sprintf('%s%s:%s', $sign, $m[6], $m[7]);
+        }
+        $normalised = sprintf('%sT%s.%s%s', $m[1], $m[2], $fraction, $offset);
+        $format = 'Y-m-d\TH:i:s.uP';
+        $tmp = DateTime::createFromFormat($format, $normalised);
+        if ($tmp !== false && $tmp->format($format) === $normalised) {
             return $tmp;
         }
         return false;
+    }
+
+    /**
+     * Parse the input with the given format, rejecting anything that does not round-trip exactly
+     * (which catches PHP's silent overflow such as February 30th becoming March 1st/2nd).
+     *
+     * @param string $format
+     * @return DateTime|false
+     */
+    private function fromStrictFormat(string $format): DateTime|bool
+    {
+        $input = $this->inputAsString();
+        $tmp = DateTime::createFromFormat($format, $input);
+        if ($tmp !== false && $tmp->format($format) === $input) {
+            return $tmp;
+        }
+        return false;
+    }
+
+    /**
+     * Parse '[-]{seconds}.{fraction}' where the fraction has exactly $digits digits, treating the value
+     * as a signed decimal number of seconds.
+     *
+     * @param string $input
+     * @param int $digits
+     * @return DateTime|false
+     */
+    private static function fromFractionalTimestamp(string $input, int $digits): DateTime|bool
+    {
+        if (preg_match('/^(-?)(\d{1,12})\.(\d{' . $digits . '})$/D', $input, $m) !== 1) {
+            return false;
+        }
+        $unit = 10 ** $digits;
+        $total = intval($m[2]) * $unit + intval($m[3]);
+        if ($m[1] === '-') {
+            $total = -$total;
+        }
+        $seconds = intdiv($total, $unit);
+        $remainder = $total % $unit;
+        if ($remainder < 0) {
+            $remainder += $unit;
+            $seconds -= 1;
+        }
+        return DateTime::createFromFormat(
+            'U.u',
+            sprintf('%d.%06d', $seconds, $remainder * intdiv(1000000, $unit))
+        );
+    }
+
+    /**
+     * Get the input as a string without losing float precision. Floats are rendered with exactly
+     * $decimals decimal places when given, otherwise in their shortest round-trip form.
+     *
+     * @param int|null $decimals
+     * @return string
+     */
+    private function inputAsString(?int $decimals = null): string
+    {
+        if (!is_float($this->input)) {
+            return strval($this->input);
+        }
+        if ($decimals !== null) {
+            return sprintf('%.' . $decimals . 'F', $this->input);
+        }
+        $asString = var_export($this->input, true);
+        return str_ends_with($asString, '.0') ? substr($asString, 0, -2) : $asString;
+    }
+
+    /**
+     * Escape every character of a string so that DateTime treats it literally within a format string.
+     *
+     * @param string $value
+     * @return string
+     */
+    private static function escapeFormatLiteral(string $value): string
+    {
+        if ($value === '') {
+            return '';
+        }
+        return '\\' . implode('\\', str_split($value));
     }
 }

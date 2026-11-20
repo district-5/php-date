@@ -48,7 +48,7 @@ class StartAndEnd
      */
     public function startOfDayFromYearMonthDay(int $year, int $month, int $day): DateTime
     {
-        return $this->startOfMonthFromDateTime(
+        return $this->startOfDayFromDateTime(
             Date::createYMDHISM($year, $month, $day)
         );
     }
@@ -71,7 +71,7 @@ class StartAndEnd
      */
     public function endOfDayFromYearMonthDay(int $year, int $month, int $day): DateTime
     {
-        return $this->endOfMonthFromDateTime(
+        return $this->endOfDayFromDateTime(
             Date::createYMDHISM($year, $month, $day)
         );
     }

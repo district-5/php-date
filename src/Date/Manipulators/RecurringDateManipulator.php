@@ -123,20 +123,15 @@ class RecurringDateManipulator
     public function isToday(): bool
     {
         try {
-            $dt = Date::now()->default();
-            $start = $this->generateNormalisedDate();
-            $end = DateTime::createFromFormat(
-                'Y-m-d H:i:s',
-                sprintf(
-                    '%s-%s-%s 23:59:59',
-                    $dt->format('Y'),
-                    $dt->format('m'),
-                    $dt->format('d')
-                )
+            $today = new DateTime('now', $this->dateTime->getTimezone());
+            // Normalise the recurring date into the current year (e.g. Feb 29 becomes Mar 1 in a non-leap year).
+            $normalised = clone $this->dateTime;
+            $normalised->setDate(
+                intval($today->format('Y')),
+                intval($this->dateTime->format('n')),
+                intval($this->dateTime->format('j'))
             );
-            if ($dt >= $start && $dt <= $end) {
-                return true;
-            }
+            return $normalised->format('Y-m-d') === $today->format('Y-m-d');
         } catch (Exception) {
         }
         return false;
@@ -153,7 +148,7 @@ class RecurringDateManipulator
         try {
             $date = $this->generateNormalisedDate();
             if (Date::validateObject($this->dateTime)->isNewerThan($date)) {
-                return $this->nextYear();
+                return $this->lastYear();
             }
             return $this->dateTime;
         } catch (Exception) {

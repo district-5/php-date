@@ -42,9 +42,13 @@ class DateTest extends TestCase
 {
     public function testCreateFromString()
     {
+        // fromString() parses in the default timezone but returns a +00:00 DateTime, so convert back
+        // to the default timezone before comparing wall-clock values.
         $this->assertEquals(
             '2045-01-02 00:00:00',
-            Date::fromString('First Monday of January 2045')->format('Y-m-d H:i:s')
+            Date::fromString('First Monday of January 2045')
+                ->setTimezone(new \DateTimeZone(date_default_timezone_get()))
+                ->format('Y-m-d H:i:s')
         );
         $this->assertFalse(
             Date::fromString('This has nothing to do with a date.')
@@ -65,7 +69,8 @@ class DateTest extends TestCase
 
     public function testCreateYMDHISM()
     {
-        $dt = Date::now()->utc();
+        // createYMDHISM() without a timezone uses the default timezone, so take the components from there.
+        $dt = Date::nowDefault();
         $this->assertEquals(
             $dt->format('U.u'),
             Date::createYMDHISM(

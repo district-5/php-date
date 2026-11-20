@@ -116,10 +116,10 @@ class Minus extends AbstractManipulator
      */
     public function hoursAndMinutes(int $hours, int $minutes): DateTime|bool
     {
-        if (false === $this->hours($hours) || false === $this->minutes($minutes)) {
-            return false;
-        }
-        return $this->dateTime;
+        return $this->runMany(
+            sprintf('PT%sH', abs($hours)),
+            sprintf('PT%sM', abs($minutes))
+        );
     }
 
     /**
@@ -132,10 +132,11 @@ class Minus extends AbstractManipulator
      */
     public function hoursAndMinutesAndSeconds(int $hours, int $minutes, int $seconds): DateTime|bool
     {
-        if (false === $this->hours($hours) || false === $this->minutes($minutes) || false === $this->seconds($seconds)) {
-            return false;
-        }
-        return $this->dateTime;
+        return $this->runMany(
+            sprintf('PT%sH', abs($hours)),
+            sprintf('PT%sM', abs($minutes)),
+            sprintf('PT%sS', abs($seconds))
+        );
     }
 
     /**
@@ -247,5 +248,28 @@ class Minus extends AbstractManipulator
         } catch (Exception) {
         }
         return false;
+    }
+
+    /**
+     * Build every DateInterval first, then apply them all. If any interval is invalid, false is returned
+     * and the DateTime is left untouched (important when operating in place).
+     *
+     * @param string ...$specs
+     * @return DateTime|false
+     */
+    private function runMany(string ...$specs): DateTime|bool
+    {
+        try {
+            $intervals = [];
+            foreach ($specs as $spec) {
+                $intervals[] = new DateInterval($spec);
+            }
+        } catch (Exception) {
+            return false;
+        }
+        foreach ($intervals as $interval) {
+            $this->dateTime->sub($interval);
+        }
+        return $this->dateTime;
     }
 }
