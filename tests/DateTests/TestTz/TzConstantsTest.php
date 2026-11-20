@@ -31,6 +31,7 @@
 namespace District5Tests\DateTests\TestTz;
 
 use DateTimeZone;
+use District5\Date\Date;
 use District5\Date\Tz\TzConstants;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
@@ -47,16 +48,23 @@ class TzConstantsTest extends TestCase
         $this->assertNotEmpty(TzConstants::$ALL_TIMEZONES);
         $invalid = [];
         foreach (TzConstants::$ALL_TIMEZONES as $timezone) {
+            // Only require PHP to accept the identifier. Some timezone databases (e.g. system tzdata on Ubuntu)
+            // normalise renamed zones, so new DateTimeZone('Europe/Kiev')->getName() may return 'Europe/Kyiv'.
             try {
-                $tz = new DateTimeZone($timezone);
-                if ($tz->getName() !== $timezone) {
-                    $invalid[] = $timezone;
-                }
+                new DateTimeZone($timezone);
             } catch (\Exception) {
                 $invalid[] = $timezone;
             }
         }
-        $this->assertSame([], $invalid);
+        // Renamed/merged zones kept in TzConstants for backwards compatibility. Systems without legacy tzdata
+        // (e.g. Ubuntu 24.04+ without the tzdata-legacy package) do not know these names at all.
+        $legacy = [
+            'America/Godthab', 'America/Nipigon', 'America/Pangnirtung', 'America/Rainy_River',
+            'America/Santa_Isabel', 'America/Thunder_Bay', 'America/Yellowknife', 'Asia/Choibalsan',
+            'Asia/Rangoon', 'Australia/Currie', 'Europe/Kiev', 'Europe/Uzhgorod', 'Europe/Zaporozhye',
+            'Pacific/Enderbury', 'Pacific/Johnston',
+        ];
+        $this->assertSame([], array_values(array_diff($invalid, $legacy)));
     }
 
     public function testAllTimezonesHasNoDuplicates()
@@ -123,5 +131,21 @@ class TzConstantsTest extends TestCase
     public function testIsNotValidTimezone(string $timezone): void
     {
         $this->assertFalse(TzConstants::isValidTimezone($timezone));
+    }
+
+    public function testCurrentNamesOfRenamedZonesAreListed()
+    {
+        $renamed = [
+            'Europe/Kiev' => 'Europe/Kyiv',
+            'America/Godthab' => 'America/Nuuk',
+            'Asia/Rangoon' => 'Asia/Yangon',
+            'Pacific/Enderbury' => 'Pacific/Kanton',
+        ];
+        foreach ($renamed as $old => $current) {
+            $this->assertTrue(TzConstants::isValidTimezone($old), $old);
+            $this->assertTrue(TzConstants::isValidTimezone($current), $current);
+            $this->assertNotFalse(Date::now()->inTimezone($current), $current);
+        }
+        $this->assertSame('Europe/Kyiv', TzConstants::EUROPE_KYIV);
     }
 }

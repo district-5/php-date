@@ -128,7 +128,9 @@ class TzConstants
     const AMERICA_CAYMAN = 'America/Cayman';
     const AMERICA_CHICAGO = 'America/Chicago';
     const AMERICA_CHIHUAHUA = 'America/Chihuahua';
+    const AMERICA_CIUDAD_JUAREZ = 'America/Ciudad_Juarez';
     const AMERICA_COSTA_RICA = 'America/Costa_Rica';
+    const AMERICA_COYHAIQUE = 'America/Coyhaique';
     const AMERICA_CRESTON = 'America/Creston';
     const AMERICA_CUIABA = 'America/Cuiaba';
     const AMERICA_CURACAO = 'America/Curacao';
@@ -198,6 +200,7 @@ class TzConstants
     const AMERICA_NORTH_DAKOTA_BEULAH = 'America/North_Dakota/Beulah';
     const AMERICA_NORTH_DAKOTA_CENTER = 'America/North_Dakota/Center';
     const AMERICA_NORTH_DAKOTA_NEW_SALEM = 'America/North_Dakota/New_Salem';
+    const AMERICA_NUUK = 'America/Nuuk';
     const AMERICA_OJINAGA = 'America/Ojinaga';
     const AMERICA_PANAMA = 'America/Panama';
     const AMERICA_PANGNIRTUNG = 'America/Pangnirtung';
@@ -207,6 +210,7 @@ class TzConstants
     const AMERICA_PORT_OF_SPAIN = 'America/Port_of_Spain';
     const AMERICA_PORTO_VELHO = 'America/Porto_Velho';
     const AMERICA_PUERTO_RICO = 'America/Puerto_Rico';
+    const AMERICA_PUNTA_ARENAS = 'America/Punta_Arenas';
     const AMERICA_RAINY_RIVER = 'America/Rainy_River';
     const AMERICA_RANKIN_INLET = 'America/Rankin_Inlet';
     const AMERICA_RECIFE = 'America/Recife';
@@ -257,10 +261,12 @@ class TzConstants
     const ASIA_AQTAU = 'Asia/Aqtau';
     const ASIA_AQTOBE = 'Asia/Aqtobe';
     const ASIA_ASHGABAT = 'Asia/Ashgabat';
+    const ASIA_ATYRAU = 'Asia/Atyrau';
     const ASIA_BAGHDAD = 'Asia/Baghdad';
     const ASIA_BAHRAIN = 'Asia/Bahrain';
     const ASIA_BAKU = 'Asia/Baku';
     const ASIA_BANGKOK = 'Asia/Bangkok';
+    const ASIA_BARNAUL = 'Asia/Barnaul';
     const ASIA_BEIRUT = 'Asia/Beirut';
     const ASIA_BISHKEK = 'Asia/Bishkek';
     const ASIA_BRUNEI = 'Asia/Brunei';
@@ -272,6 +278,7 @@ class TzConstants
     const ASIA_DILI = 'Asia/Dili';
     const ASIA_DUBAI = 'Asia/Dubai';
     const ASIA_DUSHANBE = 'Asia/Dushanbe';
+    const ASIA_FAMAGUSTA = 'Asia/Famagusta';
     const ASIA_GAZA = 'Asia/Gaza';
     const ASIA_HEBRON = 'Asia/Hebron';
     const ASIA_HO_CHI_MINH = 'Asia/Ho_Chi_Minh';
@@ -305,6 +312,7 @@ class TzConstants
     const ASIA_PONTIANAK = 'Asia/Pontianak';
     const ASIA_PYONGYANG = 'Asia/Pyongyang';
     const ASIA_QATAR = 'Asia/Qatar';
+    const ASIA_QOSTANAY = 'Asia/Qostanay';
     const ASIA_QYZYLORDA = 'Asia/Qyzylorda';
     const ASIA_RANGOON = 'Asia/Rangoon';
     const ASIA_RIYADH = 'Asia/Riyadh';
@@ -320,12 +328,14 @@ class TzConstants
     const ASIA_TEHRAN = 'Asia/Tehran';
     const ASIA_THIMPHU = 'Asia/Thimphu';
     const ASIA_TOKYO = 'Asia/Tokyo';
+    const ASIA_TOMSK = 'Asia/Tomsk';
     const ASIA_ULAANBAATAR = 'Asia/Ulaanbaatar';
     const ASIA_URUMQI = 'Asia/Urumqi';
     const ASIA_UST_NERA = 'Asia/Ust-Nera';
     const ASIA_VIENTIANE = 'Asia/Vientiane';
     const ASIA_VLADIVOSTOK = 'Asia/Vladivostok';
     const ASIA_YAKUTSK = 'Asia/Yakutsk';
+    const ASIA_YANGON = 'Asia/Yangon';
     const ASIA_YEKATERINBURG = 'Asia/Yekaterinburg';
     const ASIA_YEREVAN = 'Asia/Yerevan';
     const ATLANTIC_AZORES = 'Atlantic/Azores';
@@ -352,6 +362,7 @@ class TzConstants
     const AUSTRALIA_SYDNEY = 'Australia/Sydney';
     const EUROPE_AMSTERDAM = 'Europe/Amsterdam';
     const EUROPE_ANDORRA = 'Europe/Andorra';
+    const EUROPE_ASTRAKHAN = 'Europe/Astrakhan';
     const EUROPE_ATHENS = 'Europe/Athens';
     const EUROPE_BELGRADE = 'Europe/Belgrade';
     const EUROPE_BERLIN = 'Europe/Berlin';
@@ -371,6 +382,8 @@ class TzConstants
     const EUROPE_JERSEY = 'Europe/Jersey';
     const EUROPE_KALININGRAD = 'Europe/Kaliningrad';
     const EUROPE_KIEV = 'Europe/Kiev';
+    const EUROPE_KIROV = 'Europe/Kirov';
+    const EUROPE_KYIV = 'Europe/Kyiv';
     const EUROPE_LISBON = 'Europe/Lisbon';
     const EUROPE_LJUBLJANA = 'Europe/Ljubljana';
     const EUROPE_LONDON = 'Europe/London';
@@ -390,12 +403,14 @@ class TzConstants
     const EUROPE_SAMARA = 'Europe/Samara';
     const EUROPE_SAN_MARINO = 'Europe/San_Marino';
     const EUROPE_SARAJEVO = 'Europe/Sarajevo';
+    const EUROPE_SARATOV = 'Europe/Saratov';
     const EUROPE_SIMFEROPOL = 'Europe/Simferopol';
     const EUROPE_SKOPJE = 'Europe/Skopje';
     const EUROPE_SOFIA = 'Europe/Sofia';
     const EUROPE_STOCKHOLM = 'Europe/Stockholm';
     const EUROPE_TALLINN = 'Europe/Tallinn';
     const EUROPE_TIRANE = 'Europe/Tirane';
+    const EUROPE_ULYANOVSK = 'Europe/Ulyanovsk';
     const EUROPE_UZHGOROD = 'Europe/Uzhgorod';
     const EUROPE_VADUZ = 'Europe/Vaduz';
     const EUROPE_VATICAN = 'Europe/Vatican';
@@ -434,6 +449,7 @@ class TzConstants
     const PACIFIC_GUAM = 'Pacific/Guam';
     const PACIFIC_HONOLULU = 'Pacific/Honolulu';
     const PACIFIC_JOHNSTON = 'Pacific/Johnston';
+    const PACIFIC_KANTON = 'Pacific/Kanton';
     const PACIFIC_KIRITIMATI = 'Pacific/Kiritimati';
     const PACIFIC_KOSRAE = 'Pacific/Kosrae';
     const PACIFIC_KWAJALEIN = 'Pacific/Kwajalein';
@@ -551,7 +567,9 @@ class TzConstants
         self::AMERICA_CAYMAN,
         self::AMERICA_CHICAGO,
         self::AMERICA_CHIHUAHUA,
+        self::AMERICA_CIUDAD_JUAREZ,
         self::AMERICA_COSTA_RICA,
+        self::AMERICA_COYHAIQUE,
         self::AMERICA_CRESTON,
         self::AMERICA_CUIABA,
         self::AMERICA_CURACAO,
@@ -621,6 +639,7 @@ class TzConstants
         self::AMERICA_NORTH_DAKOTA_BEULAH,
         self::AMERICA_NORTH_DAKOTA_CENTER,
         self::AMERICA_NORTH_DAKOTA_NEW_SALEM,
+        self::AMERICA_NUUK,
         self::AMERICA_OJINAGA,
         self::AMERICA_PANAMA,
         self::AMERICA_PANGNIRTUNG,
@@ -630,6 +649,7 @@ class TzConstants
         self::AMERICA_PORT_OF_SPAIN,
         self::AMERICA_PORTO_VELHO,
         self::AMERICA_PUERTO_RICO,
+        self::AMERICA_PUNTA_ARENAS,
         self::AMERICA_RAINY_RIVER,
         self::AMERICA_RANKIN_INLET,
         self::AMERICA_RECIFE,
@@ -680,10 +700,12 @@ class TzConstants
         self::ASIA_AQTAU,
         self::ASIA_AQTOBE,
         self::ASIA_ASHGABAT,
+        self::ASIA_ATYRAU,
         self::ASIA_BAGHDAD,
         self::ASIA_BAHRAIN,
         self::ASIA_BAKU,
         self::ASIA_BANGKOK,
+        self::ASIA_BARNAUL,
         self::ASIA_BEIRUT,
         self::ASIA_BISHKEK,
         self::ASIA_BRUNEI,
@@ -695,6 +717,7 @@ class TzConstants
         self::ASIA_DILI,
         self::ASIA_DUBAI,
         self::ASIA_DUSHANBE,
+        self::ASIA_FAMAGUSTA,
         self::ASIA_GAZA,
         self::ASIA_HEBRON,
         self::ASIA_HO_CHI_MINH,
@@ -728,6 +751,7 @@ class TzConstants
         self::ASIA_PONTIANAK,
         self::ASIA_PYONGYANG,
         self::ASIA_QATAR,
+        self::ASIA_QOSTANAY,
         self::ASIA_QYZYLORDA,
         self::ASIA_RANGOON,
         self::ASIA_RIYADH,
@@ -743,12 +767,14 @@ class TzConstants
         self::ASIA_TEHRAN,
         self::ASIA_THIMPHU,
         self::ASIA_TOKYO,
+        self::ASIA_TOMSK,
         self::ASIA_ULAANBAATAR,
         self::ASIA_URUMQI,
         self::ASIA_UST_NERA,
         self::ASIA_VIENTIANE,
         self::ASIA_VLADIVOSTOK,
         self::ASIA_YAKUTSK,
+        self::ASIA_YANGON,
         self::ASIA_YEKATERINBURG,
         self::ASIA_YEREVAN,
         self::ATLANTIC_AZORES,
@@ -775,6 +801,7 @@ class TzConstants
         self::AUSTRALIA_SYDNEY,
         self::EUROPE_AMSTERDAM,
         self::EUROPE_ANDORRA,
+        self::EUROPE_ASTRAKHAN,
         self::EUROPE_ATHENS,
         self::EUROPE_BELGRADE,
         self::EUROPE_BERLIN,
@@ -794,6 +821,8 @@ class TzConstants
         self::EUROPE_JERSEY,
         self::EUROPE_KALININGRAD,
         self::EUROPE_KIEV,
+        self::EUROPE_KIROV,
+        self::EUROPE_KYIV,
         self::EUROPE_LISBON,
         self::EUROPE_LJUBLJANA,
         self::EUROPE_LONDON,
@@ -813,12 +842,14 @@ class TzConstants
         self::EUROPE_SAMARA,
         self::EUROPE_SAN_MARINO,
         self::EUROPE_SARAJEVO,
+        self::EUROPE_SARATOV,
         self::EUROPE_SIMFEROPOL,
         self::EUROPE_SKOPJE,
         self::EUROPE_SOFIA,
         self::EUROPE_STOCKHOLM,
         self::EUROPE_TALLINN,
         self::EUROPE_TIRANE,
+        self::EUROPE_ULYANOVSK,
         self::EUROPE_UZHGOROD,
         self::EUROPE_VADUZ,
         self::EUROPE_VATICAN,
@@ -857,6 +888,7 @@ class TzConstants
         self::PACIFIC_GUAM,
         self::PACIFIC_HONOLULU,
         self::PACIFIC_JOHNSTON,
+        self::PACIFIC_KANTON,
         self::PACIFIC_KIRITIMATI,
         self::PACIFIC_KOSRAE,
         self::PACIFIC_KWAJALEIN,

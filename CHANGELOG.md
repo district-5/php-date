@@ -22,6 +22,9 @@ behaviour that existing code may rely on — see **Changed** below before upgrad
 - `NtpServer::getMicrotime()` returns the NTP time with sub-second precision, corrected for network delay.
 - More default NTP servers: Cloudflare, Apple, AWS, Microsoft, the NTP Pool and NIST, after the existing Google servers.
 - `NtpServer` servers may be given as `host:port`, an IPv6 address, or `[ipv6]:port`.
+- `TzConstants` includes 16 current IANA zone names that were missing, including the new names of
+  renamed zones (`Europe/Kyiv`, `America/Nuuk`, `Asia/Yangon`, `Pacific/Kanton`). The old names are kept,
+  but note that systems without legacy tzdata (e.g. Ubuntu 24.04+ without `tzdata-legacy`) reject them.
 - Greatly expanded test suite (292 → 1,359 tests; `src/Date` line coverage 84% → 97%).
 
 ### Changed
