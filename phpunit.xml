@@ -10,8 +10,7 @@
         timeoutForSmallTests="1"
         timeoutForMediumTests="10"
         timeoutForLargeTests="60"
-        bootstrap="vendor/autoload.php"
-        cacheResult="false">
+        bootstrap="vendor/autoload.php">
     <coverage includeUncoveredFiles="true"
               pathCoverage="false"
               ignoreDeprecatedCodeUnits="true"
